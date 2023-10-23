@@ -1,0 +1,8 @@
+﻿<Application x:Class="GameEngine.Editor.Windows.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GameEngine.Editor.Windows">
+    <Application.Resources>
+        <ResourceDictionary Source="/Engine/Editor/Editor Windows/Theme/EditorTheme.xaml"/>
+    </Application.Resources>
+</Application>

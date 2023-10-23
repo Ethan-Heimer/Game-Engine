@@ -1,0 +1,28 @@
+{
+  "behaviorFunctions": [
+    {
+      "FunctionName": "Update",
+      "ParamTypes": []
+    },
+
+    {
+      "FunctionName": "Start",
+      "ParamTypes": []
+    },
+
+    {
+      "FunctionName": "Awake",
+      "ParamTypes": []
+    },
+
+    {
+      "FunctionName": "OnDraw",
+      "ParamTypes": [
+        {
+          "Type": " GameEngine.Rendering.Drawer",
+          "Assembly": "Game Engine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+        }
+      ]
+    }
+  ]
+}
