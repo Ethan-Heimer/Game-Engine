@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GameEngine.Editor.Windows">
     <Application.Resources>
-        <ResourceDictionary Source="/Engine/Editor/Editor Windows/Theme/EditorTheme.xaml"/>
+        <ResourceDictionary Source="/Editor/Editor Windows/Theme/EditorTheme.xaml"/>
     </Application.Resources>
 </Application>

@@ -37,5 +37,10 @@
     <Style TargetType="TextBlock">
         <Setter Property="Foreground" Value="White"/>
     </Style>
+    
+    <Style TargetType="TextBlock" x:Key="Label">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="25"/>
+    </Style>
 
 </ResourceDictionary>

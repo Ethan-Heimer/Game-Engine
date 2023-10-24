@@ -63,9 +63,13 @@
     <Reference Include="XamlBuildTask" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\Editor Windows\EditorGUI.cs" />
+    <Compile Include="Editor\Editor Windows\EditorWindow.cs" />
+    <Compile Include="Editor\Editor Windows\TestWindow.cs" />
+    <Compile Include="Editor\Editor Windows\WindowManager.cs" />
     <Compile Include="Engine\ComponentModel\Behavior.cs" />
     <Compile Include="Engine\ComponentModel\GameObjectCollection.cs" />
-    <Compile Include="Engine\Components\Component.cs" />
+    <Compile Include="Engine\ComponentModel\Component.cs" />
     <Compile Include="Engine\ComponentModel\ComponentCacheManager.cs" />
     <Compile Include="Engine\ComponentModel\BehaviorFunctionData.cs" />
     <Compile Include="Engine\ComponentModel\BehaviorFunctionExecuter.cs" />
@@ -77,11 +81,11 @@
     <Compile Include="Engine\Rendering\Renderer.cs" />
     <Compile Include="Engine\Utilities\BinarySeriailizer.cs" />
     <Compile Include="Engine\Utilities\ContentLoader.cs" />
-    <Compile Include="Engine\Editor\Editor.cs" />
+    <Compile Include="Editor\Editor.cs" />
     <Compile Include="Engine\Game1.cs" />
-    <Compile Include="Applictaion\GameInitalizer.cs" />
+    <Compile Include="App\GameInitalizer.cs" />
     <Compile Include="Engine\GameObject.cs" />
-    <Compile Include="Applictaion\Program.cs" />
+    <Compile Include="App\Program.cs" />
     <Compile Include="Engine\Scene.cs" />
     <Compile Include="Engine\SceneManager.cs" />
     <Compile Include="Engine\Utilities\DelegateTypeFactory.cs" />
@@ -91,9 +95,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Engine\Editor\Editor Windows\Scene Loader\Scene Loader.xaml.cs">
+    <Compile Include="Editor\Editor Windows\Scene Loader\Scene Loader.xaml.cs">
       <DependentUpon>Scene Loader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Engine\Utilities\StringSpacer.cs" />
     <Compile Include="Game\Move.cs" />
     <Compile Include="Game\TestComponent.cs" />
   </ItemGroup>
@@ -103,19 +108,17 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Engine\Editor\Editor Windows\Scene Loader\Scene Loader.xaml">
+    <Page Include="Editor\Editor Windows\Scene Loader\Scene Loader.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Engine\Editor\Editor Windows\Theme\EditorTheme.xaml">
+    <Page Include="Editor\Editor Windows\Theme\EditorTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\Editor\Editor Windows\Hiarchy\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Game\Content\PlaceHolderOne.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -40,7 +40,8 @@
         <TextBlock Text="Play Mode" 
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    FontSize="24"
-                   Grid.Row="3"/>
+                   Grid.Row="3"
+                   />
 
         <Button Content="Play"
                 Width="250"
