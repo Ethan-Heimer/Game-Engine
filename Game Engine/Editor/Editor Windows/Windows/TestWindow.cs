@@ -14,9 +14,15 @@ namespace GameEngine.Editor.Windows
             Height = 500;
         }
 
-        public override void OnGUI(EditorGUIDrawer drawer)
+        public override void OnGUI(EditorGUIDrawer editorGui)
         {
-            drawer.Label("Hello World");
+            editorGui.DrawLabel("Test");
+
+            editorGui.StartHorizontalGroup();
+            editorGui.Draw<TestButtonComponent>("Prams!!!");
+            editorGui.EndGroup();
+
+            editorGui.DrawLabel("Test");
         }
     }
 }

@@ -63,9 +63,12 @@
     <Reference Include="XamlBuildTask" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\Editor Windows\Component.cs" />
+    <Compile Include="Editor\Editor Windows\Components\TestButtonComponent.cs" />
     <Compile Include="Editor\Editor Windows\EditorGUI.cs" />
     <Compile Include="Editor\Editor Windows\EditorWindow.cs" />
-    <Compile Include="Editor\Editor Windows\TestWindow.cs" />
+    <Compile Include="Editor\Editor Windows\Windows\ChangeLogWindow.cs" />
+    <Compile Include="Editor\Editor Windows\Windows\TestWindow.cs" />
     <Compile Include="Editor\Editor Windows\WindowManager.cs" />
     <Compile Include="Engine\ComponentModel\Behavior.cs" />
     <Compile Include="Engine\ComponentModel\GameObjectCollection.cs" />
@@ -95,9 +98,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Editor\Editor Windows\Scene Loader\Scene Loader.xaml.cs">
-      <DependentUpon>Scene Loader.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Engine\Utilities\StringSpacer.cs" />
     <Compile Include="Game\Move.cs" />
     <Compile Include="Game\TestComponent.cs" />
@@ -107,10 +107,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Editor\Editor Windows\Scene Loader\Scene Loader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Editor\Editor Windows\Theme\EditorTheme.xaml">
       <SubType>Designer</SubType>

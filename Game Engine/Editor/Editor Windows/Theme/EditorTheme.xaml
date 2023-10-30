@@ -5,11 +5,16 @@
         <Setter Property="Background" Value="#08415C"/>
     </Style>
 
-    <Style TargetType="Button">
+    <Style TargetType="Button" x:Key="Button">
         <Style.Setters>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#388697"/>
+            <Setter Property="FontSize" Value="17.5"/>
+            <Setter Property="Padding" Value="10"/>
+
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Margin" Value="5"/>
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -41,6 +46,14 @@
     <Style TargetType="TextBlock" x:Key="Label">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="25"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Text">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
 </ResourceDictionary>
