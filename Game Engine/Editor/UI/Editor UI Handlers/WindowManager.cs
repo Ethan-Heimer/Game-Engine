@@ -16,44 +16,7 @@ namespace GameEngine.Editor
 {
     public static class WindowManager
     {
-        public static void Initalize()
-        {
-            App app = new App();
-            app.InitializeComponent();
-
-            List<EditorWindow> editorWindows = FindWindows();
-            List<Window> windows = InstanciateWindows(editorWindows);
-
-            ShowWindows(windows);
-        }
-
-        public static void ShowWindows(List<Window> windows)
-        {
-            foreach(Window o in windows) 
-            {
-                ShowWindow(o);
-            }
-        }
-
-        static List<EditorWindow> FindWindows()
-        {
-            List<EditorWindow> windows = new List<EditorWindow>();
-            foreach (Type type in
-                Assembly.GetAssembly(typeof(EditorWindow)).GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(EditorWindow))))
-            {
-                windows.Add((EditorWindow)Activator.CreateInstance(type, new object[0]));
-            }
-            
-            return windows;
-        }
-
-        static List<Window> InstanciateWindows(List<EditorWindow> windows)
-        {
-            return windows.Select(x => CreateWindow(x)).ToList();
-        }
-
-        static Window CreateWindow(EditorWindow editorWindow)
+        public static Window CreateWindow(EditorWindow editorWindow)
         {
             var window = new Window();
             window.Title = StringSpacer.Space(editorWindow.GetType().Name);
@@ -72,6 +35,8 @@ namespace GameEngine.Editor
 
             editorWindow.OnGUI(drawer);
 
+            ShowWindow(window);
+
             return window;
         }
 
@@ -86,4 +51,6 @@ namespace GameEngine.Editor
             await signal.WaitAsync();
         }
     }
+
+   
 }

@@ -10,8 +10,7 @@ namespace GameEngine.Editor.Windows
     {
         public TestWindow() 
         {
-            Width = 500;
-            Height = 500;
+            OpenOnDefault = false;
         }
 
         public override void OnGUI(EditorGUIDrawer editorGui)

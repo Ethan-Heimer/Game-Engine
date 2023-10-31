@@ -35,24 +35,11 @@ namespace GameEngine.Editor
 
         public static void Open()
         {
-            WindowManager.Initalize();
-            OpenEditor();
+            DefaultWindowHandler.OpenDefaultWindows();
             playMode = false;
         }
 
-        async static void OpenEditor()
-        {
-            /*
-            var signal = new SemaphoreSlim(0, 1);
-
-            var Window = WindowManager.Test();
-            Window.Closed += (s, _) => signal.Release();
-
-            Window.Show();
-
-            await signal.WaitAsync();
-            */
-        }
+       
 
         static Scene cachedScene = null;
         static SemaphoreSlim playSignal = null; 

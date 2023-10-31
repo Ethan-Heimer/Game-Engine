@@ -11,6 +11,7 @@ namespace GameEngine.Engine
         public static string Space(string input)
         {
             StringBuilder newString = new StringBuilder(input);
+            int offset = 0; 
 
             for(int i = 0; i < input.Length; i++) 
             {
@@ -18,7 +19,10 @@ namespace GameEngine.Engine
                     continue;
 
                 if (char.IsUpper(input[i]))
-                    newString.Insert(i, ' ');
+                {
+                    newString.Insert(i + offset, ' ');
+                    offset++;
+                }
             }
 
             return newString.ToString();

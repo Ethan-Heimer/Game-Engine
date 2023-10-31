@@ -9,9 +9,10 @@ namespace GameEngine.Editor.Windows
 {
     public abstract class EditorWindow
     {
-        public int Width = 0;
-        public int Height = 0;
+        public int Width = 500;
+        public int Height = 500;
 
+        public bool OpenOnDefault = true;
         public abstract void OnGUI(EditorGUIDrawer drawer);
     }
 }

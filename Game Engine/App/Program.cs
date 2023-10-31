@@ -2,6 +2,7 @@
 using System;
 using GameEngine.Editor;
 using GameEngine;
+using GameEngine.Editor.Windows;
 
 namespace Program
 {
@@ -15,8 +16,11 @@ namespace Program
          {
              using (Game1 game = new Game1())
              {
-                 Editor.Open();
-                 GameInitalizer.Run(game);
+                App app = new App();
+                app.InitializeComponent();
+
+                Editor.Open();
+                GameInitalizer.Run(game);
              }
          }
      }
