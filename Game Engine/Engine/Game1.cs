@@ -17,7 +17,9 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using GameEngine.Engine;
 using GameEngine.Engine.Rendering;
+using GameEngine.Engine.Events;
 using System.Security.Cryptography;
+using System.Windows;
 
 namespace GameEngine
 {
@@ -30,10 +32,13 @@ namespace GameEngine
         public Game1() //This is the constructor, this function is called whenever the game class is created.
         {
             graphics = new GraphicsDeviceManager(this);
+            EngineEventManager.Init();
         }
 
         protected override void Initialize()
         {
+           
+
             renderer = new Renderer(this, graphics, GraphicsDevice);
             assetManager = new AssetManager(Content);
 

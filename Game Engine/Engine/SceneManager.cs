@@ -8,17 +8,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GameEngine.Editor;
+using GameEngine.Engine.Events;
 
 namespace GameEngine
 {
+    [ContainsEvents]
     public static class SceneManager
     {
-        public static event Action<Scene> OnSceneUnloaded;
-        public static event Action<Scene> OnSceneLoaded;
-        public static event Action<Scene> OnSceneSaved;
+        static readonly EngineEvent<SceneLoadedEvent> OnSceneLoaded;
+
+        static readonly EngineEvent<SceneUnloadedEvent> OnSceneUnloaded;
+        static readonly EngineEvent<SceneSavedEvent> OnSceneSaved;
 
         static Dictionary<string, string> scenes = new Dictionary<string, string>(); 
-
         static Scene _currentScene;
         public static Scene currentScene
         {
@@ -28,13 +30,13 @@ namespace GameEngine
             {
                 if (_currentScene != null)
                 {
-                    OnSceneUnloaded?.Invoke(_currentScene);
+                    OnSceneUnloaded?.Invoke(new SceneUnloadedEvent() { Scene = value });
                     GameObject.OnGameObjectCreated -= currentScene.LoadGameobject;
                 }
                 
                 _currentScene = value;
                 GameObject.OnGameObjectCreated += currentScene.LoadGameobject;
-                OnSceneLoaded?.Invoke(value);
+                OnSceneLoaded?.Invoke(new SceneLoadedEvent() { Scene = value });
             }
         }
 
@@ -86,9 +88,23 @@ namespace GameEngine
             Console.WriteLine(currentScene.name + " Name");
 
             AssetManager.SaveFile(currentScene, name); 
-            OnSceneSaved?.Invoke(currentScene);
+            OnSceneSaved?.Invoke(new SceneSavedEvent { Scene = currentScene});
 
             LoadScenes(); 
         }
+    }
+
+    public class SceneLoadedEvent : SceneEvent { }
+    public class SceneUnloadedEvent : SceneEvent { }
+    public class SceneSavedEvent : SceneEvent { }
+
+    public class SceneEvent : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
+        }
+
+        public Scene Scene; 
     }
 }

@@ -8,11 +8,6 @@ namespace GameEngine.Editor.Windows
 {
     public class TestWindow : EditorWindow
     {
-        public TestWindow() 
-        {
-            OpenOnDefault = false;
-        }
-
         public override void OnGUI(EditorGUIDrawer editorGui)
         {
             editorGui.DrawLabel("Test");

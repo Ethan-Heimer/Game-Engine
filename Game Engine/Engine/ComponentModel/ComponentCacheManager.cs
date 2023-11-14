@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameEngine.Engine.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -70,26 +71,26 @@ namespace GameEngine.ComponentManagement
                 AddCache(o);
         }
 
-        static void OnSceneUnload(Scene scene)
+        static void OnSceneUnload(SceneUnloadedEvent e)
         {
             ClearCache();
 
-            scene.GetGameObjectCollection().onGameObjectAdded -= AddCache;
-            scene.GetGameObjectCollection().onGameObjectRemoved -= RemoveCache;
+            e.Scene.GetGameObjectCollection().onGameObjectAdded -= AddCache;
+            e.Scene.GetGameObjectCollection().onGameObjectRemoved -= RemoveCache;
 
-            scene.GetGameObjectCollection().onGameObjectComponentAdded -= AddCache;
-            scene.GetGameObjectCollection().onGameObjectComponentRemoved -= RemoveCache;
+            e.Scene.GetGameObjectCollection().onGameObjectComponentAdded -= AddCache;
+            e.Scene.GetGameObjectCollection().onGameObjectComponentRemoved -= RemoveCache;
         }
 
-        static void OnSceneLoad(Scene scene)
+        static void OnSceneLoad(SceneLoadedEvent e)
         {
-            PopulateCache(scene);
+            PopulateCache(e.Scene);
 
-            scene.GetGameObjectCollection().onGameObjectAdded += AddCache;
-            scene.GetGameObjectCollection().onGameObjectRemoved += RemoveCache;
+            e.Scene.GetGameObjectCollection().onGameObjectAdded += AddCache;
+            e.Scene.GetGameObjectCollection().onGameObjectRemoved += RemoveCache;
 
-            scene.GetGameObjectCollection().onGameObjectComponentAdded += AddCache;
-            scene.GetGameObjectCollection().onGameObjectComponentRemoved += RemoveCache;
+            e.Scene.GetGameObjectCollection().onGameObjectComponentAdded += AddCache;
+            e.Scene.GetGameObjectCollection().onGameObjectComponentRemoved += RemoveCache;
         }
 
         public static BehaviorMethodCollection GetCache(string name)
@@ -107,8 +108,8 @@ namespace GameEngine.ComponentManagement
 
             PopulateCache(SceneManager.currentScene);
 
-            SceneManager.OnSceneUnloaded += OnSceneUnload;
-            SceneManager.OnSceneLoaded += OnSceneLoad;
+            EngineEventManager.AddEventListener<SceneLoadedEvent>(OnSceneLoad);
+            EngineEventManager.AddEventListener<SceneUnloadedEvent>(OnSceneUnload);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Program
 
                 Editor.Open();
                 GameInitalizer.Run(game);
-             }
+            }
          }
      }
 

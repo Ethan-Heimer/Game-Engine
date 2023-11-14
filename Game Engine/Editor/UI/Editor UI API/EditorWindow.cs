@@ -12,7 +12,6 @@ namespace GameEngine.Editor.Windows
         public int Width = 500;
         public int Height = 500;
 
-        public bool OpenOnDefault = true;
         public abstract void OnGUI(EditorGUIDrawer drawer);
     }
 }

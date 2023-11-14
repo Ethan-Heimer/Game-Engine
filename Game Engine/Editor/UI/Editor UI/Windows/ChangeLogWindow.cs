@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Editor.Windows
 {
-    [OpenWindowByDefault]
     public class ChangeLogWindow : EditorWindow
     {
         public ChangeLogWindow() 

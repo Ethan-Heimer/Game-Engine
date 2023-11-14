@@ -4,28 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameEngine.Engine
+public static class StringSpacer
 {
-    public static class StringSpacer
+    public static string Space(string input)
     {
-        public static string Space(string input)
+        StringBuilder newString = new StringBuilder(input);
+        int offset = 0;
+
+        for (int i = 0; i < input.Length; i++)
         {
-            StringBuilder newString = new StringBuilder(input);
-            int offset = 0; 
+            if (i == 0 || i == input.Length - 1)
+                continue;
 
-            for(int i = 0; i < input.Length; i++) 
+            if (char.IsUpper(input[i]))
             {
-                if (i == 0 || i == input.Length - 1)
-                    continue;
-
-                if (char.IsUpper(input[i]))
-                {
-                    newString.Insert(i + offset, ' ');
-                    offset++;
-                }
+                newString.Insert(i + offset, ' ');
+                offset++;
             }
-
-            return newString.ToString();
         }
+
+        return newString.ToString();
     }
 }

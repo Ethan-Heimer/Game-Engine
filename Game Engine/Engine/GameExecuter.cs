@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.ComponentManagement;
+using GameEngine.Engine.Events;
 
 namespace GameEngine.Engine
 {
@@ -27,7 +28,7 @@ namespace GameEngine.Engine
 
         public static void Initailize()
         {
-            SceneManager.OnSceneLoaded += (s) => ExecuteStart();
+            EngineEventManager.AddEventListener<SceneLoadedEvent>((e) => ExecuteStart());
         }
 
         public static void Tick()
