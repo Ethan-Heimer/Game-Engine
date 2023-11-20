@@ -19,8 +19,9 @@ namespace Program
                 App app = new App();
                 app.InitializeComponent();
 
-                Editor.Open();
+                Editor.Start();
                 GameInitalizer.Run(game);
+                
             }
          }
      }

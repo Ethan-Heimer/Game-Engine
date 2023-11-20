@@ -8,6 +8,7 @@ using GameEngine.ComponentManagement;
 using GameEngine.Editor.Windows;
 using GameEngine.Engine;
 using System.Reflection;
+using GameEngine.Engine.Events;
 
 namespace GameEngine.Editor
 {
@@ -32,8 +33,12 @@ namespace GameEngine.Editor
             }
         }
 
+        public static void Start()
+        {
+            Game1.AfterInit += Open;
+        }
 
-        public static void Open()
+        static void Open()
         {
             DefaultWindowHandler.OpenDefaultWindows();
             playMode = false;

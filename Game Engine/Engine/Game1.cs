@@ -1,49 +1,44 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-
-using Microsoft.Xna.Framework.src.Graphics;
 using GameEngine.Editor;
 using GameEngine.Game;
 using System;
-using System.IO;
 using GameEngine.ComponentManagement;
-using System.Text.Json;
-using System.Runtime.CompilerServices;
-using System.Linq;
 using GameEngine.Engine;
 using GameEngine.Engine.Rendering;
 using GameEngine.Engine.Events;
-using System.Security.Cryptography;
-using System.Windows;
 
 namespace GameEngine
 {
+    [ContainsEvents]
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        Renderer renderer;
-        AssetManager assetManager;
+        public static event Action AfterInit;
 
-        public Game1() //This is the constructor, this function is called whenever the game class is created.
+        GraphicsDeviceManager graphics;
+       
+        static EngineEvent<OnEngineTickEvent> OnTick;
+        OnEngineTickEvent OnEngineTickEvent = new OnEngineTickEvent();
+
+        static EngineEvent<OnEngineDrawEvent> OnDraw;
+        OnEngineDrawEvent OnEngineDrawEvent = new OnEngineDrawEvent();
+
+        public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-
-            EngineEventManager.Init();
-            ComponentCacheManager.Init();
-            SceneManager.Init();
         }
 
         protected override void Initialize()
         {
-            
+            EngineEventManager.Init();
+            ComponentCacheManager.Init();
+            GameExecuter.Init();
+            SceneManager.Init();
+            InputManager.Init();
+            Renderer.Init(this, graphics, GraphicsDevice);
+            AssetManager.Init(Content);
 
-            renderer = new Renderer(this, graphics, GraphicsDevice);
-            assetManager = new AssetManager(Content);
+            AfterInit.Invoke();
 
             base.Initialize();
         }
@@ -57,16 +52,38 @@ namespace GameEngine
             gameObect.AddComponent<TestComponent>();
         }
 
+
         protected override void Update(GameTime gameTime)
         {
-            Input.Update();
-            GameExecuter.Tick();
+            OnEngineTickEvent.GameTime = gameTime;
+            OnEngineTickEvent.Sender = this;
+
+            OnTick?.Invoke(OnEngineTickEvent);
         }
 
        
         protected override void Draw(GameTime gameTime)
         {
-            renderer.Draw();
+            OnEngineDrawEvent.Sender = this;
+            OnDraw?.Invoke(OnEngineDrawEvent);
+        }
+    }
+
+    public struct OnEngineTickEvent : IEventArgs
+    {
+        public GameTime GameTime;
+        public object Sender
+        {
+            get; set;
+        }
+    }
+
+    public struct OnEngineDrawEvent : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
         }
     }
 }
+

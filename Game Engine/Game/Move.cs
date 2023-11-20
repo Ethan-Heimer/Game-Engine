@@ -13,20 +13,20 @@ namespace GameEngine
         public float Speed;
         public void Update() 
         {
-            if(Input.IsKeyDown(Keys.A)) 
+            if(InputManager.IsKeyDown(Keys.A)) 
             {
                 gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X - Speed, gameObject.Transform.Position.Y);
             }
-            if (Input.IsKeyDown(Keys.D))
+            if (InputManager.IsKeyDown(Keys.D))
             {
                 gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X + Speed, gameObject.Transform.Position.Y);
             }
 
-            if(Input.IsKeyDown(Keys.W))
+            if(InputManager.IsKeyDown(Keys.W))
             {
                 gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X, gameObject.Transform.Position.Y-Speed);
             }
-            if (Input.IsKeyDown(Keys.S))
+            if (InputManager.IsKeyDown(Keys.S))
             {
                 gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X, gameObject.Transform.Position.Y+Speed);
             }

@@ -1,4 +1,5 @@
 ﻿using GameEngine.ComponentManagement;
+using GameEngine.Engine.Events;
 using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Engine.Rendering
 {
-    public class Renderer
+    public static class Renderer
     {
-        GraphicsDevice graphicDevice;
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Drawer renderer;
-        public Renderer(Game1 game, GraphicsDeviceManager _graphicsDeviceManager, GraphicsDevice _graphicDevice)
+        static GraphicsDevice graphicDevice;
+        static GraphicsDeviceManager graphics;
+        static SpriteBatch spriteBatch;
+        static Drawer renderer;
+        public static void Init(Game1 game, GraphicsDeviceManager _graphicsDeviceManager, GraphicsDevice _graphicDevice)
         {
             graphics = _graphicsDeviceManager;
             graphicDevice = _graphicDevice;
@@ -30,9 +31,10 @@ namespace GameEngine.Engine.Rendering
 
             renderer = new Drawer(spriteBatch);
 
+            EngineEventManager.AddEventListener<OnEngineDrawEvent>((e) => Draw());
         }
 
-        public void Draw()
+        static void Draw()
         {
             graphicDevice.Clear(Color.CornflowerBlue);
 

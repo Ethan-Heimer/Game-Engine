@@ -26,9 +26,10 @@ namespace GameEngine.Engine
 
         static bool started;
 
-        public static void Initailize()
+        public static void Init()
         {
             EngineEventManager.AddEventListener<SceneLoadedEvent>((e) => ExecuteStart());
+            EngineEventManager.AddEventListener<OnEngineTickEvent>((e) => Tick());
         }
 
         public static void Tick()

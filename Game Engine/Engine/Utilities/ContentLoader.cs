@@ -13,14 +13,14 @@ using System.Windows.Forms.VisualStyles;
 
 namespace GameEngine.Editor
 {
-    public class AssetManager
+    public static class AssetManager
     {
         const string folderName = "Content";
         const string contentPath = "..\\..\\game\\" + folderName;
 
         static ContentManager contentManager;
 
-        public AssetManager(ContentManager content)
+        public static void Init(ContentManager content)
         {
             contentManager = content;
             contentManager.RootDirectory = "game\\" + folderName;

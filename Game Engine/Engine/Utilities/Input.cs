@@ -5,10 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameEngine.Engine.Events;
 
 namespace GameEngine
 {
-    public static class Input //Static classes can easily be accessed anywhere in our codebase. They always stay in memory so you should only do it for universal things like input.
+    public static class InputManager //Static classes can easily be accessed anywhere in our codebase. They always stay in memory so you should only do it for universal things like input.
     {
         private static KeyboardState keyboardState = Keyboard.GetState();
         private static KeyboardState lastKeyboardState;
@@ -16,7 +17,12 @@ namespace GameEngine
         private static MouseState mouseState;
         private static MouseState lastMouseState;
 
-        public static void Update()
+        public static void Init()
+        {
+            EngineEventManager.AddEventListener<OnEngineTickEvent>((e) => Update());
+        }
+
+        static void Update()
         {
             lastKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
