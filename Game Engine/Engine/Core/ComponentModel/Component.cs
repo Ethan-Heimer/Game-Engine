@@ -1,6 +1,9 @@
-﻿using System;
+﻿using GameEngine.ComponentManagement;
+using GameEngine.Engine.Events;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -9,9 +12,30 @@ using System.Threading.Tasks;
 namespace GameEngine
 {
     [Serializable]
-    public class Component : ISerializable, ICloneable
+    public class Component : ISerializable
     {
+        public static event Action<Component> OnComponentDestryed;
+
         public Behavior BindingBehavior;
+
+        GameObject _gameObject;
+        public GameObject GameObject
+        {
+            get { return _gameObject; }
+            set
+            {
+                if(_gameObject == null && value != null)
+                    ComponentCacheManager.AddCache(BindingBehavior);
+                else if (value == null)
+                    ComponentCacheManager.RemoveCache(BindingBehavior);
+                
+
+                _gameObject = value;
+                BindingBehavior.gameObject = value;
+
+                Console.WriteLine(value);
+            }
+        }
          
         public Component(Behavior behavior) 
         { 
@@ -38,6 +62,8 @@ namespace GameEngine
                 catch { }
                 
             }
+
+            GameObject = BindingBehavior.gameObject;
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -54,9 +80,9 @@ namespace GameEngine
             info.AddValue("Behavior Type", BindingBehavior.GetType().FullName);
         }
 
-        public object Clone()
-        {
-            return new Component(BindingBehavior.Clone() as Behavior);
+        ~Component(){
+            Console.WriteLine("Destroyed");
+            OnComponentDestryed?.Invoke(this);
         }
     }
 }

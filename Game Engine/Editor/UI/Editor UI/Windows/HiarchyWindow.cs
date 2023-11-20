@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using GameEngine.Engine.Events;
+using GameEngine.Engine;
+using GameEngine.Game;
+using Microsoft.Xna.Framework;
 
 namespace GameEngine.Editor.Windows
 {
@@ -21,23 +24,39 @@ namespace GameEngine.Editor.Windows
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
+            
+
+            EngineEventManager.AddEventListener<GameObjectAddedEvent>((e) => RenderGUI(e, drawer));
+            EngineEventManager.AddEventListener<GameObjectRemovedEvent>((e) => RenderGUI(e,drawer));
+
+           
+        }
+
+        void RenderGUI(GameObjectEvent e, EditorGUIDrawer drawer) 
+        {
+            drawer.Clear();
             drawer.DrawLabel("Hiarchy");
 
-            EngineEventManager.AddEventListener<SceneLoadedEvent>((e) => Hook(e.Scene, drawer));
-        }
-
-        void Hook(Scene scene, EditorGUIDrawer drawer)
-        {
-            scene.OnNewObjectLoaded += (g) => RenderGUI(scene, drawer);
-        }
-
-        void RenderGUI(Scene scene, EditorGUIDrawer drawer) 
-        {
             Console.WriteLine("Hello");
-            foreach(GameObject o in scene.GetGameobjects())
+            foreach(GameObject o in e.TotalGameObjects)
             {
                 drawer.DrawText("Gameobject");
             }
+
+            drawer.DrawButton("Create GameObject", (s, _) => CreateGameObject());
+        }
+
+        void CreateGameObject()
+        {
+            Random r = new Random();
+
+            GameObject gameObect = new GameObject();
+            gameObect.Transform.Position = Vector2.One * 500;
+            gameObect.AddComponent<TextureRenderer>().Path = "PlaceHolderTwo";
+            gameObect.AddComponent<Move>().Speed = 9;
+            gameObect.AddComponent<TestComponent>();
+
+            gameObect.Name = "Test Hoe";
         }
     }
 }

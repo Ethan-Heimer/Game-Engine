@@ -32,12 +32,15 @@ namespace GameEngine
         public Game1() //This is the constructor, this function is called whenever the game class is created.
         {
             graphics = new GraphicsDeviceManager(this);
+
             EngineEventManager.Init();
+            ComponentCacheManager.Init();
+            SceneManager.Init();
         }
 
         protected override void Initialize()
         {
-           
+            
 
             renderer = new Renderer(this, graphics, GraphicsDevice);
             assetManager = new AssetManager(Content);
@@ -47,11 +50,9 @@ namespace GameEngine
 
         protected override void LoadContent()
         {
-            SceneManager.LoadScenes();
-            
             GameObject gameObect = new GameObject();
             gameObect.Transform.Position = Vector2.One * 200;
-            gameObect.AddComponent<TextureRenderer>().texture = AssetManager.LoadContent<Texture2D>("PlaceHolderTwo");
+            gameObect.AddComponent<TextureRenderer>().Path = "PlaceHolderTwo";
             gameObect.AddComponent<Move>().Speed = 9;
             gameObect.AddComponent<TestComponent>();
         }

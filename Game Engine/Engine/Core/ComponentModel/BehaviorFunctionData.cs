@@ -18,7 +18,7 @@ namespace GameEngine.ComponentManagement
             {
                 if (_functions == null)
                 {
-                    string data = File.ReadAllText("..\\..\\engine\\componentModel\\BehaviorFunctions.json");
+                    string data = File.ReadAllText("..\\..\\engine\\core\\componentModel\\BehaviorFunctions.json");
                     _functions = JsonSerializer.Deserialize<BehaviorFunctionList>(data);
                 }
 

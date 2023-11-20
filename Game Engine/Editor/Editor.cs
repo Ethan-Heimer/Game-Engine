@@ -39,32 +39,27 @@ namespace GameEngine.Editor
             playMode = false;
         }
 
-       
-
-        static Scene cachedScene = null;
-        static SemaphoreSlim playSignal = null; 
-        public async static void EnterPlayMode()
+        public static void EnterPlayMode()
         {
+            BinarySeriailizer serializer = new BinarySeriailizer();
             playMode = true;
-            playSignal = new SemaphoreSlim(0, 1);
-            cachedScene = SceneManager.currentScene;
 
-            using(Scene runtimeScene = cachedScene.Clone() as Scene)
-            {
-                SceneManager.LoadScene(runtimeScene);
-                await playSignal.WaitAsync();
-            }
+            SceneManager.currentScene.Save();
+            serializer.Serialize(SceneManager.currentScene, "temp.scene");
         }
 
         public static void ExitPlayMode() 
         {
+            BinarySeriailizer serializer = new BinarySeriailizer();
+
             playMode = false;
+            var cachedScene = (Scene)serializer.Deserialize("temp.scene");
+
+            Console.WriteLine(cachedScene.gameObjects.Length + " gameObjects");
 
             if (cachedScene != null)
             {
                 SceneManager.LoadScene(cachedScene);
-                cachedScene = null;
-                playSignal.Release();
             }
         }
     }

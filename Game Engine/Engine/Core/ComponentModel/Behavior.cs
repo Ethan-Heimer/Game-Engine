@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    public class Behavior : ICloneable
+    public class Behavior
     {
         public GameObject gameObject;
         public Transform transform
@@ -15,11 +15,6 @@ namespace GameEngine
             {
                 return gameObject.Transform;
             }
-        }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
         }
     }
 }

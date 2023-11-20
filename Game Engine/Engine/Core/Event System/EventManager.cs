@@ -14,7 +14,6 @@ namespace GameEngine.Engine.Events
      * Also, yeah it looks stragnge that im using field info and not event info but this is so i can manipulate the delegate.
      */
 
-    [ContainsEvents]
     public static class EngineEventManager
     {
         static Dictionary<Type, FieldInfo> events  = new Dictionary<Type, FieldInfo>();
@@ -22,12 +21,10 @@ namespace GameEngine.Engine.Events
         public static void Init()
         {
             List<Type> typesWithEvents = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetCustomAttribute(typeof(ContainsEventsAttribute)) != null).ToList();
-            Console.WriteLine(typesWithEvents.Count);
 
             foreach (Type type in typesWithEvents) 
             {
-                var e = GetEvents(type);
-                Console.WriteLine(e.Length);
+                var e = GetEvents(type); 
 
                 foreach(var evnt in e)
                     AddEvent(evnt);
@@ -87,7 +84,6 @@ namespace GameEngine.Engine.Events
         static void AddEvent(FieldInfo eventInfo)
         {
             Type eventType = eventInfo.FieldType.GetGenericArguments()[0];
-            Console.WriteLine(eventType.Name);
 
             events.Add(eventType, eventInfo);
         }

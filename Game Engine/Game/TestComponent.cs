@@ -10,7 +10,7 @@ namespace GameEngine.Game
     {
         public void Awake()
         {
-            Console.WriteLine("Awake!");
+            //Console.WriteLine(gameObject.Transform);
         }
 
         public void Start()
@@ -20,7 +20,7 @@ namespace GameEngine.Game
 
         public void Update()
         {
-            Console.WriteLine("Update!!!");
+            //Console.WriteLine("Update!!!");
         }
 
         public void ParamFunc(string inputOne, int inputTwo)

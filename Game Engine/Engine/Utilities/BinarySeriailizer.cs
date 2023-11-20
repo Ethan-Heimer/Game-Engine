@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Editor
 {
@@ -44,6 +45,7 @@ namespace GameEngine.Editor
             }
             catch (Exception e) 
             {
+                Console.WriteLine(e);
                 throw e;
             }
         }

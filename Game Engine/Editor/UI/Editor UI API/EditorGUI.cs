@@ -86,6 +86,11 @@ namespace GameEngine.Editor.Windows
             T component = Activator.CreateInstance<T>();
             component.Draw(this, args);
         }
+
+        public void Clear()
+        {
+            defaultContainer.Children.Clear();
+        }
     }
 
     public delegate void ButtonClick(object sender, RoutedEventArgs e); 

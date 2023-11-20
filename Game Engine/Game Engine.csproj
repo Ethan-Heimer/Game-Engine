@@ -37,8 +37,11 @@
     <StartupObject>Program.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
-    <None Include="Engine\ComponentModel\BehaviorFunctions.json" />
+    <None Include="Engine\Core\ComponentModel\BehaviorFunctions.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FNA">
@@ -73,28 +76,29 @@
     <Compile Include="Editor\UI\Editor UI\Windows\HiarchyWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\TestWindow.cs" />
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
-    <Compile Include="Engine\ComponentModel\Behavior.cs" />
-    <Compile Include="Engine\ComponentModel\GameObjectCollection.cs" />
-    <Compile Include="Engine\ComponentModel\Component.cs" />
-    <Compile Include="Engine\ComponentModel\ComponentCacheManager.cs" />
-    <Compile Include="Engine\ComponentModel\BehaviorFunctionData.cs" />
-    <Compile Include="Engine\ComponentModel\BehaviorFunctionExecuter.cs" />
-    <Compile Include="Engine\ComponentModel\BehaviorMethodCollection.cs" />
+    <Compile Include="Engine\Core\ComponentModel\Behavior.cs" />
+    <Compile Include="Engine\Core\ComponentModel\Component.cs" />
+    <Compile Include="Engine\Core\ComponentModel\ComponentCacheManager.cs" />
+    <Compile Include="Engine\Core\ComponentModel\BehaviorFunctionData.cs" />
+    <Compile Include="Engine\Core\ComponentModel\BehaviorFunctionExecuter.cs" />
+    <Compile Include="Engine\Core\ComponentModel\BehaviorMethodCollection.cs" />
     <Compile Include="Engine\Components\TextureRenderer.cs" />
     <Compile Include="Engine\Components\Transform.cs" />
-    <Compile Include="Engine\Event System\Event.cs" />
-    <Compile Include="Engine\Event System\EventManager.cs" />
+    <Compile Include="Engine\Core\Event System\Event.cs" />
+    <Compile Include="Engine\Core\Event System\EventManager.cs" />
+    <Compile Include="Engine\Core\Game Object System\GameObjectManager.cs" />
     <Compile Include="Engine\GameExecuter.cs" />
     <Compile Include="Engine\Rendering\Drawer.cs" />
     <Compile Include="Engine\Rendering\Renderer.cs" />
+    <Compile Include="Engine\Rendering\Sprite.cs" />
     <Compile Include="Engine\Utilities\BinarySeriailizer.cs" />
     <Compile Include="Engine\Utilities\ContentLoader.cs" />
     <Compile Include="Editor\Editor.cs" />
     <Compile Include="Engine\Game1.cs" />
     <Compile Include="App\GameInitalizer.cs" />
-    <Compile Include="Engine\GameObject.cs" />
+    <Compile Include="Engine\Core\Game Object System\GameObject.cs" />
     <Compile Include="App\Program.cs" />
-    <Compile Include="Engine\Scene.cs" />
+    <Compile Include="Engine\Core\Scene.cs" />
     <Compile Include="Engine\SceneManager.cs" />
     <Compile Include="Engine\Utilities\DelegateTypeFactory.cs" />
     <Compile Include="Engine\Utilities\Input.cs" />

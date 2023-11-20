@@ -10,18 +10,19 @@ using System.Threading.Tasks;
 using System.Reflection;
 using GameEngine.Editor;
 using GameEngine.Editor.Windows;
+using GameEngine.Engine.Events;
+using GameEngine.Engine;
+using GameEngine.ComponentManagement;
+using System.Windows.Forms;
 
 namespace GameEngine
 {
     [Serializable]
-    public class GameObject : ICloneable, ISerializable
+    public class GameObject : ISerializable
     {
-        public static event Action<GameObject> OnGameObjectCreated;
+        public string Name;
 
-        public event Action<Behavior> OnComponentAdded;
-        public event Action<Behavior> OnComponentRemoved;
-
-        List<Component> components = new List<Component>();
+        public List<Component> components = new List<Component>();
         List<GameObject> children = new List<GameObject>();
 
         Transform _transform;
@@ -38,7 +39,7 @@ namespace GameEngine
         public GameObject() 
         {
             AddComponent<Transform>();
-            OnGameObjectCreated?.Invoke(this);
+            GameObjectManager.RegisterGameobject(this);
         }
 
         public GameObject(SerializationInfo info, StreamingContext context)
@@ -47,27 +48,24 @@ namespace GameEngine
             children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
         }
 
-        private GameObject(bool @pri)
-        {
-            AddComponent<Transform>();
-        }
-
         public T GetComponent<T>() where T : Behavior
         {
-            foreach(Component o in components) 
+            components.ForEach(x => Console.WriteLine(x.BindingBehavior.GetType().Name));
+            foreach (var o in components) 
             {
                 if(o.BindingBehavior.GetType() == typeof(T))
                     return o.BindingBehavior as T;
             }
-
+           
             return null;
         }
 
         public T AddComponent<T>() where T : Behavior
         {
             Behavior behavior = (Behavior)Activator.CreateInstance(typeof(T));
+            var component = BindComponent(behavior);
 
-            components.Add(BindComponent(behavior));
+            components.Add(component);
             return (T)behavior;
         }
 
@@ -85,6 +83,8 @@ namespace GameEngine
 
             if(component != null)
                 components.Remove(component);
+
+            ComponentCacheManager.RemoveCache(component.BindingBehavior);
         }
 
         public Component[] GetAllComponents() => components.ToArray();
@@ -99,21 +99,20 @@ namespace GameEngine
         {
             info.AddValue("Components", components);
             info.AddValue("Children", children);
+            components.ForEach(x => Console.WriteLine(x + " on serialized"));
         }
 
-        public object Clone()
+        public void Destroy()
         {
-            GameObject go = new GameObject(true);
+            GameObjectManager.DispatchGameobject(this);
+        }
 
-            go.Transform.Position = new Vector2(Transform.Position.X, Transform.Position.Y);
+        public void ClearComponents()
+        {
+            foreach(Component o in components)
+                ComponentCacheManager.RemoveCache(o.BindingBehavior);
 
-            go.components = new List<Component>();
-            foreach(Component o in components) 
-            {
-                go.AddComponent<Behavior>(o.Clone() as Component);
-            }
-
-            return go;
+            components.Clear();
         }
 
         Component BindComponent(Behavior behavior)
@@ -122,6 +121,7 @@ namespace GameEngine
             gameObjectField.SetValue(behavior, this);
 
             Component component = new Component(behavior);
+            component.GameObject = this;
 
             return component;
         }
