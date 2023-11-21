@@ -17,6 +17,8 @@ namespace GameEngine
         private static MouseState mouseState;
         private static MouseState lastMouseState;
 
+
+       
         public static void Init()
         {
             EngineEventManager.AddEventListener<OnEngineTickEvent>((e) => Update());
@@ -29,6 +31,16 @@ namespace GameEngine
 
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
+            SetScrollDelta();
+        }
+
+        static float scrollDelta;
+        static float prevScroll;
+        private static void SetScrollDelta()
+        {
+            float currentScroll = mouseState.ScrollWheelValue;
+            scrollDelta = currentScroll - prevScroll;
+            prevScroll = currentScroll;
         }
 
         /// <summary>
@@ -63,10 +75,7 @@ namespace GameEngine
         /// </summary>
         public static bool MouseLeftDown()
         {
-            if (mouseState.LeftButton == ButtonState.Pressed)
-                return true;
-            else
-                return false;
+            return (mouseState.LeftButton == ButtonState.Pressed); 
         }
 
         /// <summary>
@@ -74,10 +83,12 @@ namespace GameEngine
         /// </summary>
         public static bool MouseRightDown()
         {
-            if (mouseState.RightButton == ButtonState.Pressed)
-                return true;
-            else
-                return false;
+            return (mouseState.RightButton == ButtonState.Pressed);
+        }
+
+        public static bool MouseMiddleDown()
+        {
+            return mouseState.MiddleButton == ButtonState.Pressed;
         }
 
         /// <summary>
@@ -105,6 +116,11 @@ namespace GameEngine
         /// <summary>
         /// Gets mouse coordinates adjusted for virtual resolution and camera position.
         /// </summary>
+        
+        public static Vector2 RawMousePosition() => new Vector2(mouseState.X, mouseState.Y);
+        public static float ScrollDelta() => scrollDelta;
+       
+
         /*
         public static Vector2 MousePositionCamera()
         {

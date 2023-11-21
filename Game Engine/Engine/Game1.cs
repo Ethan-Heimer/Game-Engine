@@ -7,6 +7,7 @@ using GameEngine.ComponentManagement;
 using GameEngine.Engine;
 using GameEngine.Engine.Rendering;
 using GameEngine.Engine.Events;
+using GameEngine.Rendering;
 
 namespace GameEngine
 {
@@ -19,9 +20,6 @@ namespace GameEngine
        
         static EngineEvent<OnEngineTickEvent> OnTick;
         OnEngineTickEvent OnEngineTickEvent = new OnEngineTickEvent();
-
-        static EngineEvent<OnEngineDrawEvent> OnDraw;
-        OnEngineDrawEvent OnEngineDrawEvent = new OnEngineDrawEvent();
 
         public Game1()
         {
@@ -37,7 +35,9 @@ namespace GameEngine
             InputManager.Init();
             Renderer.Init(this, graphics, GraphicsDevice);
             AssetManager.Init(Content);
+            CameraManager.Init();
 
+            this.IsMouseVisible = true;
             AfterInit.Invoke();
 
             base.Initialize();
@@ -61,11 +61,10 @@ namespace GameEngine
             OnTick?.Invoke(OnEngineTickEvent);
         }
 
-       
+        
         protected override void Draw(GameTime gameTime)
         {
-            OnEngineDrawEvent.Sender = this;
-            OnDraw?.Invoke(OnEngineDrawEvent);
+            Renderer.Draw();
         }
     }
 
@@ -78,12 +77,6 @@ namespace GameEngine
         }
     }
 
-    public struct OnEngineDrawEvent : IEventArgs
-    {
-        public object Sender
-        {
-            get; set;
-        }
-    }
+   
 }
 

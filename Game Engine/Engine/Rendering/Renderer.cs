@@ -10,15 +10,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameEngine.Engine.Rendering
+namespace GameEngine.Rendering
 {
+    [ContainsEvents]
     public static class Renderer
     {
         static GraphicsDevice graphicDevice;
         static GraphicsDeviceManager graphics;
         static SpriteBatch spriteBatch;
         static Drawer renderer;
-        public static void Init(Game1 game, GraphicsDeviceManager _graphicsDeviceManager, GraphicsDevice _graphicDevice)
+
+        static EngineEvent<OnEngineDrawEvent> OnDraw;
+        static OnEngineDrawEvent OnEngineDrawEvent = new OnEngineDrawEvent();
+
+    public static void Init(Game1 game, GraphicsDeviceManager _graphicsDeviceManager, GraphicsDevice _graphicDevice)
         {
             graphics = _graphicsDeviceManager;
             graphicDevice = _graphicDevice;
@@ -29,18 +34,31 @@ namespace GameEngine.Engine.Rendering
 
             spriteBatch = new SpriteBatch(_graphicDevice);
 
-            renderer = new Drawer(spriteBatch);
+            renderer = new Drawer(spriteBatch, graphicDevice);
 
-            EngineEventManager.AddEventListener<OnEngineDrawEvent>((e) => Draw());
+            //EngineEventManager.AddEventListener<OnEngineDrawEvent>(e => Console.WriteLine("OnDraw"));
         }
 
-        static void Draw()
+        public static void Draw()
         {
-            graphicDevice.Clear(Color.CornflowerBlue);
+            graphicDevice.Clear(new Color(55,55,55));
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, CameraManager.GetTransformantionMaxtrix());
             BehaviorFunctionExecuter.Execute.OnDraw(renderer);
+            OnEngineDrawEvent.drawer = renderer;
+            OnDraw?.Invoke(OnEngineDrawEvent);
             spriteBatch.End();
+
+            
+        }
+    }
+
+    public struct OnEngineDrawEvent : IEventArgs
+    {
+        public Drawer drawer;
+        public object Sender
+        {
+            get; set;
         }
     }
 }

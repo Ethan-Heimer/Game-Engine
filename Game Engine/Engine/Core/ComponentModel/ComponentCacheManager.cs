@@ -29,8 +29,6 @@ namespace GameEngine.ComponentManagement
 
         public static void AddCache(GameObjectAddedEvent e)
         {
-            Console.WriteLine("gameobject Added");
-
             AddCache(e.AddedGameObject);
         }
         public static void AddCache(GameObject e)
@@ -51,7 +49,6 @@ namespace GameEngine.ComponentManagement
  
         public static void RemoveCache(GameObjectRemovedEvent e)
         {
-            Console.WriteLine("Removed");
             RemoveCache(e.RemovedGameObject);
         }
         public static void RemoveCache(GameObject e)

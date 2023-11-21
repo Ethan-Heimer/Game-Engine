@@ -9,8 +9,12 @@ using GameEngine.Engine.Events;
 
 namespace GameEngine.Engine
 {
+    [ContainsEvents]
     public static class GameExecuter
     {
+        static EngineEvent<OnPlayModeEnter> OnEnterPlayMode;
+        static EngineEvent<OnPlayModeExit> OnExitPlayMode;
+
         static bool _play = true;
         public static bool play
         {
@@ -20,11 +24,18 @@ namespace GameEngine.Engine
                 _play = value;
 
                 if (!value)
+                {
                     started = false;
+                    OnExitPlayMode?.Invoke(new OnPlayModeExit());
+                }
+                else
+                    OnEnterPlayMode?.Invoke(new OnPlayModeEnter());
             }
         }
 
         static bool started;
+
+
 
         public static void Init()
         {
@@ -48,5 +59,21 @@ namespace GameEngine.Engine
         }
 
         static void ExecuteStart() => started = false;
+    }
+
+    public struct OnPlayModeExit : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
+        }
+    }
+
+    public struct OnPlayModeEnter : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
+        }
     }
 }

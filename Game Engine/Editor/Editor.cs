@@ -9,6 +9,8 @@ using GameEngine.Editor.Windows;
 using GameEngine.Engine;
 using System.Reflection;
 using GameEngine.Engine.Events;
+using GameEngine.Editor.UI;
+using GameEngine.Rendering;
 
 namespace GameEngine.Editor
 {
@@ -38,10 +40,16 @@ namespace GameEngine.Editor
             Game1.AfterInit += Open;
         }
 
+       
         static void Open()
         {
-            DefaultWindowHandler.OpenDefaultWindows();
+            Grid grid = new Grid();
+            EngineEventManager.AddEventListener<OnEngineDrawEvent>((e) => grid.Draw(e.drawer, CameraManager.GetVisableArea(), 100));
+
+            Console.WriteLine(grid);
             playMode = false;
+
+            DefaultWindowHandler.OpenDefaultWindows();
         }
 
         public static void EnterPlayMode()
