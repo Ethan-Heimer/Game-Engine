@@ -11,30 +11,17 @@ using System.Reflection;
 using GameEngine.Engine.Events;
 using GameEngine.Editor.UI;
 using GameEngine.Rendering;
+using GameEngine.Engine.Rendering;
+using System.IO;
+using System.Windows;
+using System.Diagnostics;
 
 namespace GameEngine.Editor
 {
     public static class Editor
     {
-        public static event Action OnPlayModeEnter;
-        public static event Action OnPlayModeExit;
-
-        static bool _playMode;
-        public static bool playMode
-        {
-            get { return _playMode; }
-            private set 
-            { 
-                _playMode = value;
-                GameExecuter.play = value;
-
-                if (value)
-                    OnPlayModeEnter?.Invoke();
-                else
-                    OnPlayModeExit?.Invoke();
-            }
-        }
-
+        static EditorCamera editorCamera = new EditorCamera();
+        static bool Initialized;
         public static void Start()
         {
             Game1.AfterInit += Open;
@@ -43,37 +30,28 @@ namespace GameEngine.Editor
        
         static void Open()
         {
-            Grid grid = new Grid();
-            EngineEventManager.AddEventListener<OnEngineDrawEvent>((e) => grid.Draw(e.drawer, CameraManager.GetVisableArea(), 100));
+            EngineEventManager.AddEventListener<OnEnterEditMode>((e) => SetToEditorCamera());
+           
 
-            Console.WriteLine(grid);
-            playMode = false;
+            PlayModeManager.SetMode(PlayModeManager.PlayMode.Edit);
+
+            Grid grid = new Grid();
+            EngineEventManager.AddEventListener<WhileInEditMode>((e) => grid.Draw(new Microsoft.Xna.Framework.Rectangle()
+            {
+                Width = CameraManager.GetVisableArea().Width + 100,
+                Height = CameraManager.GetVisableArea().Height + 100,
+
+                X = CameraManager.GetVisableArea().X,
+                Y = CameraManager.GetVisableArea().Y
+            }, 100));
 
             DefaultWindowHandler.OpenDefaultWindows();
+
+            Initialized = true;
         }
 
-        public static void EnterPlayMode()
-        {
-            BinarySeriailizer serializer = new BinarySeriailizer();
-            playMode = true;
+        static void SetToEditorCamera() => CameraManager.SetMainCamera(editorCamera);
 
-            SceneManager.currentScene.Save();
-            serializer.Serialize(SceneManager.currentScene, "temp.scene");
-        }
-
-        public static void ExitPlayMode() 
-        {
-            BinarySeriailizer serializer = new BinarySeriailizer();
-
-            playMode = false;
-            var cachedScene = (Scene)serializer.Deserialize("temp.scene");
-
-            Console.WriteLine(cachedScene.gameObjects.Length + " gameObjects");
-
-            if (cachedScene != null)
-            {
-                SceneManager.LoadScene(cachedScene);
-            }
-        }
+        
     }
 }

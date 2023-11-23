@@ -12,40 +12,19 @@ namespace GameEngine.Engine
     [ContainsEvents]
     public static class GameExecuter
     {
-        static EngineEvent<OnPlayModeEnter> OnEnterPlayMode;
-        static EngineEvent<OnPlayModeExit> OnExitPlayMode;
-
-        static bool _play = true;
-        public static bool play
-        {
-            get { return _play; }
-            set
-            {
-                _play = value;
-
-                if (!value)
-                {
-                    started = false;
-                    OnExitPlayMode?.Invoke(new OnPlayModeExit());
-                }
-                else
-                    OnEnterPlayMode?.Invoke(new OnPlayModeEnter());
-            }
-        }
-
         static bool started;
-
-
 
         public static void Init()
         {
-            EngineEventManager.AddEventListener<SceneLoadedEvent>((e) => ExecuteStart());
-            EngineEventManager.AddEventListener<OnEngineTickEvent>((e) => Tick());
+            EngineEventManager.AddEventListener<SceneLoadedEvent>((e) => ResetStart());
+
+            EngineEventManager.AddEventListener<WhileInPlayMode>(e => Tick());
+            EngineEventManager.AddEventListener<OnEnterEditMode>(e => ResetStart());
         }
 
         public static void Tick()
         {
-            if (!play) return;
+            //Console.WriteLine("Tick");
 
             if(!started) 
             {
@@ -58,22 +37,6 @@ namespace GameEngine.Engine
             BehaviorFunctionExecuter.Execute.Update();
         }
 
-        static void ExecuteStart() => started = false;
-    }
-
-    public struct OnPlayModeExit : IEventArgs
-    {
-        public object Sender
-        {
-            get; set;
-        }
-    }
-
-    public struct OnPlayModeEnter : IEventArgs
-    {
-        public object Sender
-        {
-            get; set;
-        }
+        static void ResetStart() => started = false;
     }
 }

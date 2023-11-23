@@ -77,6 +77,8 @@
     <Compile Include="Editor\UI\Editor UI\Windows\TestWindow.cs" />
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
     <Compile Include="Editor\UI\Grid.cs" />
+    <Compile Include="Engine\Debugging\NotesManager.cs" />
+    <Compile Include="Engine\Play Handling\PlayModeManager.cs" />
     <Compile Include="Engine\Rendering\Camera.cs" />
     <Compile Include="Engine\Core\ComponentModel\Behavior.cs" />
     <Compile Include="Engine\Core\ComponentModel\Component.cs" />
@@ -91,11 +93,11 @@
     <Compile Include="Engine\Core\Game Object System\GameObjectManager.cs" />
     <Compile Include="Engine\GameExecuter.cs" />
     <Compile Include="Engine\Rendering\CameraManager.cs" />
-    <Compile Include="Engine\Rendering\Drawer.cs" />
     <Compile Include="Engine\Rendering\EditorCamera.cs" />
     <Compile Include="Engine\Rendering\ICamera.cs" />
     <Compile Include="Engine\Rendering\Renderer.cs" />
     <Compile Include="Engine\Rendering\Sprite.cs" />
+    <Compile Include="Engine\TempFileHandler.cs" />
     <Compile Include="Engine\Utilities\BinarySeriailizer.cs" />
     <Compile Include="Engine\Utilities\ContentLoader.cs" />
     <Compile Include="Editor\Editor.cs" />
@@ -112,6 +114,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Engine\Utilities\State.cs" />
+    <Compile Include="Engine\Utilities\StateMachiene.cs" />
     <Compile Include="Engine\Utilities\StringSpacer.cs" />
     <Compile Include="Game\Move.cs" />
     <Compile Include="Game\TestComponent.cs" />
@@ -139,6 +143,7 @@
     <Content Include="Game\Content\PlaceHolderTwo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

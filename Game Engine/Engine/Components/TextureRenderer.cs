@@ -25,9 +25,9 @@ namespace GameEngine
 
         public Sprite sprite = new Sprite("");
 
-        public void OnDraw(Drawer g)
+        public void OnDraw()
         {
-            g.RenderTexture(sprite, transform, Color.White);
+            Renderer.RenderTexture(sprite, transform, Color.White);
         }
     }
 }

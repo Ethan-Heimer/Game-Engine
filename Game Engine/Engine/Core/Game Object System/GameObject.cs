@@ -50,7 +50,6 @@ namespace GameEngine
 
         public T GetComponent<T>() where T : Behavior
         {
-            components.ForEach(x => Console.WriteLine(x.BindingBehavior.GetType().Name));
             foreach (var o in components) 
             {
                 if(o.BindingBehavior.GetType() == typeof(T))

@@ -7,6 +7,7 @@ using System.Windows;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Forms;
+using GameEngine.Engine;
 
 namespace GameEngine.Editor.Windows
 {
@@ -30,6 +31,7 @@ namespace GameEngine.Editor.Windows
             editorGUI.DrawLabel("Play Modes");
             editorGUI.DrawButton("Enter Play", Play);
             editorGUI.DrawButton("Exit Play", ExitPlay);
+            editorGUI.DrawButton("Pause", EnterPause);
             editorGUI.EndGroup();
         }
 
@@ -68,12 +70,16 @@ namespace GameEngine.Editor.Windows
 
         private void Play(object sender, RoutedEventArgs e)
         {
-            Editor.EnterPlayMode();
+            PlayModeManager.SetMode(PlayModeManager.PlayMode.Play);
         }
 
         private void ExitPlay(object sender, RoutedEventArgs e)
         {
-            Editor.ExitPlayMode();
+            PlayModeManager.SetMode(PlayModeManager.PlayMode.Edit);
+        }
+        private void EnterPause(object sender, RoutedEventArgs e)
+        {
+            PlayModeManager.SetMode(PlayModeManager.PlayMode.Pause);
         }
     }
 }

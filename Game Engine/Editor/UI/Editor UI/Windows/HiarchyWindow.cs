@@ -37,7 +37,6 @@ namespace GameEngine.Editor.Windows
             drawer.Clear();
             drawer.DrawLabel("Hiarchy");
 
-            Console.WriteLine("Hello");
             foreach(GameObject o in e.TotalGameObjects)
             {
                 drawer.DrawText("Gameobject");

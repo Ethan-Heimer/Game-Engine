@@ -11,6 +11,7 @@ using GameEngine.Editor;
 using GameEngine.Engine.Events;
 using GameEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
+using static GameEngine.Engine.PlayModeManager;
 
 namespace GameEngine
 {
@@ -46,6 +47,9 @@ namespace GameEngine
         {
             FindScenes();
             LoadFirst();
+
+            EngineEventManager.AddEventListener<OnEnterPlayMode>(e => HandleSceneOnPlay());
+            EngineEventManager.AddEventListener<OnEnterEditMode>(e => HandleSceneOnEdit());
         }
 
         public static void FindScenes() 
@@ -56,7 +60,6 @@ namespace GameEngine
             foreach (var o in scenesFound)
             {
                 string name = Path.GetFileNameWithoutExtension(o);
-                Console.WriteLine(name);
                 scenes.Add(name, o);
             }
         }
@@ -89,19 +92,32 @@ namespace GameEngine
 
         static void LoadFirst()
         {
-            try
+            if (scenes.Count() == 0)
+            {
+                LoadScene(new Scene());
+                Console.WriteLine("Loaded New");
+            }
+            else
             {
                 if (currentScene != null)
                     LoadScene(currentScene);
                 else
                     LoadScene(scenes.First().Key);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                LoadScene(new Scene());
-                Console.WriteLine("New Loaded");
-            }
+        }
+
+        static void HandleSceneOnPlay()
+        {
+            currentScene.Save();
+            TempFileHandler.Serialize(currentScene, "temp.scene");
+        }
+
+        static void HandleSceneOnEdit()
+        {
+            Scene tempScene = (Scene)TempFileHandler.Deserialize("temp.scene");
+
+            if (tempScene != null)
+                LoadScene(tempScene);
         }
     }
 

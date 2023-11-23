@@ -8,10 +8,12 @@ using GameEngine.Engine;
 using GameEngine.Engine.Rendering;
 using GameEngine.Engine.Events;
 using GameEngine.Rendering;
+using GameEngine.Debugging;
 
 namespace GameEngine
 {
     [ContainsEvents]
+    [Note(note = "Theres a lot of init functions. Maybe a system to call static init functions might be better?")]
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         public static event Action AfterInit;
@@ -21,6 +23,9 @@ namespace GameEngine
         static EngineEvent<OnEngineTickEvent> OnTick;
         OnEngineTickEvent OnEngineTickEvent = new OnEngineTickEvent();
 
+        static EngineEvent<OnEngineExitEvent> OnExit;
+        OnEngineExitEvent OnEngineExitEvent = new OnEngineExitEvent();  
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -29,6 +34,7 @@ namespace GameEngine
         protected override void Initialize()
         {
             EngineEventManager.Init();
+
             ComponentCacheManager.Init();
             GameExecuter.Init();
             SceneManager.Init();
@@ -36,6 +42,9 @@ namespace GameEngine
             Renderer.Init(this, graphics, GraphicsDevice);
             AssetManager.Init(Content);
             CameraManager.Init();
+            PlayModeManager.Init();
+            TempFileHandler.Init();
+            NotesManager.Init();
 
             this.IsMouseVisible = true;
             AfterInit.Invoke();
@@ -52,7 +61,6 @@ namespace GameEngine
             gameObect.AddComponent<TestComponent>();
         }
 
-
         protected override void Update(GameTime gameTime)
         {
             OnEngineTickEvent.GameTime = gameTime;
@@ -60,11 +68,16 @@ namespace GameEngine
 
             OnTick?.Invoke(OnEngineTickEvent);
         }
-
         
         protected override void Draw(GameTime gameTime)
         {
             Renderer.Draw();
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            base.OnExiting(sender, args);
+            OnExit?.Invoke(OnEngineExitEvent);   
         }
     }
 
@@ -77,6 +90,12 @@ namespace GameEngine
         }
     }
 
-   
+    public struct OnEngineExitEvent : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
+        }
+    }
 }
 

@@ -13,42 +13,44 @@ namespace GameEngine.Editor.UI
 {
     public class Grid
     {
-
-        public void Draw(Drawer drawer, Rectangle bounds, int cellSize) 
+        public void Draw(Rectangle bounds, int cellSize) 
         {
-            DrawHorizontal(bounds, drawer, cellSize);
-            DrawVertical(bounds, drawer, cellSize);
+            if (bounds == Rectangle.Empty)
+                return;
+
+            DrawHorizontal(bounds, cellSize);
+            DrawVertical(bounds, cellSize);
         }
 
-        void DrawHorizontal(Rectangle bounds, Drawer drawer, int cellSize)
+        void DrawHorizontal(Rectangle bounds, int cellSize)
         {
-            for (int i = 0; i < bounds.Width + 200; i++)
+            for (int i = 0; i < bounds.Width; i++)
             {
                 if (i % cellSize != 0)
                     continue;
                     
-                int offset = (bounds.X / 100) * 100;
-                Color color = GetColor(i + offset);
-                drawer.DrawLine((new Vector3(i + offset, bounds.Y, 0)), (new Vector3(i + offset, bounds.Bottom + 100, 0)), color);
+                int offset = (bounds.X / cellSize) * cellSize;
+                Color color = GetColor(i + offset, cellSize);
+                Renderer.DrawLine((new Vector3(i + offset, bounds.Y, 0)), (new Vector3(i + offset, bounds.Bottom, 0)), color);
             }
         }
 
-        void DrawVertical(Rectangle bounds, Drawer drawer, int cellSize)
+        void DrawVertical(Rectangle bounds, int cellSize)
         {
-            for (int i = 0; i < bounds.Height + 200; i++)
+            for (int i = 0; i < bounds.Height; i++)
             {
                 if (i % cellSize != 0)
                     continue;
 
-                int offset = (bounds.Y / 100) * 100;
-                Color color = GetColor(i + offset);
-                drawer.DrawLine((new Vector3(bounds.X, i + offset, 0)), (new Vector3(bounds.Right + 100, i + offset, 0)), color);
+                int offset = (bounds.Y / cellSize) * cellSize;
+                Color color = GetColor(i + offset, cellSize);
+                Renderer.DrawLine((new Vector3(bounds.X, i + offset, 0)), (new Vector3(bounds.Right, i + offset, 0)), color);
             }
         }
 
-        Color GetColor(int position)
+        Color GetColor(int position, int cellSize)
         {
-            if (position % 1000 == 0)
+            if (position % (cellSize * 10) == 0)
                 return new Color(200, 200, 200);
 
             return new Color(70,70, 70);

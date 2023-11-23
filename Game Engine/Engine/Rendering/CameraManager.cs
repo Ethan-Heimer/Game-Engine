@@ -14,13 +14,13 @@ namespace GameEngine.Rendering
     {
         static ICamera MainCamera = null;
 
-        static EditorCamera editorCamera = new EditorCamera();
+        
         public static void Init()
         {
             EngineEventManager.AddEventListener<OnEngineTickEvent>((e) => Update());
 
-            EngineEventManager.AddEventListener<OnPlayModeExit>((e) => SetToEditorCamera());
-            EngineEventManager.AddEventListener<OnPlayModeEnter>((e) => SetToMainGameCamera());
+            //change where this executes
+            EngineEventManager.AddEventListener<OnEnterPlayMode>((e) => SetMainCamera(null));
         }
 
         public static void Update() { MainCamera?.OnUpdate(); }
@@ -46,7 +46,6 @@ namespace GameEngine.Rendering
             return (Rectangle)rect;
         }
 
-        static void SetToEditorCamera() => MainCamera = editorCamera;
-        static void SetToMainGameCamera() => MainCamera = null;
+        public static void SetMainCamera(ICamera camera) => MainCamera = camera;
     }
 }
