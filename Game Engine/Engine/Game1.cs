@@ -1,66 +1,97 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-
-using Microsoft.Xna.Framework.src.Graphics;
 using GameEngine.Editor;
 using GameEngine.Game;
 using System;
-using System.IO;
 using GameEngine.ComponentManagement;
-using System.Text.Json;
-using System.Runtime.CompilerServices;
-using System.Linq;
 using GameEngine.Engine;
 using GameEngine.Engine.Rendering;
-using System.Security.Cryptography;
+using GameEngine.Engine.Events;
+using GameEngine.Rendering;
+using GameEngine.Debugging;
 
 namespace GameEngine
 {
+    [ContainsEvents]
+    [Note(note = "Theres a lot of init functions. Maybe a system to call static init functions might be better?")]
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        Renderer renderer;
-        AssetManager assetManager;
+        public static event Action AfterInit;
 
-        public Game1() //This is the constructor, this function is called whenever the game class is created.
+        GraphicsDeviceManager graphics;
+       
+        static EngineEvent<OnEngineTickEvent> OnTick;
+        OnEngineTickEvent OnEngineTickEvent = new OnEngineTickEvent();
+
+        static EngineEvent<OnEngineExitEvent> OnExit;
+        OnEngineExitEvent OnEngineExitEvent = new OnEngineExitEvent();  
+
+        public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
         }
 
         protected override void Initialize()
         {
-            renderer = new Renderer(this, graphics, GraphicsDevice);
-            assetManager = new AssetManager(Content);
+            EngineEventManager.Init();
+
+            ComponentCacheManager.Init();
+            GameExecuter.Init();
+            SceneManager.Init();
+            InputManager.Init();
+            Renderer.Init(this, graphics, GraphicsDevice);
+            AssetManager.Init(Content);
+            CameraManager.Init();
+            PlayModeManager.Init();
+            TempFileHandler.Init();
+            NotesManager.Init();
+
+            this.IsMouseVisible = true;
+            AfterInit.Invoke();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            SceneManager.LoadScenes();
-            
-            GameObject gameObect = new GameObject();
-            gameObect.Transform.Position = Vector2.One * 200;
-            gameObect.AddComponent<TextureRenderer>().texture = AssetManager.LoadContent<Texture2D>("PlaceHolderTwo");
-            gameObect.AddComponent<Move>().Speed = 9;
-            gameObect.AddComponent<TestComponent>();
+           
         }
 
         protected override void Update(GameTime gameTime)
         {
-            Input.Update();
-            GameExecuter.Tick();
-        }
+            OnEngineTickEvent.GameTime = gameTime;
+            OnEngineTickEvent.Sender = this;
 
-       
+            OnTick?.Invoke(OnEngineTickEvent);
+        }
+        
         protected override void Draw(GameTime gameTime)
         {
-            renderer.Draw();
+            Renderer.Draw();
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            base.OnExiting(sender, args);
+            OnExit?.Invoke(OnEngineExitEvent);   
+        }
+    }
+
+    public struct OnEngineTickEvent : IEventArgs
+    {
+        public GameTime GameTime;
+        public object Sender
+        {
+            get; set;
+        }
+    }
+
+    public struct OnEngineExitEvent : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
         }
     }
 }
+

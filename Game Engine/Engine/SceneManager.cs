@@ -8,17 +8,23 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GameEngine.Editor;
+using GameEngine.Engine.Events;
+using GameEngine.Engine;
+using Microsoft.Xna.Framework.Graphics;
+using static GameEngine.Engine.PlayModeManager;
+using System.Windows.Markup;
 
 namespace GameEngine
 {
+    [ContainsEvents]
     public static class SceneManager
     {
-        public static event Action<Scene> OnSceneUnloaded;
-        public static event Action<Scene> OnSceneLoaded;
-        public static event Action<Scene> OnSceneSaved;
+        static readonly EngineEvent<SceneLoadedEvent> OnSceneLoaded;
+
+        static readonly EngineEvent<SceneUnloadedEvent> OnSceneUnloaded;
+        static readonly EngineEvent<SceneSavedEvent> OnSceneSaved;
 
         static Dictionary<string, string> scenes = new Dictionary<string, string>(); 
-
         static Scene _currentScene;
         public static Scene currentScene
         {
@@ -28,17 +34,26 @@ namespace GameEngine
             {
                 if (_currentScene != null)
                 {
-                    OnSceneUnloaded?.Invoke(_currentScene);
-                    GameObject.OnGameObjectCreated -= currentScene.LoadGameobject;
+                    OnSceneUnloaded?.Invoke(new SceneUnloadedEvent() { Scene = value });
+                    _currentScene.Unload();
                 }
                 
                 _currentScene = value;
-                GameObject.OnGameObjectCreated += currentScene.LoadGameobject;
-                OnSceneLoaded?.Invoke(value);
+                OnSceneLoaded?.Invoke(new SceneLoadedEvent() { Scene = value });
+                _currentScene.Load();
             }
         }
 
-        public static void LoadScenes() 
+        public static void Init()
+        {
+            FindScenes();
+            LoadFirst();
+
+            EngineEventManager.AddEventListener<OnEnterPlayMode>(e => HandleSceneOnPlay());
+            EngineEventManager.AddEventListener<OnEnterEditMode>(e => HandleSceneOnEdit());
+        }
+
+        public static void FindScenes() 
         {
             scenes.Clear();
 
@@ -46,23 +61,9 @@ namespace GameEngine
             foreach (var o in scenesFound)
             {
                 string name = Path.GetFileNameWithoutExtension(o);
-                Console.WriteLine(name);
+                Console.WriteLine(o);
                 scenes.Add(name, o);
             }
-            
-            try
-            {
-                if (currentScene != null)
-                    LoadScene(currentScene);
-                else
-                    LoadScene(scenes.First().Key);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-                LoadScene(new Scene());
-            }
-            
         }
 
         public static void LoadScene(string name)
@@ -80,15 +81,65 @@ namespace GameEngine
 
         public static void SaveScene(string path)
         {
+            currentScene.Save();
+            
             string name = AssetManager.GetFilePath(path);
+            string sceneName = Path.GetFileNameWithoutExtension(name);
 
-            currentScene.name = Path.GetFileNameWithoutExtension(name);
-            Console.WriteLine(currentScene.name + " Name");
+            currentScene.name = sceneName;
+           
+            AssetManager.SaveFile(currentScene, name);
 
-            AssetManager.SaveFile(currentScene, name); 
-            OnSceneSaved?.Invoke(currentScene);
+            Console.WriteLine(name);
 
-            LoadScenes(); 
+            if (!scenes.ContainsKey(sceneName))
+                scenes.Add(sceneName, name);
+
+            OnSceneSaved?.Invoke(new SceneSavedEvent { Scene = currentScene });
         }
+
+        static void LoadFirst()
+        {
+            if (scenes.Count() == 0)
+            {
+                LoadScene(new Scene());
+                Console.WriteLine("Loaded New");
+            }
+            else
+            {
+                if (currentScene != null)
+                    LoadScene(currentScene);
+                else
+                    LoadScene(scenes.First().Key);
+            }
+        }
+
+        static void HandleSceneOnPlay()
+        {
+            currentScene.Save();
+            TempFileHandler.Serialize(currentScene, "temp.scene");
+        }
+
+        static void HandleSceneOnEdit()
+        {
+            Scene tempScene = (Scene)TempFileHandler.Deserialize("temp.scene");
+
+            if (tempScene != null)
+                LoadScene(tempScene);
+        }
+    }
+
+    public class SceneLoadedEvent : SceneEvent { }
+    public class SceneUnloadedEvent : SceneEvent { }
+    public class SceneSavedEvent : SceneEvent { }
+
+    public class SceneEvent : IEventArgs
+    {
+        public object Sender
+        {
+            get; set;
+        }
+
+        public Scene Scene; 
     }
 }

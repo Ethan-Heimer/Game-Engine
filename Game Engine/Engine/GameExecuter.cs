@@ -5,34 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.ComponentManagement;
+using GameEngine.Engine.Events;
 
 namespace GameEngine.Engine
 {
+    [ContainsEvents]
     public static class GameExecuter
     {
-        static bool _play = true;
-        public static bool play
-        {
-            get { return _play; }
-            set
-            {
-                _play = value;
-
-                if (!value)
-                    started = false;
-            }
-        }
-
         static bool started;
 
-        public static void Initailize()
+        public static void Init()
         {
-            SceneManager.OnSceneLoaded += (s) => ExecuteStart();
+            EngineEventManager.AddEventListener<SceneLoadedEvent>((e) => ResetStart());
+
+            EngineEventManager.AddEventListener<WhileInPlayMode>(e => Tick());
+            EngineEventManager.AddEventListener<OnEnterEditMode>(e => ResetStart());
         }
 
         public static void Tick()
         {
-            if (!play) return;
+            //Console.WriteLine("Tick");
 
             if(!started) 
             {
@@ -45,6 +37,6 @@ namespace GameEngine.Engine
             BehaviorFunctionExecuter.Execute.Update();
         }
 
-        static void ExecuteStart() => started = false;
+        static void ResetStart() => started = false;
     }
 }

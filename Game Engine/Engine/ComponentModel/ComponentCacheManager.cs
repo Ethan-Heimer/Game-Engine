@@ -1,37 +1,43 @@
-﻿using System;
+﻿using GameEngine.Engine;
+using GameEngine.Engine.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace GameEngine.ComponentManagement
 {
     public static class ComponentCacheManager
     {
-        static Dictionary<string, BehaviorMethodCollection> _cache;
-        static Dictionary<string, BehaviorMethodCollection> cache
-        {
-            get
-            {
-                if(_cache == null)
-                {
-                    InitalizeCasheManager();
-                }
+        static Dictionary<string, BehaviorMethodCollection> cache;
 
-                return _cache;
+        public static void Init()
+        {
+            cache = new Dictionary<string, BehaviorMethodCollection>();
+            foreach (var o in BehaviorFunctions.functionTypes)
+            {
+                cache.Add(o.FunctionName, new BehaviorMethodCollection(o));
             }
+
+            EngineEventManager.AddEventListener<GameObjectAddedEvent>(AddCache);
+            EngineEventManager.AddEventListener<GameObjectRemovedEvent>(RemoveCache);
         }
 
-        public static void AddCache(GameObject gameObject)
+        public static void AddCache(GameObjectAddedEvent e)
         {
-            foreach(var c in gameObject.GetAllComponents())
+            AddCache(e.AddedGameObject);
+        }
+        public static void AddCache(GameObject e)
+        {
+            foreach (var c in e.GetAllComponents())
             {
                 AddCache(c.BindingBehavior);
             }
         }
-
         public static void AddCache(Behavior behavior)
         {
             foreach (var o in BehaviorFunctions.functionTypes)
@@ -40,15 +46,19 @@ namespace GameEngine.ComponentManagement
             }
         }
 
-        public static void RemoveCache(GameObject gameObject)
+ 
+        public static void RemoveCache(GameObjectRemovedEvent e)
         {
-            foreach (var c in gameObject.GetAllComponents())
+            RemoveCache(e.RemovedGameObject);
+        }
+        public static void RemoveCache(GameObject e)
+        {
+            foreach (var c in e.GetAllComponents())
             {
                 RemoveCache(c.BindingBehavior);
             }
         }
-
-        private static void RemoveCache(Behavior c)
+        public static void RemoveCache(Behavior c)
         {
             foreach (var o in BehaviorFunctions.functionTypes)
             {
@@ -64,51 +74,11 @@ namespace GameEngine.ComponentManagement
             }
         }
 
-        static void PopulateCache(Scene scene)
-        {
-            foreach (GameObject o in scene.GetGameObjectCollection())
-                AddCache(o);
-        }
-
-        static void OnSceneUnload(Scene scene)
-        {
-            ClearCache();
-
-            scene.GetGameObjectCollection().onGameObjectAdded -= AddCache;
-            scene.GetGameObjectCollection().onGameObjectRemoved -= RemoveCache;
-
-            scene.GetGameObjectCollection().onGameObjectComponentAdded -= AddCache;
-            scene.GetGameObjectCollection().onGameObjectComponentRemoved -= RemoveCache;
-        }
-
-        static void OnSceneLoad(Scene scene)
-        {
-            PopulateCache(scene);
-
-            scene.GetGameObjectCollection().onGameObjectAdded += AddCache;
-            scene.GetGameObjectCollection().onGameObjectRemoved += RemoveCache;
-
-            scene.GetGameObjectCollection().onGameObjectComponentAdded += AddCache;
-            scene.GetGameObjectCollection().onGameObjectComponentRemoved += RemoveCache;
-        }
-
         public static BehaviorMethodCollection GetCache(string name)
         {
             return cache[name];
         }
 
-        static void InitalizeCasheManager()
-        {
-            _cache = new Dictionary<string, BehaviorMethodCollection>();
-            foreach (var o in BehaviorFunctions.functionTypes)
-            {
-                cache.Add(o.FunctionName, new BehaviorMethodCollection(o));
-            }
-
-            PopulateCache(SceneManager.currentScene);
-
-            SceneManager.OnSceneUnloaded += OnSceneUnload;
-            SceneManager.OnSceneLoaded += OnSceneLoad;
-        }
+        
     }
 }

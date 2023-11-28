@@ -37,6 +37,9 @@
     <StartupObject>Program.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
     <None Include="Engine\ComponentModel\BehaviorFunctions.json" />
   </ItemGroup>
@@ -63,37 +66,74 @@
     <Reference Include="XamlBuildTask" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\Pointer Functions\GameObjectRotationManipulator.cs" />
+    <Compile Include="Editor\Pointer Functions\GameObjectScaleManipulator.cs" />
+    <Compile Include="Editor\Pointer Functions\GameObjectTranslateManipulator.cs" />
+    <Compile Include="Editor\Pointer Functions\OnGameobjectSelectManipulator.cs" />
+    <Compile Include="Editor\UI\Editor UI API\Component.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\FloatField.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\IntField.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\StringField.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\TestButtonComponent.cs" />
+    <Compile Include="Editor\UI\Editor UI API\DefaultWindowHandler.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUI.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\ChangeLogWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\GameManaer.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\HiarchyWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\InspectorWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\TestWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
+    <Compile Include="Editor\UI\Grid.cs" />
+    <Compile Include="Editor\Widgets\Widget.cs" />
+    <Compile Include="Editor\Widgets\WidgetDrawer.cs" />
+    <Compile Include="Editor\Widgets\Wigets\LineWidget.cs" />
+    <Compile Include="Editor\Widgets\Wigets\RotationWidget.cs" />
+    <Compile Include="Engine\Components\DrawBounds.cs" />
+    <Compile Include="Engine\Debugging\NotesManager.cs" />
+    <Compile Include="Engine\Event System\Event.cs" />
+    <Compile Include="Engine\Event System\EventManager.cs" />
+    <Compile Include="Engine\Play Handling\PlayModeManager.cs" />
+    <Compile Include="Engine\Pointer System\GameObjectPointer.cs" />
+    <Compile Include="Engine\Pointer System\IPointerManipulator.cs" />
+    <Compile Include="Engine\Pointer System\Pointer.cs" />
+    <Compile Include="Engine\Rendering\Camera.cs" />
     <Compile Include="Engine\ComponentModel\Behavior.cs" />
-    <Compile Include="Engine\ComponentModel\GameObjectCollection.cs" />
-    <Compile Include="Engine\Components\Component.cs" />
+    <Compile Include="Engine\ComponentModel\Component.cs" />
     <Compile Include="Engine\ComponentModel\ComponentCacheManager.cs" />
     <Compile Include="Engine\ComponentModel\BehaviorFunctionData.cs" />
     <Compile Include="Engine\ComponentModel\BehaviorFunctionExecuter.cs" />
     <Compile Include="Engine\ComponentModel\BehaviorMethodCollection.cs" />
     <Compile Include="Engine\Components\TextureRenderer.cs" />
     <Compile Include="Engine\Components\Transform.cs" />
+    <Compile Include="Engine\Game Object System\GameObjectManager.cs" />
     <Compile Include="Engine\GameExecuter.cs" />
-    <Compile Include="Engine\Rendering\Drawer.cs" />
+    <Compile Include="Engine\Rendering\CameraManager.cs" />
+    <Compile Include="Engine\Rendering\EditorCamera.cs" />
+    <Compile Include="Engine\Rendering\ICamera.cs" />
     <Compile Include="Engine\Rendering\Renderer.cs" />
+    <Compile Include="Engine\Rendering\Sprite.cs" />
+    <Compile Include="Engine\TempFileHandler.cs" />
     <Compile Include="Engine\Utilities\BinarySeriailizer.cs" />
     <Compile Include="Engine\Utilities\ContentLoader.cs" />
-    <Compile Include="Engine\Editor\Editor.cs" />
+    <Compile Include="Editor\Editor.cs" />
     <Compile Include="Engine\Game1.cs" />
-    <Compile Include="Applictaion\GameInitalizer.cs" />
-    <Compile Include="Engine\GameObject.cs" />
-    <Compile Include="Applictaion\Program.cs" />
+    <Compile Include="App\GameInitalizer.cs" />
+    <Compile Include="Engine\Game Object System\GameObject.cs" />
+    <Compile Include="App\Program.cs" />
     <Compile Include="Engine\Scene.cs" />
     <Compile Include="Engine\SceneManager.cs" />
     <Compile Include="Engine\Utilities\DelegateTypeFactory.cs" />
     <Compile Include="Engine\Utilities\Input.cs" />
+    <Compile Include="Engine\Pointer System\IPointer.cs" />
     <Compile Include="Engine\Utilities\Resolution.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Engine\Editor\Editor Windows\Scene Loader\Scene Loader.xaml.cs">
-      <DependentUpon>Scene Loader.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Engine\Utilities\State.cs" />
+    <Compile Include="Engine\Utilities\StateMachiene.cs" />
+    <Compile Include="Engine\Utilities\StringSpacer.cs" />
     <Compile Include="Game\Move.cs" />
     <Compile Include="Game\TestComponent.cs" />
   </ItemGroup>
@@ -103,19 +143,13 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Engine\Editor\Editor Windows\Scene Loader\Scene Loader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Engine\Editor\Editor Windows\Theme\EditorTheme.xaml">
+    <Page Include="Editor\UI\Editor UI\Theme\EditorTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\Editor\Editor Windows\Hiarchy\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Game\Content\PlaceHolderOne.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -126,6 +160,7 @@
     <Content Include="Game\Content\PlaceHolderTwo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

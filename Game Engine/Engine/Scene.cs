@@ -7,47 +7,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 using GameEngine.ComponentManagement;
+using GameEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine
 {
     [Serializable]
-    public class Scene : ICloneable, IDisposable
+    public class Scene : IDisposable
     {
-        public event Action<GameObject> OnNewObjectLoaded;
-        public event Action<GameObject> OnObjectUnloaded;
-
-        public bool ActiveScene;
-
         public string name;
 
-        //List<GameObject> gameObjects = new List<GameObject>();
-        //public ComponentCollection components = new ComponentCollection();
-        GameObjectCollection gameObjects = new GameObjectCollection();
-
+        public GameObject[] gameObjects = new GameObject[0];
+        
         public GameObject[] GetGameobjects() => gameObjects.ToArray();
-        public GameObjectCollection GetGameObjectCollection() => gameObjects;
 
-        public void LoadGameobject(GameObject gameObject)
+        public void Save()
         {
-            gameObjects.AddGameObject(gameObject);
-            OnNewObjectLoaded?.Invoke(gameObject);
+            gameObjects = GameObjectManager.GetGameObjects();
         }
 
-        public void UnloadGameobject(GameObject gameObject) 
+        public void Load()
         {
-            gameObjects.RemoveGameObject(gameObject);
-            OnObjectUnloaded?.Invoke(gameObject);
+            Console.WriteLine(gameObjects.Length);
+
+            if(gameObjects != null)
+                GameObjectManager.RegisterGameobjectGroup(gameObjects);
         }
 
-        public object Clone()
+        public void Unload()
         {
-            Scene clone = new Scene();
-            clone.name = name + "Clone";
-
-            clone.gameObjects = gameObjects.Clone() as GameObjectCollection;
-
-            return clone;
+            Console.WriteLine("Unload");
+            if (gameObjects != null)
+                GameObjectManager.ClearAll();
         }
 
         public void Dispose() 
@@ -60,7 +51,7 @@ namespace GameEngine
         {
             if(disposing) 
             {
-               gameObjects.Clear(); 
+                gameObjects = new GameObject[0];
             }
         }
     }

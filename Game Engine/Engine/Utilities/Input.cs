@@ -5,10 +5,12 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameEngine.Engine.Events;
+using GameEngine.Rendering;
 
 namespace GameEngine
 {
-    public static class Input //Static classes can easily be accessed anywhere in our codebase. They always stay in memory so you should only do it for universal things like input.
+    public static class InputManager //Static classes can easily be accessed anywhere in our codebase. They always stay in memory so you should only do it for universal things like input.
     {
         private static KeyboardState keyboardState = Keyboard.GetState();
         private static KeyboardState lastKeyboardState;
@@ -16,13 +18,30 @@ namespace GameEngine
         private static MouseState mouseState;
         private static MouseState lastMouseState;
 
-        public static void Update()
+
+       
+        public static void Init()
+        {
+            EngineEventManager.AddEventListener<OnEngineTickEvent>((e) => Update());
+        }
+
+        static void Update()
         {
             lastKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
 
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
+            SetScrollDelta();
+        }
+
+        static float scrollDelta;
+        static float prevScroll;
+        private static void SetScrollDelta()
+        {
+            float currentScroll = mouseState.ScrollWheelValue;
+            scrollDelta = currentScroll - prevScroll;
+            prevScroll = currentScroll;
         }
 
         /// <summary>
@@ -57,10 +76,7 @@ namespace GameEngine
         /// </summary>
         public static bool MouseLeftDown()
         {
-            if (mouseState.LeftButton == ButtonState.Pressed)
-                return true;
-            else
-                return false;
+            return (mouseState.LeftButton == ButtonState.Pressed); 
         }
 
         /// <summary>
@@ -68,10 +84,27 @@ namespace GameEngine
         /// </summary>
         public static bool MouseRightDown()
         {
-            if (mouseState.RightButton == ButtonState.Pressed)
-                return true;
-            else
-                return false;
+            return (mouseState.RightButton == ButtonState.Pressed);
+        }
+
+        public static bool MouseMiddleDown()
+        {
+            return mouseState.MiddleButton == ButtonState.Pressed;
+        }
+
+        public static bool MouseLeftReleased()
+        {
+            return (mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed);
+        }
+
+        public static bool MouseRightReleased()
+        {
+            return (mouseState.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed);
+        }
+
+        public static bool MouseMiddleReleased()
+        {
+            return (mouseState.MiddleButton == ButtonState.Released && lastMouseState.MiddleButton == ButtonState.Pressed);
         }
 
         /// <summary>
@@ -99,7 +132,12 @@ namespace GameEngine
         /// <summary>
         /// Gets mouse coordinates adjusted for virtual resolution and camera position.
         /// </summary>
-        /*
+        
+        public static Vector2 RawMousePosition() => new Vector2(mouseState.X, mouseState.Y);
+        public static float ScrollDelta() => scrollDelta;
+       
+
+        
         public static Vector2 MousePositionCamera()
         {
             Vector2 mousePosition = Vector2.Zero;
@@ -124,14 +162,14 @@ namespace GameEngine
         /// <summary>
         /// Takes screen coordinates (2D position like where the mouse is on screen) then converts it to world position (where we clicked at in the world). 
         /// </summary>
-        /*
+        
         private static Vector2 ScreenToWorld(Vector2 input)
         {
             input.X -= Resolution.VirtualViewportX;
             input.Y -= Resolution.VirtualViewportY;
 
-            return Vector2.Transform(input, Matrix.Invert(Camera.GetTransformMatrix()));
+            return Vector2.Transform(input, Matrix.Invert(CameraManager.GetTransformantionMaxtrix()));
         }
-        */
+        
     }
 }
