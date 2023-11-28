@@ -24,20 +24,20 @@ namespace GameEngine.Editor.Windows
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
-            
+            EngineEventManager.AddEventListener<GameObjectAddedEvent>((e) => RenderGUI(e.TotalGameObjects, drawer));
+            EngineEventManager.AddEventListener<GameObjectRemovedEvent>((e) => RenderGUI(e.TotalGameObjects,drawer));
 
-            EngineEventManager.AddEventListener<GameObjectAddedEvent>((e) => RenderGUI(e, drawer));
-            EngineEventManager.AddEventListener<GameObjectRemovedEvent>((e) => RenderGUI(e,drawer));
-
-           
+            RenderGUI(GameObjectManager.GetGameObjects(), drawer);
         }
 
-        void RenderGUI(GameObjectEvent e, EditorGUIDrawer drawer) 
+        void RenderGUI(GameObject[] objects, EditorGUIDrawer drawer) 
         {
+            Console.WriteLine("gameObject Added");
+
             drawer.Clear();
             drawer.DrawLabel("Hiarchy");
 
-            foreach(GameObject o in e.TotalGameObjects)
+            foreach(GameObject o in objects)
             {
                 drawer.DrawText("Gameobject");
             }

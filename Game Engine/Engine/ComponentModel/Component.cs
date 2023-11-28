@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,16 +69,19 @@ namespace GameEngine
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            Type type = BindingBehavior.GetType();
+            FieldInfo[] fields = GetFields();
 
-            foreach(var o in type.GetFields()) 
+            foreach(var o in fields) 
             {
-                Console.WriteLine(o.Name);
-                if(o.FieldType.IsSerializable && o.FieldType != typeof(Component))
-                    info.AddValue(o.Name, o.GetValue(BindingBehavior));
+                 info.AddValue(o.Name, o.GetValue(BindingBehavior));
             }
 
             info.AddValue("Behavior Type", BindingBehavior.GetType().FullName);
+        }
+
+        public FieldInfo[] GetFields()
+        {
+            return BindingBehavior.GetType().GetFields().Where(x => x.FieldType.IsSerializable && x.FieldType != typeof(Component)).ToArray();
         }
 
         ~Component(){

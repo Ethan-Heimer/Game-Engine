@@ -1,4 +1,6 @@
-﻿using GameEngine.Editor;
+﻿using GameEngine.Debugging;
+using GameEngine.Editor;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -28,12 +30,18 @@ namespace GameEngine.Rendering
         {
             get
             {
-                if(_texture == null)
-                {
-                    _texture = AssetManager.LoadContent<Texture2D>(_path);
-                }
+                if(_texture == null)   
+                    _texture = AssetManager.LoadContent<Texture2D>(Path);
 
                 return _texture;
+            }
+        }
+
+        public Rectangle Bounds
+        {
+            get
+            {
+                return Texture == null ? Rectangle.Empty : Texture.Bounds;
             }
         }
 

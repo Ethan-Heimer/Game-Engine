@@ -14,11 +14,12 @@ using GameEngine.Engine.Events;
 using GameEngine.Engine;
 using GameEngine.ComponentManagement;
 using System.Windows.Forms;
+using GameEngine.Pointers;
 
 namespace GameEngine
 {
     [Serializable]
-    public class GameObject : ISerializable
+    public class GameObject : ISerializable, IPointerManiplatable
     {
         public string Name;
 
@@ -33,6 +34,17 @@ namespace GameEngine
                 if(_transform == null)
                     _transform = GetComponent<Transform>();
                 return _transform;
+            }
+        }
+
+        TextureRenderer _renderer;
+        public TextureRenderer renderer
+        {
+            get
+            {
+                if (_renderer == null)
+                    _renderer = GetComponent<TextureRenderer>();
+                return _renderer;
             }
         }
 

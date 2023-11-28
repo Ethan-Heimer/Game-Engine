@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Shapes;
 
 namespace GameEngine.Editor
 {
@@ -29,7 +30,15 @@ namespace GameEngine.Editor
         #region Load
         public static T LoadContent<T>(string name)
         {
-            return contentManager.Load<T>(name);
+            try
+            {
+                return contentManager.Load<T>(name);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return default(T);
+            }
         }
 
         public static T LoadFile<T>(string name)

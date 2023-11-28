@@ -57,6 +57,26 @@ namespace GameEngine.Editor.Windows
             containerStack.Peek().Children.Add(button);
         }
 
+        public void DrawField(Action<string> onValueChanged)
+        {
+            TextBox textBox = new TextBox();
+            textBox.TextChanged += (s, e) => { onValueChanged(textBox.Text); };
+
+            containerStack.Peek().Children.Add(textBox);
+        }
+
+        public void DrawField(string defaultText, Action<string> onValueChanged)
+        {
+            TextBox textBox = new TextBox()
+            {
+                Text = defaultText
+            };
+
+            textBox.TextChanged += (s, e) => { onValueChanged(textBox.Text); };
+
+            containerStack.Peek().Children.Add(textBox);
+        }
+
         public void StartHorizontalGroup()
         {
             StackPanel container = new StackPanel()

@@ -54,11 +54,7 @@ namespace GameEngine
 
         protected override void LoadContent()
         {
-            GameObject gameObect = new GameObject();
-            gameObect.Transform.Position = Vector2.One * 200;
-            gameObect.AddComponent<TextureRenderer>().Path = "PlaceHolderTwo";
-            gameObect.AddComponent<Move>().Speed = 9;
-            gameObect.AddComponent<TestComponent>();
+           
         }
 
         protected override void Update(GameTime gameTime)

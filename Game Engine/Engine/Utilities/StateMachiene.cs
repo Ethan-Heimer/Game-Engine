@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Utilities
 {
-    public class BasicStateMachiene : IStateMachiene
+    public class StateMachiene<T> : IStateMachiene<T> where T : IState
     {
-        IState currentState;
+        T currentState;
 
-        public void SetCurrentState(IState state)
+        public void SetCurrentState(T state)
         {
             currentState.OnLeave();
             currentState = state;
             currentState.OnEnter();
         }
 
-        public void Tick() => currentState.WhileInState();
+        public virtual void Tick() => currentState.WhileInState();
     }
 
-    public interface IStateMachiene
+    public interface IStateMachiene<T> where T : IState
     {
-        void SetCurrentState(IState currentState);
+        void SetCurrentState(T currentState);
         void Tick();
     }
 }

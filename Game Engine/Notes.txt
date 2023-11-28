@@ -1,2 +1,5 @@
-11/23/2023 12:52:12 PM: In class Game1: Theres a lot of init functions. Maybe a system to call static init functions might be better?
-11/23/2023 12:52:12 PM: In class Renderer: The render uses a buffer which i feel might use alot of memory. when optimizing this might be a good place to start
+11/27/2023 10:58:37 PM: In class TextureRenderer: The Standard Rectangle Only Allows for int values, a coustom one with floting point values might be better
+11/27/2023 10:58:37 PM: In class Game1: Theres a lot of init functions. Maybe a system to call static init functions might be better?
+11/27/2023 10:58:37 PM: In class Renderer: The render uses a buffer which i feel might use alot of memory. when optimizing this might be a good place to start. a fun approch could be rendering with async, blocking the fuctions rendering calls until some blocking method is released
+11/27/2023 10:58:37 PM: In class GameManagerWindow: Crash when loading scene
+11/27/2023 10:58:37 PM: In class InspectorWindow: Data Binder for inspector

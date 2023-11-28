@@ -31,7 +31,7 @@ namespace GameEngine.Editor.UI
                     
                 int offset = (bounds.X / cellSize) * cellSize;
                 Color color = GetColor(i + offset, cellSize);
-                Renderer.DrawLine((new Vector3(i + offset, bounds.Y, 0)), (new Vector3(i + offset, bounds.Bottom, 0)), color);
+                Renderer.DrawLine(new Vector2(i + offset, bounds.Y), new Vector2(i + offset, bounds.Bottom), color);
             }
         }
 
@@ -44,16 +44,16 @@ namespace GameEngine.Editor.UI
 
                 int offset = (bounds.Y / cellSize) * cellSize;
                 Color color = GetColor(i + offset, cellSize);
-                Renderer.DrawLine((new Vector3(bounds.X, i + offset, 0)), (new Vector3(bounds.Right, i + offset, 0)), color);
+                Renderer.DrawLine(new Vector2(bounds.X, i + offset), new Vector2(bounds.Right, i + offset), color); 
             }
         }
 
         Color GetColor(int position, int cellSize)
         {
             if (position % (cellSize * 10) == 0)
-                return new Color(200, 200, 200);
+                return new Color(255, 255, 255);
 
-            return new Color(70,70, 70);
+            return new Color(255,255,255) * .1f;
         }
     }
 }

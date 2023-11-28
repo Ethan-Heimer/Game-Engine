@@ -1,4 +1,5 @@
 ﻿using GameEngine.Engine.Events;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,12 @@ namespace GameEngine.Engine
             {
                 DispatchGameobject(gameObjects[0]);
             }
+        }
+
+        public static GameObject[] GetOverlapping(Rectangle rectangle)
+        {
+            //O(N)
+            return gameObjects.Where(x => x.Transform.Bounds.Intersects(rectangle)).ToArray();
         }
 
     }

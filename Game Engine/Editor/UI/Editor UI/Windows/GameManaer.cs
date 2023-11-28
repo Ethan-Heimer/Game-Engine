@@ -8,10 +8,12 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Forms;
 using GameEngine.Engine;
+using GameEngine.Debugging;
 
 namespace GameEngine.Editor.Windows
 {
     [OpenWindowByDefault]
+    [Note(note ="Crash when loading scene")]
     public class GameManagerWindow : EditorWindow
     {
         public GameManagerWindow() 

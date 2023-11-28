@@ -41,7 +41,7 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
-    <None Include="Engine\Core\ComponentModel\BehaviorFunctions.json" />
+    <None Include="Engine\ComponentModel\BehaviorFunctions.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FNA">
@@ -66,7 +66,14 @@
     <Reference Include="XamlBuildTask" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\Pointer Functions\GameObjectRotationManipulator.cs" />
+    <Compile Include="Editor\Pointer Functions\GameObjectScaleManipulator.cs" />
+    <Compile Include="Editor\Pointer Functions\GameObjectTranslateManipulator.cs" />
+    <Compile Include="Editor\Pointer Functions\OnGameobjectSelectManipulator.cs" />
     <Compile Include="Editor\UI\Editor UI API\Component.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\FloatField.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\IntField.cs" />
+    <Compile Include="Editor\UI\Editor UI\Components\StringField.cs" />
     <Compile Include="Editor\UI\Editor UI\Components\TestButtonComponent.cs" />
     <Compile Include="Editor\UI\Editor UI API\DefaultWindowHandler.cs" />
     <Compile Include="Editor\UI\Editor UI API\EditorGUI.cs" />
@@ -74,23 +81,32 @@
     <Compile Include="Editor\UI\Editor UI\Windows\ChangeLogWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\GameManaer.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\HiarchyWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\InspectorWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\TestWindow.cs" />
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
     <Compile Include="Editor\UI\Grid.cs" />
+    <Compile Include="Editor\Widgets\Widget.cs" />
+    <Compile Include="Editor\Widgets\WidgetDrawer.cs" />
+    <Compile Include="Editor\Widgets\Wigets\LineWidget.cs" />
+    <Compile Include="Editor\Widgets\Wigets\RotationWidget.cs" />
+    <Compile Include="Engine\Components\DrawBounds.cs" />
     <Compile Include="Engine\Debugging\NotesManager.cs" />
+    <Compile Include="Engine\Event System\Event.cs" />
+    <Compile Include="Engine\Event System\EventManager.cs" />
     <Compile Include="Engine\Play Handling\PlayModeManager.cs" />
+    <Compile Include="Engine\Pointer System\GameObjectPointer.cs" />
+    <Compile Include="Engine\Pointer System\IPointerManipulator.cs" />
+    <Compile Include="Engine\Pointer System\Pointer.cs" />
     <Compile Include="Engine\Rendering\Camera.cs" />
-    <Compile Include="Engine\Core\ComponentModel\Behavior.cs" />
-    <Compile Include="Engine\Core\ComponentModel\Component.cs" />
-    <Compile Include="Engine\Core\ComponentModel\ComponentCacheManager.cs" />
-    <Compile Include="Engine\Core\ComponentModel\BehaviorFunctionData.cs" />
-    <Compile Include="Engine\Core\ComponentModel\BehaviorFunctionExecuter.cs" />
-    <Compile Include="Engine\Core\ComponentModel\BehaviorMethodCollection.cs" />
+    <Compile Include="Engine\ComponentModel\Behavior.cs" />
+    <Compile Include="Engine\ComponentModel\Component.cs" />
+    <Compile Include="Engine\ComponentModel\ComponentCacheManager.cs" />
+    <Compile Include="Engine\ComponentModel\BehaviorFunctionData.cs" />
+    <Compile Include="Engine\ComponentModel\BehaviorFunctionExecuter.cs" />
+    <Compile Include="Engine\ComponentModel\BehaviorMethodCollection.cs" />
     <Compile Include="Engine\Components\TextureRenderer.cs" />
     <Compile Include="Engine\Components\Transform.cs" />
-    <Compile Include="Engine\Core\Event System\Event.cs" />
-    <Compile Include="Engine\Core\Event System\EventManager.cs" />
-    <Compile Include="Engine\Core\Game Object System\GameObjectManager.cs" />
+    <Compile Include="Engine\Game Object System\GameObjectManager.cs" />
     <Compile Include="Engine\GameExecuter.cs" />
     <Compile Include="Engine\Rendering\CameraManager.cs" />
     <Compile Include="Engine\Rendering\EditorCamera.cs" />
@@ -103,12 +119,13 @@
     <Compile Include="Editor\Editor.cs" />
     <Compile Include="Engine\Game1.cs" />
     <Compile Include="App\GameInitalizer.cs" />
-    <Compile Include="Engine\Core\Game Object System\GameObject.cs" />
+    <Compile Include="Engine\Game Object System\GameObject.cs" />
     <Compile Include="App\Program.cs" />
-    <Compile Include="Engine\Core\Scene.cs" />
+    <Compile Include="Engine\Scene.cs" />
     <Compile Include="Engine\SceneManager.cs" />
     <Compile Include="Engine\Utilities\DelegateTypeFactory.cs" />
     <Compile Include="Engine\Utilities\Input.cs" />
+    <Compile Include="Engine\Pointer System\IPointer.cs" />
     <Compile Include="Engine\Utilities\Resolution.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

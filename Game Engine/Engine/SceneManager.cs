@@ -12,6 +12,7 @@ using GameEngine.Engine.Events;
 using GameEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 using static GameEngine.Engine.PlayModeManager;
+using System.Windows.Markup;
 
 namespace GameEngine
 {
@@ -60,6 +61,7 @@ namespace GameEngine
             foreach (var o in scenesFound)
             {
                 string name = Path.GetFileNameWithoutExtension(o);
+                Console.WriteLine(o);
                 scenes.Add(name, o);
             }
         }
@@ -82,11 +84,17 @@ namespace GameEngine
             currentScene.Save();
             
             string name = AssetManager.GetFilePath(path);
+            string sceneName = Path.GetFileNameWithoutExtension(name);
 
-            currentScene.name = Path.GetFileNameWithoutExtension(name);
-            Console.WriteLine(currentScene.name + " Name");
-
+            currentScene.name = sceneName;
+           
             AssetManager.SaveFile(currentScene, name);
+
+            Console.WriteLine(name);
+
+            if (!scenes.ContainsKey(sceneName))
+                scenes.Add(sceneName, name);
+
             OnSceneSaved?.Invoke(new SceneSavedEvent { Scene = currentScene });
         }
 

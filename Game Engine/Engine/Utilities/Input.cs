@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Engine.Events;
+using GameEngine.Rendering;
 
 namespace GameEngine
 {
@@ -91,6 +92,21 @@ namespace GameEngine
             return mouseState.MiddleButton == ButtonState.Pressed;
         }
 
+        public static bool MouseLeftReleased()
+        {
+            return (mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed);
+        }
+
+        public static bool MouseRightReleased()
+        {
+            return (mouseState.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed);
+        }
+
+        public static bool MouseMiddleReleased()
+        {
+            return (mouseState.MiddleButton == ButtonState.Released && lastMouseState.MiddleButton == ButtonState.Pressed);
+        }
+
         /// <summary>
         /// Checks if the left mouse button was clicked.
         /// </summary>
@@ -121,7 +137,7 @@ namespace GameEngine
         public static float ScrollDelta() => scrollDelta;
        
 
-        /*
+        
         public static Vector2 MousePositionCamera()
         {
             Vector2 mousePosition = Vector2.Zero;
@@ -146,14 +162,14 @@ namespace GameEngine
         /// <summary>
         /// Takes screen coordinates (2D position like where the mouse is on screen) then converts it to world position (where we clicked at in the world). 
         /// </summary>
-        /*
+        
         private static Vector2 ScreenToWorld(Vector2 input)
         {
             input.X -= Resolution.VirtualViewportX;
             input.Y -= Resolution.VirtualViewportY;
 
-            return Vector2.Transform(input, Matrix.Invert(Camera.GetTransformMatrix()));
+            return Vector2.Transform(input, Matrix.Invert(CameraManager.GetTransformantionMaxtrix()));
         }
-        */
+        
     }
 }
