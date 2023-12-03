@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace GameEngine.Editor.Windows
 {
-    public class StringField : Component
+    public class StringField : UIComponent
     {
         public void OnDraw(EditorGUIDrawer editorGui, GameEngine.Component owner, FieldInfo field)
         {

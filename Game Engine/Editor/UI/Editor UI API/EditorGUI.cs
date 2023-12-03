@@ -101,11 +101,13 @@ namespace GameEngine.Editor.Windows
             containerStack.Push(container);
         }
 
-        public void Draw<T>(params object[] args) where T : Component
+        public void Draw<T>(params object[] args) where T : UIComponent
         {
             T component = Activator.CreateInstance<T>();
             component.Draw(this, args);
         }
+
+        public void Draw(UIComponent component, params object[] args) => component.Draw(this, args);
 
         public void Clear()
         {

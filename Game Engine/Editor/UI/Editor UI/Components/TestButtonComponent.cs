@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Editor.Windows
 {
-    public class TestButtonComponent : Component
+    public class TestButtonComponent : UIComponent
     {
         public void OnDraw(EditorGUIDrawer editorGui, string ButtonOneName)
         {

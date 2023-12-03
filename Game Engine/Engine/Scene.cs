@@ -28,8 +28,6 @@ namespace GameEngine
 
         public void Load()
         {
-            Console.WriteLine(gameObjects.Length);
-
             if(gameObjects != null)
                 GameObjectManager.RegisterGameobjectGroup(gameObjects);
         }

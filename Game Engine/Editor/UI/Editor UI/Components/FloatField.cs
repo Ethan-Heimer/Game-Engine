@@ -1,4 +1,5 @@
-﻿using GameEngine.Editor.Windows;
+﻿using GameEngine.Editor.UI.Inspector;
+using GameEngine.Editor.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,20 +9,23 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Editor.Windows
 {
-    public class FloatField : Component
+    public class FloatField : UIComponent
     {
-        public void OnDraw(EditorGUIDrawer editorGui, GameEngine.Component owner, FieldInfo field)
+        public void OnDraw(EditorGUIDrawer editorGui, Type BinderType, FieldInfo field, object owner)
         {
+            IFieldBinder<float> data = (IFieldBinder<float>)Activator.CreateInstance(BinderType, new object[] { field, owner });
+
             editorGui.StartHorizontalGroup();
 
-            editorGui.DrawText(field.Name);
-            editorGui.DrawField(field.GetValue(owner.BindingBehavior).ToString(), (value) =>
+            editorGui.DrawText(data.Name);
+
+            editorGui.DrawField(data.GetValue().ToString(), (value) =>
             {
                 Console.WriteLine(value.ToString());
                 if (value == "")
                     return;
 
-                field.SetValue(owner.BindingBehavior, float.Parse(value));
+                data.SetValue(float.Parse(value));
             });
 
             editorGui.EndGroup();

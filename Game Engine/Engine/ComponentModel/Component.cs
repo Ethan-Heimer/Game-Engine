@@ -33,8 +33,6 @@ namespace GameEngine
 
                 _gameObject = value;
                 BindingBehavior.gameObject = value;
-
-                Console.WriteLine(value);
             }
         }
          

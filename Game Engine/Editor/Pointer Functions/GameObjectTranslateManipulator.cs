@@ -12,7 +12,6 @@ namespace GameEngine.Editor
 {
     public class GameObjectTranslateManipulator : IPointerManipulator<GameObject>
     {
-
         Vector2 truePosition;
         bool active
         {

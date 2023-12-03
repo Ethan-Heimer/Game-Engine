@@ -85,6 +85,13 @@
     <Compile Include="Editor\UI\Editor UI\Windows\TestWindow.cs" />
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
     <Compile Include="Editor\UI\Grid.cs" />
+    <Compile Include="Editor\UI\Inspector\DataBinderFactory.cs" />
+    <Compile Include="Editor\UI\Inspector\DataBinders\FloatDataBinder.cs" />
+    <Compile Include="Editor\UI\Inspector\FieldTemplates\FloatFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Inspector\IFieldBinder.cs" />
+    <Compile Include="Editor\UI\Inspector\IFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Inspector\Inspector.cs" />
+    <Compile Include="Editor\UI\Inspector\InspectorUIFactory.cs" />
     <Compile Include="Editor\Widgets\Widget.cs" />
     <Compile Include="Editor\Widgets\WidgetDrawer.cs" />
     <Compile Include="Editor\Widgets\Wigets\LineWidget.cs" />

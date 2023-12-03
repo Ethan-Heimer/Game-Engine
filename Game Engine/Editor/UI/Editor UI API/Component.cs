@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace GameEngine.Editor.Windows
 {
-    public abstract class Component
+    public abstract class UIComponent
     {
         public void Draw(EditorGUIDrawer editorGUI, params object[] args)
         {

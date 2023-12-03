@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Editor.Windows
 {
-    public class IntField: Component
+    public class IntField: UIComponent
     {
         public void OnDraw(EditorGUIDrawer editorGui, GameEngine.Component owner, FieldInfo field)
         {
