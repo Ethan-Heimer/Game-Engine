@@ -10,7 +10,7 @@ namespace GameEngine
 {
     public class Move : Behavior
     {
-        public float Speed;
+        public int Speed;
         public string Name;
         public void Update() 
         {

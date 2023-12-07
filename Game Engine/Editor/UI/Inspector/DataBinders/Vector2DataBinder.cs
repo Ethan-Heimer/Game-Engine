@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Editor.UI.Inspector
 {
-    partial class FloatDataBinder : IFieldBinder<float>
+    public class Vector2DataBinder : IFieldBinder<Vector2>
     {
         public FieldInfo Field { get; set; }
         public object Owner { get; set; }
 
-        float Value;
-        public FloatDataBinder(FieldInfo field, object owner)
+        Vector2 Value;
+        public Vector2DataBinder(FieldInfo field, object owner)
         {
             Field = field;
             Owner = owner;
@@ -27,23 +28,21 @@ namespace GameEngine.Editor.UI.Inspector
             }
         }
 
-        public float GetValue()
+        public Vector2 GetValue()
         {
-            return (float)Field.GetValue(Owner);
+            return (Vector2)Field.GetValue(Owner);
         }
 
-        public void SetValue(float value) 
+        public void SetValue(Vector2 value)
         {
             Value = value;
-            Console.WriteLine("Set");
             Field.SetValue(Owner, value);
         }
 
         public bool HasValueChange()
         {
-            if(Value != GetValue())
+            if (Value != GetValue())
             {
-                Console.WriteLine("Changed");
                 Value = GetValue();
                 return true;
             }

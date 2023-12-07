@@ -9,6 +9,7 @@ using GameEngine.Debugging;
 using System.Reflection;
 using GameEngine.Editor.UI.Inspector;
 using GameEngine.Engine;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GameEngine.Editor.Windows
 {
@@ -16,11 +17,7 @@ namespace GameEngine.Editor.Windows
     [Note(note = "there Needs to be a way to tell when the ui needs to be rerendered")]
     public class InspectorWindow : EditorWindow
     {
-        
-
-        GameObject target;
-        int refreshRate = 1000;
-
+        Inspector inspector;
         public InspectorWindow() 
         {
             Width = 200;
@@ -29,34 +26,26 @@ namespace GameEngine.Editor.Windows
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
-            drawer.DrawLabel("Inspector");
-            EngineEventManager.AddEventListener<OnObjectSelectedEditorEvent>(e => SetTarget(e.SelectedObject, drawer));
-            //ontargetdeselected
-            //EngineEventManager.AddEventListener<WhileInEditMode>(e => RenderObjectData(drawer));
+            EngineEventManager.AddEventListener<OnObjectSelectedEditorEvent>(e => DrawInspector(e.SelectedObject, drawer));
         }
 
-        void SetTarget(GameObject obj, EditorGUIDrawer drawer)
+        void DrawInspector(GameObject obj, EditorGUIDrawer drawer)
         {
-            target = obj;
-            Inspector inspector = new Inspector(target, drawer);
-        }
-
-        void RenderObjectData(EditorGUIDrawer drawer)
-        {
-            if (target == null)
-                return;
-
             drawer.Clear();
 
-            drawer.DrawLabel("Inspector");
-            drawer.DrawText(target.ToString());
+            drawer.DrawText("Inspector", new ElementStyle()
+            {
+                FontSize = ElementStyle.LargeTextSize
+            });
+            inspector = new Inspector(obj, drawer);
 
+            drawer.DrawContextMenu();
             
         }
 
-        void UpdateInspector()
+        public override void OnUpdateGUI(EditorGUIDrawer drawer)
         {
-
+            inspector?.Update(drawer);
         }
     }
 }

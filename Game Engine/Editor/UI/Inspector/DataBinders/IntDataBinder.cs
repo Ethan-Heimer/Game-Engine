@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Editor.UI.Inspector
 {
-    partial class FloatDataBinder : IFieldBinder<float>
+    partial class IntDataBinder : IFieldBinder<int>
     {
         public FieldInfo Field { get; set; }
         public object Owner { get; set; }
 
-        float Value;
-        public FloatDataBinder(FieldInfo field, object owner)
+        int Value;
+        public IntDataBinder(FieldInfo field, object owner)
         {
             Field = field;
             Owner = owner;
@@ -27,12 +27,12 @@ namespace GameEngine.Editor.UI.Inspector
             }
         }
 
-        public float GetValue()
+        public int GetValue()
         {
-            return (float)Field.GetValue(Owner);
+            return (int)Field.GetValue(Owner);
         }
 
-        public void SetValue(float value) 
+        public void SetValue(int value) 
         {
             Value = value;
             Console.WriteLine("Set");

@@ -10,13 +10,13 @@ namespace GameEngine.Editor.Windows
     {
         public override void OnGUI(EditorGUIDrawer editorGui)
         {
-            editorGui.DrawLabel("Test");
+            editorGui.DrawText("Test");
 
             editorGui.StartHorizontalGroup();
             editorGui.Draw<TestButtonComponent>("Prams!!!");
             editorGui.EndGroup();
 
-            editorGui.DrawLabel("Test");
+            editorGui.DrawText("Test");
         }
     }
 }

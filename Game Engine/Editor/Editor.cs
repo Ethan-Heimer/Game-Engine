@@ -38,7 +38,7 @@ namespace GameEngine.Editor
             EngineEventManager.AddEventListener<OnEnterEditMode>((e) => SetToEditorCamera());
             EngineEventManager.AddEventListener<WhileInEditMode>((e) => Update());
 
-            DefaultWindowHandler.OpenDefaultWindows();
+            WindowManager.Init();
             PlayModeManager.SetMode(PlayModeManager.PlayMode.Edit);
 
             WidgetDrawer.Init();

@@ -10,38 +10,23 @@ namespace GameEngine.Editor.UI.Inspector
 {
     public class InspectorUIFactory
     {
-        public bool TryGetUI(FieldInfo field, out UIComponent component)
+        public Type TryGetTemplate(FieldInfo field)
         {
-            component = null;
             Type fieldType = field.FieldType;
 
             if (!fieldType.IsSerializable)
-                return false;
+                return null;
 
             MethodInfo mi = this.GetType().GetMethod("GetUI");
             var method = mi.MakeGenericMethod(fieldType);
-            component = (UIComponent)method.Invoke(this, new object[] { field });
-
-            Console.WriteLine(component + " try value");
-
-            if (component != null)
-                return true;
-
-            return false;
+            return (Type)method.Invoke(this, new object[0]);
         }
 
-        public UIComponent GetUI<T>(FieldInfo fieldType)
+        public Type GetUI<T>()
         {
-           
-            Type template = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(x => x.GetInterfaces().Contains(typeof(IFieldTemplate<T>)));
-            Console.WriteLine(template + " templeate");
-
-            if (template == null)
-                return null;
-
-            IFieldTemplate<T> fieldTemplate = Activator.CreateInstance(template) as IFieldTemplate<T>;
-
-            return fieldTemplate.GetUI(fieldType);
+            Type templateType = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(x => x.BaseType == typeof(FieldTemplate<T>));
+            Console.WriteLine(templateType);
+            return templateType;
         }
     }
 }

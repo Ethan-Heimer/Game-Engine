@@ -35,7 +35,7 @@ namespace GameEngine.Editor.Windows
             Console.WriteLine("gameObject Added");
 
             drawer.Clear();
-            drawer.DrawLabel("Hiarchy");
+            drawer.DrawText("Hiarchy");
 
             foreach(GameObject o in objects)
             {

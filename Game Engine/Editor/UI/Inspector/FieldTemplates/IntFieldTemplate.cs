@@ -10,19 +10,19 @@ using System.Windows.Controls;
 
 namespace GameEngine.Editor.UI.Inspector
 {
-    public class FloatFieldTemplate : FieldTemplate<float>
+    public class IntFieldTemplate : FieldTemplate<int>
     {
-        public FloatFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner){}
+        public IntFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner){}
 
         protected override FrameworkElement Template(EditorGUIDrawer drawer)
         {
-            drawer.StartHorizontalGroup(new ElementStyle());
+            drawer.StartHorizontalGroup();
 
             drawer.DrawText(data.Name, ElementStyle.DefaultTextStyle().OverrideMargin(new Thickness(10)));
 
-            var field = drawer.DrawField((val) =>
+            var field =  drawer.DrawField((val) =>
             {
-               HandleInput(val);
+                HandleInput(val);
             }, ElementStyle.DefaultFieldStyle());
 
             drawer.EndGroup();
@@ -41,7 +41,7 @@ namespace GameEngine.Editor.UI.Inspector
         {
             try
             {
-                float number = float.Parse(value);
+                int number = int.Parse(value);
                 data.SetValue(number);
             }
             catch { }

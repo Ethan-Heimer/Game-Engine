@@ -52,6 +52,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
@@ -71,11 +72,9 @@
     <Compile Include="Editor\Pointer Functions\GameObjectTranslateManipulator.cs" />
     <Compile Include="Editor\Pointer Functions\OnGameobjectSelectManipulator.cs" />
     <Compile Include="Editor\UI\Editor UI API\Component.cs" />
-    <Compile Include="Editor\UI\Editor UI\Components\FloatField.cs" />
     <Compile Include="Editor\UI\Editor UI\Components\IntField.cs" />
     <Compile Include="Editor\UI\Editor UI\Components\StringField.cs" />
     <Compile Include="Editor\UI\Editor UI\Components\TestButtonComponent.cs" />
-    <Compile Include="Editor\UI\Editor UI API\DefaultWindowHandler.cs" />
     <Compile Include="Editor\UI\Editor UI API\EditorGUI.cs" />
     <Compile Include="Editor\UI\Editor UI API\EditorWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\ChangeLogWindow.cs" />
@@ -86,7 +85,11 @@
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
     <Compile Include="Editor\UI\Grid.cs" />
     <Compile Include="Editor\UI\Inspector\DataBinderFactory.cs" />
+    <Compile Include="Editor\UI\Inspector\DataBinders\IntDataBinder.cs" />
     <Compile Include="Editor\UI\Inspector\DataBinders\FloatDataBinder.cs" />
+    <Compile Include="Editor\UI\Inspector\DataBinders\Vector2DataBinder.cs" />
+    <Compile Include="Editor\UI\Inspector\FieldTemplates\Vector2FieldTemplate.cs" />
+    <Compile Include="Editor\UI\Inspector\FieldTemplates\IntFieldTemplate.cs" />
     <Compile Include="Editor\UI\Inspector\FieldTemplates\FloatFieldTemplate.cs" />
     <Compile Include="Editor\UI\Inspector\IFieldBinder.cs" />
     <Compile Include="Editor\UI\Inspector\IFieldTemplate.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Editor\Widgets\WidgetDrawer.cs" />
     <Compile Include="Editor\Widgets\Wigets\LineWidget.cs" />
     <Compile Include="Editor\Widgets\Wigets\RotationWidget.cs" />
+    <Compile Include="Engine\ComponentModel\ObservableObject.cs" />
     <Compile Include="Engine\Components\DrawBounds.cs" />
     <Compile Include="Engine\Debugging\NotesManager.cs" />
     <Compile Include="Engine\Event System\Event.cs" />
@@ -141,6 +145,7 @@
     <Compile Include="Engine\Utilities\State.cs" />
     <Compile Include="Engine\Utilities\StateMachiene.cs" />
     <Compile Include="Engine\Utilities\StringSpacer.cs" />
+    <Compile Include="Engine\Utilities\UIHelper.cs" />
     <Compile Include="Game\Move.cs" />
     <Compile Include="Game\TestComponent.cs" />
   </ItemGroup>

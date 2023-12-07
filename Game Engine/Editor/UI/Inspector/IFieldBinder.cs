@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace GameEngine.Editor.UI.Inspector
 {
@@ -16,6 +17,8 @@ namespace GameEngine.Editor.UI.Inspector
 
         T GetValue();
         void SetValue(T value);
+
+        bool HasValueChange();
 
         //void CheckChanged();
         //void OnChanged();

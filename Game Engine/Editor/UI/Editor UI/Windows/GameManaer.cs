@@ -24,13 +24,13 @@ namespace GameEngine.Editor.Windows
         public override void OnGUI(EditorGUIDrawer editorGUI)
         {
             editorGUI.StartHorizontalGroup();
-            editorGUI.DrawLabel("Scene");
+            editorGUI.DrawText("Scene");
             editorGUI.DrawButton("Load Scene", LoadScene);
             editorGUI.DrawButton("Save Scene", SaveScene);
             editorGUI.EndGroup();
 
             editorGUI.StartHorizontalGroup();
-            editorGUI.DrawLabel("Play Modes");
+            editorGUI.DrawText("Play Modes");
             editorGUI.DrawButton("Enter Play", Play);
             editorGUI.DrawButton("Exit Play", ExitPlay);
             editorGUI.DrawButton("Pause", EnterPause);
