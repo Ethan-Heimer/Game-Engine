@@ -11,7 +11,7 @@ namespace GameEngine
     public class Move : Behavior
     {
         public int Speed;
-        public string Name;
+       
         public void Update() 
         {
             Console.WriteLine(Speed);

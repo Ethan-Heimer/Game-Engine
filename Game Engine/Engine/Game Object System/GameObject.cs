@@ -15,16 +15,22 @@ using GameEngine.Engine;
 using GameEngine.ComponentManagement;
 using System.Windows.Forms;
 using GameEngine.Pointers;
+using GameEngine.Debugging;
 
 namespace GameEngine
 {
     [Serializable]
+    [Note(note ="IPointerManipulatable might wanna be seperated into multiple interfaced when starting on capture system")]
     public class GameObject : ISerializable, IPointerManiplatable
     {
-        public string Name;
+        public string Name = "New Game Object";
 
         public List<Component> components = new List<Component>();
+
+        public GameObject parent;
+        
         List<GameObject> children = new List<GameObject>();
+
 
         Transform _transform;
         public Transform Transform
@@ -56,8 +62,14 @@ namespace GameEngine
 
         public GameObject(SerializationInfo info, StreamingContext context)
         {
-            components = (List<Component>)info.GetValue("Components", typeof(List<Component>));
-            children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
+            try
+            {
+                components = (List<Component>)info.GetValue("Components", typeof(List<Component>));
+                children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
+                parent = (GameObject)info.GetValue("Parent", typeof(GameObject));  
+                Name = (string)info.GetValue("Name", typeof(string));
+            }
+            catch { }
         }
 
         public T GetComponent<T>() where T : Behavior
@@ -74,7 +86,7 @@ namespace GameEngine
         public T AddComponent<T>() where T : Behavior
         {
             Behavior behavior = (Behavior)Activator.CreateInstance(typeof(T));
-            var component = BindComponent(behavior);
+            var component = Component.BindComponent(behavior, this);
 
             components.Add(component);
             return (T)behavior;
@@ -84,8 +96,19 @@ namespace GameEngine
         {
             Behavior behavior = component.BindingBehavior;
 
-            components.Add(BindComponent(behavior));
+            components.Add(Component.BindComponent(behavior, this));
             return (T)behavior;
+        }
+
+        public Behavior AddComponent(Type type) 
+        {
+            if(type.BaseType != typeof(Behavior))
+                return null;
+
+            var behavior = (Behavior)Activator.CreateInstance(type);
+            components.Add(Component.BindComponent(behavior, this));
+
+            return behavior;
         }
 
         public void RemoveComponent<T>() where T : Behavior
@@ -101,15 +124,29 @@ namespace GameEngine
         public Component[] GetAllComponents() => components.ToArray();
 
         public GameObject[] GetChildren() => children.ToArray();
-        
-        public void AddChild(GameObject child)  => children.Add(child);
 
-        public void RemoveChild(GameObject child) => children.Remove(child);
+        public void AddChild(GameObject child)
+        {
+            child.parent = this;
+            children.Add(child);
+
+            GameObjectManager.AlertTreeChange(this);
+        }
+
+        public void RemoveChild(GameObject child)
+        {
+            child.parent = null;
+            children.Remove(child);
+
+            GameObjectManager.AlertTreeChange(this);
+        }
 
         public void GetObjectData(SerializationInfo info, StreamingContext content)
         {
             info.AddValue("Components", components);
             info.AddValue("Children", children);
+            info.AddValue("Parent", parent);
+            info.AddValue("Name", Name);
             components.ForEach(x => Console.WriteLine(x + " on serialized"));
         }
 
@@ -126,16 +163,8 @@ namespace GameEngine
             components.Clear();
         }
 
-        Component BindComponent(Behavior behavior)
-        {
-            FieldInfo gameObjectField = behavior.GetType().GetField("gameObject");
-            gameObjectField.SetValue(behavior, this);
 
-            Component component = new Component(behavior);
-            component.GameObject = this;
-
-            return component;
-        }
+       
 
     }
 }

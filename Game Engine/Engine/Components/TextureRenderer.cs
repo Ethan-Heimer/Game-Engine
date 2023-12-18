@@ -26,6 +26,8 @@ namespace GameEngine
         }
 
         public Sprite Sprite = new Sprite("");
+        public Color Color = Color.White;
+
         public Rectangle Bounds 
         {
             get
@@ -36,7 +38,7 @@ namespace GameEngine
 
         public void OnDraw()
         {
-            Renderer.RenderTexture(Sprite, transform, Color.White);
+            Renderer.RenderTexture(Sprite, transform, Color);
         }
 
         

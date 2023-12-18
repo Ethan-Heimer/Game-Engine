@@ -51,8 +51,10 @@ namespace GameEngine.Editor
             }
             else
             {
-                e.Target.Transform.Position.X = ((int)(truePosition.X / 100)) * 100;
-                e.Target.Transform.Position.Y = ((int)(truePosition.Y / 100)) * 100;
+                var xPos = ((int)(truePosition.X / 100)) * 100;
+                var yPos = ((int)(truePosition.Y / 100)) * 100;
+
+                e.Target.Transform.Position = new Vector2(xPos, yPos);
             }
         }
     }

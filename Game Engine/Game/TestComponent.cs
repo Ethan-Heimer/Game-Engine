@@ -8,6 +8,7 @@ namespace GameEngine.Game
 {
     public class TestComponent : Behavior
     {
+       
         public void Awake()
         {
             //Console.WriteLine(gameObject.Transform);

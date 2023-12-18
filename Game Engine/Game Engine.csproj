@@ -72,33 +72,42 @@
     <Compile Include="Editor\Pointer Functions\GameObjectTranslateManipulator.cs" />
     <Compile Include="Editor\Pointer Functions\OnGameobjectSelectManipulator.cs" />
     <Compile Include="Editor\UI\Editor UI API\Component.cs" />
-    <Compile Include="Editor\UI\Editor UI\Components\IntField.cs" />
-    <Compile Include="Editor\UI\Editor UI\Components\StringField.cs" />
-    <Compile Include="Editor\UI\Editor UI\Components\TestButtonComponent.cs" />
-    <Compile Include="Editor\UI\Editor UI API\EditorGUI.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerBoxMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerButtonMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerContextButtonsMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerFieldMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerFileSelectorMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerImageMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\DrawerTextMethods.cs" />
+    <Compile Include="Editor\UI\Editor UI API\ElementStyle.cs" />
+    <Compile Include="Editor\UI\Editor UI API\EditorGUIDrawer\EditorGUI.cs" />
     <Compile Include="Editor\UI\Editor UI API\EditorWindow.cs" />
+    <Compile Include="Editor\EditorEventManager.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\ChangeLogWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\GameManaer.cs" />
-    <Compile Include="Editor\UI\Editor UI\Windows\HiarchyWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\HiarchyWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyNameTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\InspectorWindow.cs" />
-    <Compile Include="Editor\UI\Editor UI\Windows\TestWindow.cs" />
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
     <Compile Include="Editor\UI\Grid.cs" />
-    <Compile Include="Editor\UI\Inspector\DataBinderFactory.cs" />
-    <Compile Include="Editor\UI\Inspector\DataBinders\IntDataBinder.cs" />
-    <Compile Include="Editor\UI\Inspector\DataBinders\FloatDataBinder.cs" />
-    <Compile Include="Editor\UI\Inspector\DataBinders\Vector2DataBinder.cs" />
-    <Compile Include="Editor\UI\Inspector\FieldTemplates\Vector2FieldTemplate.cs" />
-    <Compile Include="Editor\UI\Inspector\FieldTemplates\IntFieldTemplate.cs" />
-    <Compile Include="Editor\UI\Inspector\FieldTemplates\FloatFieldTemplate.cs" />
-    <Compile Include="Editor\UI\Inspector\IFieldBinder.cs" />
-    <Compile Include="Editor\UI\Inspector\IFieldTemplate.cs" />
-    <Compile Include="Editor\UI\Inspector\Inspector.cs" />
-    <Compile Include="Editor\UI\Inspector\InspectorUIFactory.cs" />
+    <Compile Include="Editor\UI\Editor UI API\DataBinderFactory.cs" />
+    <Compile Include="Editor\UI\Editor UI API\FieldBinder.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\SpriteFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\ColorFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\StringFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\Vector2FieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\IntFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\FloatFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI API\IFieldBinder.cs" />
+    <Compile Include="Editor\UI\Editor UI API\IFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\Inspector.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\InspectorUIFactory.cs" />
     <Compile Include="Editor\Widgets\Widget.cs" />
     <Compile Include="Editor\Widgets\WidgetDrawer.cs" />
     <Compile Include="Editor\Widgets\Wigets\LineWidget.cs" />
     <Compile Include="Editor\Widgets\Wigets\RotationWidget.cs" />
+    <Compile Include="Editor\ComponentManager.cs" />
+    <Compile Include="Engine\ComponentModel\ExecuteAlways.cs" />
     <Compile Include="Engine\ComponentModel\ObservableObject.cs" />
     <Compile Include="Engine\Components\DrawBounds.cs" />
     <Compile Include="Engine\Debugging\NotesManager.cs" />
@@ -163,6 +172,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Editor\UI\Editor UI\Icons\Child Icon.png" />
+    <Content Include="Editor\UI\Editor UI\Icons\Cube.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\UI\Editor UI\Icons\Cube2.png" />
+    <Content Include="Editor\UI\Editor UI\Icons\placeholder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game\Content\PlaceHolderOne.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

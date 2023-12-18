@@ -13,6 +13,8 @@ namespace GameEngine.Engine
     {
         static EngineEvent<GameObjectAddedEvent> OnObjectAdded;
         static EngineEvent<GameObjectRemovedEvent> OnObjectRemoved;
+
+        static EngineEvent<GameObjectTreeChanged> OnTreeChanged;
        
         static List<GameObject> gameObjects = new List<GameObject>();
 
@@ -66,6 +68,15 @@ namespace GameEngine.Engine
             }
         }
 
+        public static void AlertTreeChange(GameObject changed)
+        {
+            OnTreeChanged?.Invoke(new GameObjectTreeChanged()
+            {
+                ChangedObject = changed,
+                TotalGameObjects = gameObjects.ToArray(),
+            });
+        }
+
         public static GameObject[] GetOverlapping(Rectangle rectangle)
         {
             //O(N)
@@ -93,5 +104,10 @@ namespace GameEngine.Engine
     public class GameObjectRemovedEvent : GameObjectEvent 
     {
         public GameObject RemovedGameObject;
+    }
+
+    public class GameObjectTreeChanged : GameObjectEvent
+    {
+        public GameObject ChangedObject;
     }
 }

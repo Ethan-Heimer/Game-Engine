@@ -15,8 +15,6 @@ namespace GameEngine
     [Serializable]
     public class Component : ISerializable
     {
-        public static event Action<Component> OnComponentDestryed;
-
         public Behavior BindingBehavior;
 
         GameObject _gameObject;
@@ -67,7 +65,7 @@ namespace GameEngine
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            FieldInfo[] fields = GetFields();
+            FieldInfo[] fields = GetFields(); 
 
             foreach(var o in fields) 
             {
@@ -82,9 +80,15 @@ namespace GameEngine
             return BindingBehavior.GetType().GetFields().Where(x => x.FieldType.IsSerializable && x.FieldType != typeof(Component)).ToArray();
         }
 
-        ~Component(){
-            Console.WriteLine("Destroyed");
-            OnComponentDestryed?.Invoke(this);
+        public static Component BindComponent(Behavior behavior, GameObject obj)
+        {
+            FieldInfo gameObjectField = behavior.GetType().GetField("gameObject");
+            gameObjectField.SetValue(behavior, obj);
+
+            Component component = new Component(behavior);
+            component.GameObject = obj;
+
+            return component;
         }
     }
 }

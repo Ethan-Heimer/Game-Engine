@@ -17,6 +17,7 @@ namespace GameEngine.Editor
     public static class WindowManager
     {
         static List<EditorWindow> windows = new List<EditorWindow>();
+        static Dictionary<EditorWindow, EditorGUIDrawer> drawers = new Dictionary<EditorWindow, EditorGUIDrawer>();
 
         public static void Init()
         {
@@ -44,6 +45,8 @@ namespace GameEngine.Editor
 
         public static Window CreateWindow(EditorWindow window)
         {
+            //window type should be passed, not refrence value
+
             window.Title = StringSpacer.Space(window.GetType().Name);
 
             window.Style = (Style)Application.Current.Resources["Window"];
@@ -55,6 +58,8 @@ namespace GameEngine.Editor
             
             EditorGUIDrawer drawer = new EditorGUIDrawer(window, panel);
             window.OnGUI(drawer);
+
+            drawers.Add(window, drawer);
             
             ShowWindow(window);
 
@@ -66,6 +71,7 @@ namespace GameEngine.Editor
             var signal = new SemaphoreSlim(0, 1);
 
             window.Closed += (s, _) => signal.Release();
+            window.Closed += (s, _) => drawers.Remove(window);
 
             window.Show();
 
@@ -85,7 +91,7 @@ namespace GameEngine.Editor
             {
                 foreach(var o in windows) 
                 {
-                    EditorGUIDrawer drawer = new EditorGUIDrawer(o, (StackPanel)o.Content);
+                    var drawer = drawers[o];
                     o.OnUpdateGUI(drawer);
                 }
 

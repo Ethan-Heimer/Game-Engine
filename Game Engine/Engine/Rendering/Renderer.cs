@@ -75,7 +75,7 @@ namespace GameEngine.Rendering
 
         public static void RenderTexture(Sprite texture, Transform transform, Color color)
         {
-            RenderTexture(texture, transform.Position, (float)transform.GetRotationInRad(), transform.Scale, color, transform.Origin);
+            RenderTexture(texture, transform.WorldPosition, (float)transform.WorldRotation, transform.WorldScale, color, transform.Origin);
         }
 
         public static void RenderTexture(Sprite texture, Vector2 position, float rotation, float scale, Color color, Vector2 origin)

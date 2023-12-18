@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    public class Behavior : ObservableObject
+    public class Behavior
     {
+
+
         public GameObject gameObject;
         public Transform transform
         {

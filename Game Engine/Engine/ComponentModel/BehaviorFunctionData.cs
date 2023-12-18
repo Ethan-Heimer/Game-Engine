@@ -39,6 +39,7 @@ namespace GameEngine.ComponentManagement
     {
         public string FunctionName { get; set; }
         public IList<ParamData> ParamTypes { get; set; }
+        public bool CanExecuteAlways { get; set; }
     }
 
     public class ParamData
