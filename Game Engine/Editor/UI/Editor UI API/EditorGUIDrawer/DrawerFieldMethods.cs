@@ -25,7 +25,7 @@ namespace GameEngine.Editor.Windows
         public TextBox GetField(string defaultText, Action<string> onValueChanged, string tag, ElementStyle style)
         {
             TextBox textBox = new TextBox();
-            ApplyStyle(textBox, style);
+            ElementStyle.ApplyStyle(textBox, style);
 
             textBox.Name = tag;
             textBox.Text = defaultText;

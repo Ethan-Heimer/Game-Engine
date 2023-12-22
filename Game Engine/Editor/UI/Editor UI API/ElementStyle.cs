@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows;
 using GameEngine.Debugging;
+using GameEngine.Engine;
+using System.Data.SqlClient;
+using System.Reflection;
 
 namespace GameEngine.Editor.Windows
 {
@@ -21,6 +24,7 @@ namespace GameEngine.Editor.Windows
         public readonly static int SmallTextSize = 16;
 
         public static Brush GetColor(byte r, byte g, byte b) => new SolidColorBrush(Color.FromRgb(r, g, b));
+        public static ImageBrush GetImage(Icon icon) => new ImageBrush(icon?.GetImage());
 
         public readonly static Thickness ZeroThickness = new Thickness()
         {
@@ -37,14 +41,23 @@ namespace GameEngine.Editor.Windows
         public Thickness Padding = ZeroThickness;
         public Thickness Margin = ZeroThickness;
 
-        public HorizontalAlignment HorizontalAlignment = HorizontalAlignment.Center;
+        public HorizontalAlignment HorizontalAlignment = HorizontalAlignment.Stretch;
 
         public double Width = 100;
         public double Height = 25;
 
         public bool DynamicSize = false;
 
+        public bool DynamicWidth = false;
+        public bool DynamicHeight = false;
+
+        public bool HoverEfects = false;
+        public bool DragEffects = false;
+
+        public bool AppliedHover = false;
+
         public Brush OnHoverBackground;
+        public Brush OnDragBackground;
 
         public ElementStyle OverrideFontSize(int value)
         {
@@ -104,6 +117,28 @@ namespace GameEngine.Editor.Windows
         {
             DynamicSize = value;
             return this;
+        } 
+        public ElementStyle OverrideDynamicWidth(bool value)
+        {
+            DynamicWidth = value;
+            return this;
+        }
+        public ElementStyle OverrideDynamicHeight(bool value)
+        {
+            DynamicHeight = value;
+            return this;
+        }
+
+        public ElementStyle OverrideHoverEffects(bool value)
+        {
+            HoverEfects = value;
+            return this;
+        }
+
+        public ElementStyle OverrideHoverBackground(Brush color)
+        {
+            OnHoverBackground = color;
+            return this;
         }
 
         public static ElementStyle DefaultTextStyle
@@ -147,6 +182,87 @@ namespace GameEngine.Editor.Windows
                     BorderBrush = Brushes.Black,
                 };
             }
+        }
+
+        public static ElementStyle DefaultGroupStyle => new ElementStyle()
+        {
+            DynamicSize = true,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        };
+
+        public static void ApplyStyle(FrameworkElement element, ElementStyle style)
+        {
+            MemberInfo[] styleFields = style.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+            MemberInfo[] elementFields = element.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            string[] commonStyles = FindCommonStyles(styleFields, elementFields);
+
+            foreach (var o in commonStyles)
+            {
+                if (style.DynamicSize && (o == "Width" || o == "Height"))
+                    continue;
+                else if (style.DynamicWidth && (o == "Width"))
+                    continue;
+                else if (style.DynamicHeight && (o == "Height"))
+                    continue;
+
+                var styleData = style.GetType().GetField(o).GetValue(style);
+                element.GetType().GetProperty(o).SetValue(element, styleData);
+            }
+
+            if (style.HoverEfects)
+            {
+                element.IsHitTestVisible = true;
+                element.MouseEnter += (s, e) =>
+                {
+                    var field = element.GetType().GetProperty("Background");
+
+                    if (field != null)
+                        field.SetValue(element, style.OnHoverBackground);
+                };
+
+                element.MouseLeave += (s, e) =>
+                {
+                    var field = element.GetType().GetProperty("Background");
+                    if (field != null)
+                        field.SetValue(element, style.Background);
+                };
+            }
+
+            if (style.DragEffects)
+            {
+                element.DragEnter += (s, e) =>
+                {
+                    var field = element.GetType().GetProperty("Background");
+
+                    if (field != null)
+                        field.SetValue(element, style.OnDragBackground);
+                };
+
+                element.DragLeave += (s, e) =>
+                {
+                    var field = element.GetType().GetProperty("Background");
+                    if (field != null)
+                        field.SetValue(element, style.Background);
+                };
+            }
+        }
+
+        static string[] FindCommonStyles(MemberInfo[] fields1, MemberInfo[] fields2)
+        {
+            List<string> intersecton = new List<string>();
+            HashSet<string> H = new HashSet<string>();
+
+            foreach (var o in fields1)
+                H.Add(o.Name);
+
+            foreach (var o in fields2)
+            {
+                if (H.Contains(o.Name))
+                    intersecton.Add(o.Name);
+            }
+
+            return intersecton.ToArray();
         }
 
     }

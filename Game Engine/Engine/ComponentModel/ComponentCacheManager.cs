@@ -13,9 +13,16 @@ using System.Windows.Forms;
 
 namespace GameEngine.ComponentManagement
 {
+    [ContainsEvents]
     public static class ComponentCacheManager
     {
         static Dictionary<string, BehaviorMethodCollection> cache;
+
+        static EngineEvent<OnComponentAdded> OnCompnentAddedEvent;
+        static OnComponentAdded addedArgs = new OnComponentAdded();
+
+        static EngineEvent<OnComponentRemoved> OnComponentRemovedEvent;
+        static OnComponentRemoved removeArgs = new OnComponentRemoved();
 
         public static void Init()
         {
@@ -54,6 +61,9 @@ namespace GameEngine.ComponentManagement
                 if (o.CanExecuteAlways && ExecuteAlways(behavior))
                     cache[o.FunctionName + "InEditor"].TryCacheBehavior(behavior);
             }
+
+            addedArgs.behaviorAdded = behavior;
+            OnCompnentAddedEvent?.Invoke(addedArgs);
         }
 
  
@@ -77,6 +87,9 @@ namespace GameEngine.ComponentManagement
                 if (o.CanExecuteAlways && ExecuteAlways(c))
                     cache[o.FunctionName + "InEditor"].TryCacheBehavior(c);
             }
+
+            removeArgs.behaviorRemoved = c;
+            OnComponentRemovedEvent?.Invoke(removeArgs);
         }
 
         public static void ClearCache() 
@@ -96,6 +109,26 @@ namespace GameEngine.ComponentManagement
         {
             return behavior.GetType().GetCustomAttribute(typeof(ExecuteAlwaysAttribute)) != null;
           
+        }
+    }
+
+    public struct OnComponentAdded : IEventArgs
+    {
+        public Behavior behaviorAdded;
+        public object Sender
+        {
+            get;
+            set;
+        }
+    }
+
+    public struct OnComponentRemoved : IEventArgs
+    {
+        public Behavior behaviorRemoved;
+        public object Sender
+        {
+            get;
+            set;
         }
     }
 }

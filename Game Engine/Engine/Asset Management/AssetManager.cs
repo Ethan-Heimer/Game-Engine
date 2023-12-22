@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using GameEngine.Engine;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -10,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.VisualStyles;
-using System.Windows.Shapes;
 
 namespace GameEngine.Editor
 {
@@ -18,6 +18,8 @@ namespace GameEngine.Editor
     {
         const string folderName = "Content";
         const string contentPath = "..\\..\\game\\" + folderName;
+
+        const string iconPath = "..\\..\\Engine\\Asset Management\\Icons";
 
         static ContentManager contentManager;
 
@@ -85,6 +87,25 @@ namespace GameEngine.Editor
             }
 
             return files.ToArray();
+        }
+
+        public static bool GetIcon(string name, out Icon icon)
+        {
+            icon = null;
+            string file = iconPath + "\\" + name + ".png";
+
+            if (File.Exists(file))
+            {
+                icon = new Icon(file);
+                return true;
+            }
+            
+            return false;
+        }
+
+        public static string[] GetIconNames()
+        {
+            return Directory.GetFiles(iconPath).Select(x => Path.GetFileNameWithoutExtension(x)).ToArray();
         }
 
         public static string GetAssetFolderDirectory() => contentPath;

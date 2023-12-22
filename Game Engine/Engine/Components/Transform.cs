@@ -79,7 +79,7 @@ namespace GameEngine
         {
             get
             {
-                var parentPos = gameObject.parent != null ? gameObject.parent.Transform.Position : Vector2.Zero;
+                var parentPos = gameObject.Parent != null ? gameObject.Parent.Transform.Position : Vector2.Zero;
                 return Origin - parentPos;
             }
         }
@@ -127,9 +127,7 @@ namespace GameEngine
             var rot = Matrix.CreateRotationZ((float)GetRotationInRad());
             var scale = Matrix.CreateScale(Scale);
 
-            TransformMatrix =  (scale * rot * pos) * (gameObject.parent != null ? gameObject.parent.Transform.TransformMatrix : Matrix.Identity);
-
-            Renderer.RenderRect(transform.Bounds, new Color(0, 255, 150) * .1f);
+            TransformMatrix =  (scale * rot * pos) * (gameObject.Parent != null ? gameObject.Parent.Transform.TransformMatrix : Matrix.Identity);
         }
 
         public double GetRotationInRad()

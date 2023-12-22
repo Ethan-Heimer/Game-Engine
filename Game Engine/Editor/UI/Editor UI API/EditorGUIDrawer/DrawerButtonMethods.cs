@@ -27,7 +27,7 @@ namespace GameEngine.Editor.Windows
         public Button DrawButton(object content, ButtonClick onClick, string tag, ElementStyle style)
         {
             Button button = new Button();
-            ApplyStyle(button, style);
+            ElementStyle.ApplyStyle(button, style);
 
             button.Name = tag;
             button.Content = content;

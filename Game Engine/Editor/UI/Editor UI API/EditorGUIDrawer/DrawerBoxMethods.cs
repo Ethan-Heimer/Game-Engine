@@ -50,7 +50,7 @@ namespace GameEngine.Editor.Windows
             Border border = new Border();
             border.Name = tag;
 
-            ApplyStyle(border, style);
+            ElementStyle.ApplyStyle(border, style);
 
             Render(border);
 

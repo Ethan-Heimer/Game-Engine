@@ -16,14 +16,14 @@ namespace GameEngine.Editor.UI.Inspector
     {
         public StringFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) { }
 
-        protected override void Template(EditorGUIDrawer drawer)
+        protected override void Template(EditorGUIDrawer drawer, object[] args)
         {
             drawer.DrawText(data.Name, ElementStyle.DefaultTextStyle.OverrideMargin(new Thickness(10)));
 
             var field = drawer.DrawField((val) =>
             {
                 HandleInput(val);
-            }, "field", ElementStyle.DefaultFieldStyle);
+            }, "field", ElementStyle.DefaultFieldStyle.OverrideDynamicWidth(true).OverridePadding(new Thickness(0, 0, 15, 0)));
         }
 
         protected override void OnValueChanged()

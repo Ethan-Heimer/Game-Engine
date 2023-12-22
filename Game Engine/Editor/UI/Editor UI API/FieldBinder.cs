@@ -45,7 +45,6 @@ namespace GameEngine.Editor.UI.Inspector
 
         public bool HasValueChange()
         {
-            if(Value == null) return false;
             T val = GetValue();
 
             if (!Equals(Value, val))

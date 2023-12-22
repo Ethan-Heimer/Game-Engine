@@ -27,12 +27,13 @@ namespace GameEngine.Editor.UI.Hiarchy
             {
                 DynamicSize = true,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Background = ElementStyle.PrimaryBackgroundColor
+                DragEffects = true,
+                OnDragBackground = ElementStyle.TertiaryBackgroundColor
             };
 
         }
 
-        protected override void Template(EditorGUIDrawer drawer)
+        protected override void Template(EditorGUIDrawer drawer, object[] args)
         {
             EnableDragDrop(owner);
 
@@ -43,20 +44,6 @@ namespace GameEngine.Editor.UI.Hiarchy
                     EditorEventManager.SelectedObject = (GameObject)owner;
                 }
             };
-
-
-            if (((GameObject)owner).parent != null)
-                drawer.DrawIcon("..\\..\\editor\\UI\\Editor UI\\Icons\\child icon.png", new ElementStyle()
-                {
-                    Width = 15,
-                    Height = 15
-                });
-
-            drawer.DrawIcon("..\\..\\editor\\UI\\Editor UI\\Icons\\Cube.Png", new ElementStyle()
-            {
-                Width = 30,
-                Height = 30
-            });
 
             drawer.DrawText(data.GetValue(), "name", new ElementStyle()
             {
@@ -72,41 +59,23 @@ namespace GameEngine.Editor.UI.Hiarchy
            FindElementInTemplate<TextBlock>("name").Text = data.GetValue();
         }
 
-        protected override void OnMouseEnter(EditorGUIDrawer drawer)
-        {
-            template.Background = ElementStyle.AccentBackgroundColor;
-        }
-
-        protected override void OnMouseExit(EditorGUIDrawer drawer)
-        {
-            template.Background = ElementStyle.PrimaryBackgroundColor;
-        }
-
-        protected override void OnDragEnter(EditorGUIDrawer drawer, object data)
-        {
-            template.Background = ElementStyle.TertiaryBackgroundColor;
-        }
-
         protected override void OnDragLeave(EditorGUIDrawer drawer, object data)
         {
             var gameObject = (GameObject)data;
 
-            gameObject.parent?.RemoveChild(gameObject);
+            gameObject.Parent?.RemoveChild(gameObject);
 
-            template.Background = ElementStyle.PrimaryBackgroundColor;
         }
 
         protected override void OnDrop(EditorGUIDrawer drawer, object data)
         {
             var child = (GameObject)data;
 
-            if (owner == child || ((GameObject)owner).parent == child)
+            if (owner == child || ((GameObject)owner).Parent == child)
                 return;
 
-            child.parent?.RemoveChild(child);
+            child.Parent?.RemoveChild(child);
             ((GameObject)owner).AddChild(child);
-
-            template.Background = ElementStyle.PrimaryBackgroundColor;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GameEngine.Debugging;
+using GameEngine.Engine;
 using GameEngine.Pointers;
 using System;
 using System.Collections.Generic;
@@ -28,12 +29,9 @@ namespace GameEngine.Editor.Windows
         private EditorWindow window;
         
         private StackPanel defaultContainer;
-        private Stack<StackPanel> containerStack = new Stack<StackPanel>();
+        private Stack<Panel> containerStack = new Stack<Panel>();
 
         public ContextManager contextMenuManager;
-
-        const int indentMultiplyer = 10;
-        int indentLevel;
 
         public EditorGUIDrawer(EditorWindow window, StackPanel _content) 
         {
@@ -45,13 +43,10 @@ namespace GameEngine.Editor.Windows
             this.window = window;
             window.AllowDrop = true;
         }
-
-        public void Indent() => indentLevel++;
-        public void Outdent() => indentLevel--;
        
         public StackPanel StartHorizontalGroup()
         {
-            return StartHorizontalGroup(new ElementStyle().OverrideDynamicSize(true));
+            return StartHorizontalGroup(ElementStyle.DefaultGroupStyle);
         }
 
         public StackPanel StartHorizontalGroup(ElementStyle style)
@@ -59,11 +54,9 @@ namespace GameEngine.Editor.Windows
             StackPanel container = new StackPanel()
             {
                 Orientation = Orientation.Horizontal,
-
-                Background = style.Background,
-                Margin = style.Margin,
             };
 
+            ElementStyle.ApplyStyle(container, style);
             Render(container);
             containerStack.Push(container);
 
@@ -80,11 +73,9 @@ namespace GameEngine.Editor.Windows
             StackPanel container = new StackPanel()
             {
                 Orientation = Orientation.Vertical,
-
-                Background = style.Background,
-                Margin = style.Margin,
             };
 
+            ElementStyle.ApplyStyle(container, style);
             Render(container);
             containerStack.Push(container);
 
@@ -98,6 +89,15 @@ namespace GameEngine.Editor.Windows
             return contextMenuManager;
         }
 
+        public ContextManager AddContextItem(string title, string icon, RoutedEventHandler onClick)
+        {
+            contextMenuManager.AddOption(title, icon, onClick);
+            Console.WriteLine(title);
+            return contextMenuManager;
+        }
+
+        public void ClearContextMenu() => contextMenuManager.ClearMenu();
+
         public void EndGroup() => containerStack.Pop();
 
         public void Clear()
@@ -110,45 +110,7 @@ namespace GameEngine.Editor.Windows
             return defaultContainer;
         }
 
-        void ApplyStyle(FrameworkElement element, ElementStyle style)
-        {
-            MemberInfo[] styleFields = style.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
-            MemberInfo[] elementFields = element.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
-            string[] commonStyles = FindCommonStyles(styleFields, elementFields);
         
-            foreach(var o in commonStyles)
-            {
-                if (style.DynamicSize && (o == "Width" || o == "Height"))
-                   continue;
-
-                var styleData = style.GetType().GetField(o).GetValue(style);
-                element.GetType().GetProperty(o).SetValue(element, styleData);
-            }
-
-            if(indentLevel > 0)
-            {
-                var indent = (indentLevel * indentMultiplyer);
-                element.Margin = new Thickness(element.Margin.Left + indent, element.Margin.Top, element.Margin.Right, element.Margin.Bottom);
-            }
-        }
-
-        string[] FindCommonStyles(MemberInfo[] fields1, MemberInfo[] fields2)
-        {
-            List<string> intersecton = new List<string>();
-            HashSet<string> H = new HashSet<string>();
-
-            foreach (var o in fields1)
-                H.Add(o.Name);
-
-            foreach(var o in fields2)
-            {
-                if (H.Contains(o.Name))
-                    intersecton.Add(o.Name);
-            }
-
-            return intersecton.ToArray();
-        }
 
         void Render(FrameworkElement element)
         {
@@ -167,12 +129,31 @@ namespace GameEngine.Editor.Windows
             element.ContextMenu = menu;
         }
 
+        public void ClearMenu()
+        {
+            menu.Items.Clear();
+        }
+
         public ContextManager AddOption(string Title, RoutedEventHandler OnClick)
+        {
+            AddOption(Title, "", OnClick);
+            return this;
+        }
+
+        public ContextManager AddOption(string Title, string iconName, RoutedEventHandler OnClick)
         {
             MenuItem menuItem = new MenuItem()
             {
                 Background = ElementStyle.AccentBackgroundColor,
             };
+
+            Image image = new Image();
+            
+            if(AssetManager.GetIcon(iconName, out Icon icon))
+            {
+                image.Source = icon.GetImage();
+                menuItem.Icon = image;
+            }
 
             menuItem.Header = Title;
             menuItem.Click += OnClick;

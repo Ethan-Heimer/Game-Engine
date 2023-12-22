@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameEngine.Editor.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace GameEngine.Game
         public void Update()
         {
             //Console.WriteLine("Update!!!");
+            //TextureRenderer render = gameObject.renderer;
+            //render.Sprite = new Rendering.Sprite("PlaceHolderTwo");
         }
 
         public void ParamFunc(string inputOne, int inputTwo)

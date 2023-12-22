@@ -18,7 +18,7 @@ namespace GameEngine.Editor.UI.Inspector
     {
         public Vector2FieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner){}
 
-        protected override void Template(EditorGUIDrawer drawer)
+        protected override void Template(EditorGUIDrawer drawer, object[] args)
         {
             drawer.DrawText(data.Name, ElementStyle.DefaultTextStyle.OverrideMargin(new Thickness(10)));
 

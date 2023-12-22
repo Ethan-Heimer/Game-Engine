@@ -20,7 +20,7 @@ namespace GameEngine.Editor.UI.Inspector
 
         Vector3 color;
 
-        protected override void Template(EditorGUIDrawer drawer)
+        protected override void Template(EditorGUIDrawer drawer, object[] args)
         {
             var colorData = data.GetValue();
             color = new Vector3(colorData.R/255f, colorData.G/255f, colorData.B/255f);

@@ -21,7 +21,7 @@ namespace GameEngine.Editor.UI.Inspector
     {
         public SpriteFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) { }
 
-        protected override void Template(EditorGUIDrawer drawer)
+        protected override void Template(EditorGUIDrawer drawer, object[] args)
         {
             drawer.DrawText(data.Name, ElementStyle.DefaultTextStyle.OverrideMargin(new Thickness(10)));
 
@@ -36,19 +36,20 @@ namespace GameEngine.Editor.UI.Inspector
 
         }
 
-
         protected override void OnValueChanged()
         {
+            Console.WriteLine("Changed");
             var display = FindElementInTemplate<TextBox>("field");
-            display.Text = data.GetValue().Path;
+            display.Text = data.GetValue()?.Path;
         }
 
         void OnFileSelected(string path) 
         {
+            Console.WriteLine("Value");
             string fileName = Path.GetFileNameWithoutExtension(path);
 
             var display = FindElementInTemplate<TextBox>("field");
-            display.Text = data.GetValue().Path;
+            display.Text = fileName;
             SetSprite(fileName);
         }
 

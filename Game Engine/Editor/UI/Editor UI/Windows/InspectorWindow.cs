@@ -15,6 +15,7 @@ using Microsoft.Build.Tasks.Xaml;
 using GameEngine.Engine.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Controls;
+using GameEngine.ComponentManagement;
 
 namespace GameEngine.Editor.Windows
 {
@@ -32,7 +33,9 @@ namespace GameEngine.Editor.Windows
         public override void OnGUI(EditorGUIDrawer drawer)
         {
             EngineEventManager.AddEventListener<OnObjectSelected>(e => DrawInspector(e.SelectedObject, drawer));
-            drawer.AddContextItem("Test", (s, a) => Console.WriteLine("yuh"));
+
+            EngineEventManager.AddEventListener<OnComponentAdded>(e => DrawInspector(EditorEventManager.SelectedObject, drawer));
+            EngineEventManager.AddEventListener<OnComponentRemoved>(e => DrawInspector(EditorEventManager.SelectedObject, drawer));
         }
 
         void DrawInspector(GameObject obj, EditorGUIDrawer drawer)
@@ -45,12 +48,10 @@ namespace GameEngine.Editor.Windows
 
             var (context, button) = drawer.DrawContextButton("Add Component", ElementStyle.DefaultButtonStyle.OverrideMargin(new System.Windows.Thickness(40)).OverridePadding(new System.Windows.Thickness(40, 3, 40, 3)));
            
-
             foreach(var o in ComponentManager.GetAllComponents())
                 context.AddOption("Add "+o.Name, (e, t) =>
                 {
                     obj.AddComponent(o);
-                    DrawInspector(obj, drawer);
                 });
         }
 

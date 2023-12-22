@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GameEngine.Editor.UI.Inspector
 {
@@ -41,10 +42,10 @@ namespace GameEngine.Editor.UI.Inspector
         }
 
         
-        public void Display(EditorGUIDrawer drawer)
+        public void Display(EditorGUIDrawer drawer, params object[] args)
         {
             template = drawer.StartHorizontalGroup(templateStyle);
-            Template(drawer);
+            Template(drawer, args);
             drawer.EndGroup();
 
             template.MouseEnter += (s, e) => OnMouseEnter(drawer);
@@ -146,7 +147,7 @@ namespace GameEngine.Editor.UI.Inspector
         protected virtual void OnDragLeave(EditorGUIDrawer drawer, object data) { }
         protected virtual void OnDrop(EditorGUIDrawer drawer, object data) { }
         
-        protected abstract void Template(EditorGUIDrawer drawer);
+        protected abstract void Template(EditorGUIDrawer drawer, object[] args);
 
         protected T2 FindElementInTemplate<T2>(string name) where T2 : DependencyObject
         {
@@ -156,7 +157,7 @@ namespace GameEngine.Editor.UI.Inspector
     
     public interface IFieldTemplate
     {
-        void Display(EditorGUIDrawer drawer);
+        void Display(EditorGUIDrawer drawer, params object[] args);
         void Update(EditorGUIDrawer drawer);
     }
 

@@ -26,7 +26,7 @@ namespace GameEngine.Editor.Windows
         public TextBlock DrawText(string text, string tag, ElementStyle style)
         {
             TextBlock textBlock = new TextBlock();
-            ApplyStyle(textBlock, style);
+            ElementStyle.ApplyStyle(textBlock, style);
 
             textBlock.Name = tag;
             textBlock.Text = text;

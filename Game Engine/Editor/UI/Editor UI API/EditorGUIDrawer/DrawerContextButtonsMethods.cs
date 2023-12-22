@@ -9,23 +9,23 @@ namespace GameEngine.Editor.Windows
 {
     public partial class EditorGUIDrawer
     {
-        public (ContextManager, Button) DrawContextButton(string text)
+        public (ContextManager, Button) DrawContextButton(object content)
         {
-            return DrawContextButton(text, "", ElementStyle.DefaultButtonStyle);
+            return DrawContextButton(content, "", ElementStyle.DefaultButtonStyle);
         }
 
-        public (ContextManager, Button) DrawContextButton(string text, ElementStyle style)
+        public (ContextManager, Button) DrawContextButton(object content, ElementStyle style)
         {
-            return DrawContextButton(text, "", style);
+            return DrawContextButton(content, "", style);
         }
 
-        public (ContextManager, Button) DrawContextButton(string text, string tag, ElementStyle style)
+        public (ContextManager, Button) DrawContextButton(object content, string tag, ElementStyle style)
         {
             Button button = new Button();
-            ApplyStyle(button, style);
+            ElementStyle.ApplyStyle(button, style);
 
             button.Name = tag;
-            button.Content = text;
+            button.Content = content;
 
             ContextManager context = new ContextManager(button);
 

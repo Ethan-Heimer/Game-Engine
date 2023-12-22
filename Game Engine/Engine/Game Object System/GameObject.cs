@@ -27,7 +27,8 @@ namespace GameEngine
 
         public List<Component> components = new List<Component>();
 
-        public GameObject parent;
+        public GameObject Parent;
+        public Icon Icon;
         
         List<GameObject> children = new List<GameObject>();
 
@@ -58,6 +59,8 @@ namespace GameEngine
         {
             AddComponent<Transform>();
             GameObjectManager.RegisterGameobject(this);
+
+            AssetManager.GetIcon("Cube", out Icon);
         }
 
         public GameObject(SerializationInfo info, StreamingContext context)
@@ -66,7 +69,8 @@ namespace GameEngine
             {
                 components = (List<Component>)info.GetValue("Components", typeof(List<Component>));
                 children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
-                parent = (GameObject)info.GetValue("Parent", typeof(GameObject));  
+                Parent = (GameObject)info.GetValue("Parent", typeof(GameObject));  
+                Icon = (Icon)info.GetValue("Icon", typeof(Icon));  
                 Name = (string)info.GetValue("Name", typeof(string));
             }
             catch { }
@@ -111,6 +115,12 @@ namespace GameEngine
             return behavior;
         }
 
+        public void RemoveComponent(Component component)
+        {
+            components.Remove(component);
+            ComponentCacheManager.RemoveCache(component.BindingBehavior);
+        }
+
         public void RemoveComponent<T>() where T : Behavior
         {
             Component component = components.First(x => x.BindingBehavior.GetType() == typeof(T));
@@ -127,7 +137,7 @@ namespace GameEngine
 
         public void AddChild(GameObject child)
         {
-            child.parent = this;
+            child.Parent = this;
             children.Add(child);
 
             GameObjectManager.AlertTreeChange(this);
@@ -135,7 +145,7 @@ namespace GameEngine
 
         public void RemoveChild(GameObject child)
         {
-            child.parent = null;
+            child.Parent = null;
             children.Remove(child);
 
             GameObjectManager.AlertTreeChange(this);
@@ -145,14 +155,19 @@ namespace GameEngine
         {
             info.AddValue("Components", components);
             info.AddValue("Children", children);
-            info.AddValue("Parent", parent);
+            info.AddValue("Parent", Parent);
             info.AddValue("Name", Name);
+            info.AddValue("Icon", Icon);
             components.ForEach(x => Console.WriteLine(x + " on serialized"));
         }
 
         public void Destroy()
         {
             GameObjectManager.DispatchGameobject(this);
+            Parent?.RemoveChild(this);
+
+            while(children.Count > 0)
+                children[0].Destroy();
         }
 
         public void ClearComponents()

@@ -51,10 +51,16 @@ namespace GameEngine.Editor
 
             window.Style = (Style)Application.Current.Resources["Window"];
 
+            ScrollViewer scroll = new ScrollViewer()
+            {
+                VerticalScrollBarVisibility = ScrollBarVisibility.Hidden
+            };
             StackPanel panel = new StackPanel();
             panel.Name = "Content";
 
-            window.Content = panel;
+            scroll.Content = panel;
+
+            window.Content = scroll;
             
             EditorGUIDrawer drawer = new EditorGUIDrawer(window, panel);
             window.OnGUI(drawer);

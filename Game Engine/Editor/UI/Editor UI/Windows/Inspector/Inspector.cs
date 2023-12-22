@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace GameEngine.Editor.UI.Inspector
@@ -30,11 +31,16 @@ namespace GameEngine.Editor.UI.Inspector
 
         void DrawInspector(GameObject gameObject, EditorGUIDrawer drawer)
         {
-            DrawNameField(gameObject, drawer);
+            drawer.StartHorizontalGroup();
+                DrawIconField(gameObject, drawer);
+                DrawNameField(gameObject, drawer);
+            drawer.EndGroup();
 
             foreach (Component o in gameObject.GetAllComponents())
             {
-                DrawHeading(o.BindingBehavior.GetType().Name, drawer);
+                var title = DrawHeading(StringSpacer.Space(o.BindingBehavior.GetType().Name), drawer);
+                ContextManager context = new ContextManager(title);
+                context.AddOption("Remove Component", (e, s) => gameObject.RemoveComponent(o));
 
                 foreach (FieldInfo f in o.GetFields())
                 {
@@ -43,9 +49,9 @@ namespace GameEngine.Editor.UI.Inspector
             }
         }
 
-        void DrawHeading(string text, EditorGUIDrawer drawer)
+        TextBlock DrawHeading(string text, EditorGUIDrawer drawer)
         {
-            drawer.DrawText(text, new ElementStyle()
+            return drawer.DrawText(text, new ElementStyle()
             {
                 FontSize = ElementStyle.MediumTextSize,
                 Background = ElementStyle.TertiaryBackgroundColor,
@@ -73,6 +79,18 @@ namespace GameEngine.Editor.UI.Inspector
             FieldInfo name = gameObject.GetType().GetField("Name");
 
             IFieldTemplate template = factory.TryGetTemplate(name, gameObject);
+            template.Display(drawer);
+
+            fields.Add(template);
+        }
+
+        void DrawIconField(GameObject gameObject, EditorGUIDrawer drawer)
+        {
+            drawer.ClearContextMenu();
+
+            FieldInfo icon = gameObject.GetType().GetField("Icon");
+
+            IFieldTemplate template = factory.TryGetTemplate(icon, gameObject);
             template.Display(drawer);
 
             fields.Add(template);
