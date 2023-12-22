@@ -27,10 +27,22 @@ namespace GameEngine.ComponentManagement
 
             foreach (var func in BehaviorFunctions.functionTypes) 
             {
-                if(binder.Name == func.FunctionName)
+                if(binder.Name == func.FunctionName )
                 {
-                    foreach (var o in ComponentCacheManager.GetCache(func.FunctionName))
+                    foreach (var o in ComponentCacheManager.GetCache(func.FunctionName)) 
+                    {
                         o.DynamicInvoke(args);
+                    }
+
+                    result = null;
+                    return true;
+                }
+                else if(binder.Name == func.FunctionName + "InEditor")
+                {
+                    foreach (var o in ComponentCacheManager.GetCache(func.FunctionName + "InEditor")) 
+                    {
+                        o.DynamicInvoke(args);
+                    }
 
                     result = null;
                     return true;

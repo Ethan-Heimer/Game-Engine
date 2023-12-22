@@ -35,19 +35,19 @@ namespace GameEngine
         {
             EngineEventManager.Init();
 
+            AssetManager.Init(Content);
             ComponentCacheManager.Init();
             GameExecuter.Init();
             SceneManager.Init();
             InputManager.Init();
             Renderer.Init(this, graphics, GraphicsDevice);
-            AssetManager.Init(Content);
             CameraManager.Init();
             PlayModeManager.Init();
             TempFileHandler.Init();
             NotesManager.Init();
 
             this.IsMouseVisible = true;
-            AfterInit.Invoke();
+            AfterInit?.Invoke();
 
             base.Initialize();
         }

@@ -25,18 +25,23 @@ namespace GameEngine
             }
         }
 
-        public Sprite Sprite = new Sprite("");
+        public Sprite Sprite;
+        public Color Color = Color.White;
+
         public Rectangle Bounds 
         {
             get
             {
+                if(Sprite == null)
+                    return Rectangle.Empty;
                 return Sprite.Bounds;
             }
         }
 
         public void OnDraw()
         {
-            Renderer.RenderTexture(Sprite, transform, Color.White);
+            if(Sprite != null)
+                Renderer.RenderTexture(Sprite, transform, Color);
         }
 
         

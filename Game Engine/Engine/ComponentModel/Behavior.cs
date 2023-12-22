@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameEngine.Engine.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace GameEngine
 {
     public class Behavior
     {
+
+
         public GameObject gameObject;
         public Transform transform
         {

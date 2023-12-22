@@ -51,7 +51,7 @@ namespace GameEngine.Editor
             if (e.Target == null || !active)
                 return;
 
-            rotationWidget.Position = e.Target.Transform.Position;
+            rotationWidget.Position = e.Target.Transform.WorldPosition;
             rotationWidget.pointerPosition = e.pointerPosition;
 
             WidgetDrawer.Draw(rotationWidget);
@@ -62,7 +62,7 @@ namespace GameEngine.Editor
             if (!active)
                 return;
 
-            Vector2 position = e.Target.Transform.Position;
+            Vector2 position = e.Target.Transform.WorldPosition;
 
             float angle = (float)Math.Atan2(e.pointerPosition.Y - position.Y, e.pointerPosition.X - position.X);
             e.Target.Transform.Rotation = startAngle + angle * (float)(180 / Math.PI);

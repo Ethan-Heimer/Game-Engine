@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local = "clr-namespace:GameEngine.Editor.Windows">
     <Style TargetType="{x:Type Window}" x:Key="Window">
-        <Setter Property="Background" Value="#08415C"/>
+        <Setter Property="Background" Value="#3F414F"/>
     </Style>
 
     <Style TargetType="Button" x:Key="Button">
@@ -56,13 +56,24 @@
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
-    <Style TargetType="TextBox">
+    <Style TargetType="TextBox" x:Key="TextBox">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
         <Setter Property="Background" Value="#388697"/>
         <Setter Property="Width" Value="100"/>
+        <Setter Property="BorderBrush" Value="#03191E"/>
     </Style>
+
+    <Style TargetType="TextBox" x:Key="X" BasedOn="{StaticResource ResourceKey=TextBox}">
+        <Setter Property="BorderBrush" Value="Red"/>
+        <Setter Property="Background" Value="#EFA9AE"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="Y" BasedOn="{StaticResource ResourceKey=TextBox}">
+        <Setter Property="BorderBrush" Value="Lime"/>
+        <Setter Property="Background" Value="#9BDEAC"/>
+            </Style>
 
 </ResourceDictionary>

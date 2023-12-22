@@ -12,34 +12,22 @@ namespace GameEngine.Editor
     [ContainsEvents]
     public class OnGameObjectSelectManipulator : IPointerManipulator<GameObject>
     {
-        static EngineEvent<OnObjectSelectedEditorEvent> onGameObjectSelected;
+       
         public void RegisterCallbacks(IPointer<GameObject> pointer) 
         {
-            pointer.RegisterCallback<TargetSelected<GameObject>>(Invoke);
+            pointer.RegisterCallback<TargetSelected<GameObject>>(Select);
         }
 
         public void UnregisterCallbacks(IPointer<GameObject> pointer) 
         {
-            pointer.UnregisterCallback<TargetSelected<GameObject>>(Invoke);
+            pointer.UnregisterCallback<TargetSelected<GameObject>>(Select);
         }
 
-        void Invoke(TargetSelected<GameObject> e)
+        void Select(TargetSelected<GameObject> e)
         {
-            onGameObjectSelected?.Invoke(new OnObjectSelectedEditorEvent
-            {
-                SelectedObject = e.Target,
-                Sender = e.Sender
-            });
+            EditorEventManager.SelectedObject = e.Target;
         }
     }
 
-    public class OnObjectSelectedEditorEvent : IEventArgs
-    {
-        public GameObject SelectedObject;
-        public object Sender
-        {
-            get;
-            set;
-        }
-    }
+    
 }

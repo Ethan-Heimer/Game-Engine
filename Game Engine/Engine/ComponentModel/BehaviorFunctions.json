@@ -2,22 +2,26 @@
   "behaviorFunctions": [
     {
       "FunctionName": "Update",
-      "ParamTypes": []
+      "ParamTypes": [],
+      "CanExecuteAlways": true
     },
 
     {
       "FunctionName": "Start",
-      "ParamTypes": []
+      "ParamTypes": [],
+      "CanExecuteAlways": false
     },
 
     {
       "FunctionName": "Awake",
-      "ParamTypes": []
+      "ParamTypes": [],
+      "CanExecuteAlways": false
     },
 
     {
       "FunctionName": "OnDraw",
-      "ParamTypes": []
+      "ParamTypes": [],
+      "CanExecuteAlways": false
     }
   ]
 }

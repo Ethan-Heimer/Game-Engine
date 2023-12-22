@@ -16,10 +16,10 @@ namespace GameEngine.Editor.Windows
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
-            drawer.DrawLabel("Change Log V d0.02");
+            drawer.DrawText("Change Log V d0.02");
             drawer.DrawText("Phoenix Engine Development Milestone 2 introduces an API for editor windows: 'Blocks!'");
 
-            drawer.DrawLabel("What Is Blocks?");
+            drawer.DrawText("What Is Blocks?");
             drawer.DrawText("Blocks is a component based UI API for making Editor windows and tools. To get started, create a class that inherents from 'EditorWindow'. " +
                 "All drawing is done with the 'EditorGUIDrawer' class. The class offers base building blocks for all UI, including Labels, Buttons, and Layout tools. \n\n " +
                 "Components can be made by inharenting from the 'Component' class, and defining an OnDraw Method with the first paramater being an 'EditorGUIDrawer'." +

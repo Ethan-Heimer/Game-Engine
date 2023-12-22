@@ -10,8 +10,8 @@ namespace GameEngine
 {
     public class Move : Behavior
     {
-        public float Speed;
-        public string Name;
+        public int Speed;
+       
         public void Update() 
         {
             Console.WriteLine(Speed);
