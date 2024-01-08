@@ -5,7 +5,6 @@ using GameEngine.Game;
 using System;
 using GameEngine.ComponentManagement;
 using GameEngine.Engine;
-using GameEngine.Engine.Rendering;
 using GameEngine.Engine.Events;
 using GameEngine.Rendering;
 using GameEngine.Debugging;

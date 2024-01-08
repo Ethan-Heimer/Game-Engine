@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Engine;
 using GameEngine.Engine.Events;
-using GameEngine.Engine.Rendering;
 using Microsoft.Xna.Framework;
 
 namespace GameEngine.Rendering

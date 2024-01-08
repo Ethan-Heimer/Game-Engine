@@ -20,7 +20,6 @@ using GameEngine.ComponentManagement;
 namespace GameEngine.Editor.Windows
 {
     [OpenWindowByDefault]
-    [Note(note = "there Needs to be a way to tell when the ui needs to be rerendered")]
     public class InspectorWindow : EditorWindow
     {
         Inspector inspector;
@@ -41,6 +40,9 @@ namespace GameEngine.Editor.Windows
         void DrawInspector(GameObject obj, EditorGUIDrawer drawer)
         {
             drawer.Clear();
+            
+            if (obj == null)
+                return;
 
             drawer.DrawText("Inspector", ElementStyle.DefaultTextStyle.OverrideFontSize(35).OverrideMargin(new System.Windows.Thickness(10)));
 
@@ -53,6 +55,7 @@ namespace GameEngine.Editor.Windows
                 {
                     obj.AddComponent(o);
                 });
+            Console.WriteLine("Drawed Shit");
         }
 
         public override void OnUpdateGUI(EditorGUIDrawer drawer)

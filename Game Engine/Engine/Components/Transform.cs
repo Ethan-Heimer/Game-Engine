@@ -1,4 +1,5 @@
 ﻿using GameEngine.Debugging;
+using GameEngine.Editor.UI.Inspector;
 using GameEngine.Engine.ComponentModel;
 using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GameEngine
 {
@@ -113,12 +115,41 @@ namespace GameEngine
             }
         }
 
+        public Vector2 Size
+        {
+            get
+            {
+                if (gameObject.renderer == null)
+                    return Vector2.Zero;
+
+                return new Vector2(gameObject.renderer.Bounds.Width * Math.Abs(WorldScale), gameObject.renderer.Bounds.Height * Math.Abs(WorldScale));
+            }
+        }
+
         public Vector2 Center
         {
             get
             {
                 return new Vector2(-Bounds.Width / 2 + Bounds.X, -Bounds.Height / 2 + Bounds.Height);
             }
+        }
+
+        public Vector2[] GetVerticies()
+        {
+            Vector2[] verticies = new Vector2[]
+            {
+                new Vector2(-Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y),
+                new Vector2(Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y),
+                new Vector2(-Size.X/2 + WorldPosition.X, Size.Y/2 + WorldPosition.Y),
+                new Vector2(Size.X / 2 + WorldPosition.X, Size.Y / 2 + WorldPosition.Y)
+            };
+
+            for(int i = 0; i < verticies.Length; i++)
+            {
+               verticies[i] = RotateVector(verticies[i], WorldRotation, WorldPosition);
+            }
+            
+            return verticies;
         }
 
         public void Update()
@@ -133,6 +164,25 @@ namespace GameEngine
         public double GetRotationInRad()
         {
             return Rotation * (Math.PI / 180);
+        }
+
+        public double GetWorldRotationInRad()
+        {
+            return WorldRotation * (Math.PI / 180);
+        }
+
+        public static Vector2 RotateVector(Vector2 vector, float degree, Vector2 origin)
+        {
+            float cos = (float)Math.Cos(degree);
+            float sin = (float)Math.Sin(degree);
+
+            float x = vector.X - origin.X;
+            float y = vector.Y - origin.Y;
+
+            float xPrime = x * cos - y * sin;
+            float yPrime = x * sin + y * cos;
+
+            return new Vector2(xPrime + origin.X, yPrime + origin.Y);
         }
     }
 

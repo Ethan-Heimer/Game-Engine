@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\GameInitalizer.cs" />
+    <Compile Include="Editor\Camera\EditorCameraDirector.cs" />
     <Compile Include="Editor\ComponentManager.cs" />
     <Compile Include="Editor\Editor.cs" />
     <Compile Include="Editor\EditorEventManager.cs" />
@@ -91,13 +92,12 @@
     <Compile Include="Editor\UI\Editor UI API\IFieldBinder.cs" />
     <Compile Include="Editor\UI\Editor UI API\IFieldTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI API\WindowManager.cs" />
-    <Compile Include="Editor\UI\Editor UI\Windows\ChangeLogWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\GameManaer.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Hiarchy.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\HiarchyWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyIconTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyNameTemplate.cs" />
-    <Compile Include="Editor\UI\Editor UI\Windows\InspectorWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\InspectorWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\ColorFieldTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\FloatFieldTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\IconFieldTemplate.cs" />
@@ -119,6 +119,20 @@
     <Compile Include="Engine\Debugging\NotesManager.cs" />
     <Compile Include="Engine\Event System\Event.cs" />
     <Compile Include="Engine\Event System\EventManager.cs" />
+    <Compile Include="Engine\Physics\Forces\ForceRegistration.cs" />
+    <Compile Include="Engine\Physics\Forces\ForceRegistry.cs" />
+    <Compile Include="Engine\Physics\Forces\Gravity.cs" />
+    <Compile Include="Engine\Physics\Forces\IForceGenerator.cs" />
+    <Compile Include="Engine\Physics\PhysicsSystem.cs" />
+    <Compile Include="Engine\Physics\Primitives\Box2D.cs" />
+    <Compile Include="Engine\Physics\Primitives\Collider.cs" />
+    <Compile Include="Engine\Physics\Primitives\Ray2D.cs" />
+    <Compile Include="Engine\Physics\Primitives\RayCastResult.cs" />
+    <Compile Include="Engine\Physics\Primitives\Shapes.cs" />
+    <Compile Include="Engine\Physics\Rigidbody\CollisionManifold.cs" />
+    <Compile Include="Engine\Physics\Rigidbody\Collisions.cs" />
+    <Compile Include="Engine\Physics\Rigidbody\IntersectionDetection.cs" />
+    <Compile Include="Engine\Physics\Rigidbody\RigidBody.cs" />
     <Compile Include="Engine\Play Handling\PlayModeManager.cs" />
     <Compile Include="Engine\Pointer System\GameObjectPointer.cs" />
     <Compile Include="Engine\Pointer System\IPointerManipulator.cs" />
@@ -135,7 +149,6 @@
     <Compile Include="Engine\Game Object System\GameObjectManager.cs" />
     <Compile Include="Engine\GameExecuter.cs" />
     <Compile Include="Engine\Rendering\CameraManager.cs" />
-    <Compile Include="Engine\Rendering\EditorCamera.cs" />
     <Compile Include="Engine\Rendering\ICamera.cs" />
     <Compile Include="Engine\Rendering\Renderer.cs" />
     <Compile Include="Engine\Rendering\Sprite.cs" />

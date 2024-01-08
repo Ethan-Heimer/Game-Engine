@@ -16,6 +16,7 @@ namespace GameEngine.Editor.UI.Hiarchy
         public void Draw(GameObject[] objects, EditorGUIDrawer drawer)
         {
             drawer.Clear();
+            drawer.ClearContextMenu();
             fields.Clear();
 
             drawer.DrawText("Tree", ElementStyle.DefaultTextStyle.OverrideFontSize(35).OverrideMargin(new System.Windows.Thickness(10)));

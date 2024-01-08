@@ -159,7 +159,6 @@ namespace GameEngine.Editor.Windows
             menuItem.Click += OnClick;
 
             element.ContextMenu.Items.Add(menuItem);
-            Console.WriteLine("added " + Title);
 
             return this;
         }
