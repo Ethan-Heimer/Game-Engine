@@ -9,39 +9,37 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-//Thanks to David Amador and o KB o. Static since we will only have one camera.
+//Thanks to David Amador and o KB o.   since we will only have one camera.
 
-namespace GameEngine.Unuseable
+namespace GameEngine.Rendering
 {
-    static class Camera
+    class Camera : ICamera
     {
-        static private Matrix transformMatrix; //A transformation matrix containing info on our position, how much we are rotated and zoomed etc.
-        static private Vector2 position;
-        static public float rotation;
-        static private float zoom;
-        static private Rectangle screenRect;
-       
-        static public bool updateYAxis = false; //Should the camera move along on the y axis?
-        static public bool updateXAxis = true; //Should the camera move along on the x axis?
+        private Matrix transformMatrix; //A transformation matrix containing info on our position, how much we are rotated and zoomed etc.
+        public Vector2 Position { get; set; }
+        public float Rotation { get; set; }
+        private float zoom;
 
-        public static void Initialize()
+        private Rectangle screenRect;
+
+        public void Initialize()
         {
             zoom = 1.0f;
-            rotation = 0.0f;
+            Rotation = 0.0f;
 
             //Start the camera at the center of the screen:
-            position = new Vector2(Resolution.VirtualWidth / 2, Resolution.VirtualHeight / 2);
+            Position = new Vector2(Resolution.VirtualWidth / 2, Resolution.VirtualHeight / 2);
         }
 
         /// <summary>
         /// This rectangle covers the entire screen based on where the camera is, useful if you need to determine what is currently viewable to the player, or the position of the camera.
         /// </summary>
-        public static Rectangle ScreenRect 
+        public Rectangle ScreenRect 
         {
             get { return screenRect; }
         }
 
-        public static float Zoom
+        public float Zoom
         {
             get { return zoom; }
             set
@@ -50,41 +48,27 @@ namespace GameEngine.Unuseable
             }
         }
 
-        public static void Update(Vector2 follow)
+        public void OnUpdate()
         {
-            UpdateMovement(follow);
             CalculateMatrixAndRectangle();
-        }
-
-        private static void UpdateMovement(Vector2 follow)
-        {
-            //Make the camera center on and follow the position:
-            if (updateXAxis == true)
-                position.X += ((follow.X - position.X)); //Camera will follow the position passed in
-
-            if (updateYAxis == true)
-                position.Y += ((follow.Y - position.Y)); //Camera will follow the position passed in
         }
 
         /// <summary>
         /// Immediately sets the camera to look at the position passed in.
         /// </summary>
-        public static void LookAt(Vector2 lookAt)
+        public void LookAt(Vector2 lookAt)
         {
             //Immediately looks at the vector passed in:
-            if (updateXAxis == true)
-                position.X = lookAt.X;
-            if (updateYAxis == true)
-                position.Y = lookAt.Y;
+            Position = new Vector2(lookAt.X, lookAt.Y); 
         }
 
-        private static void CalculateMatrixAndRectangle()
+        private void CalculateMatrixAndRectangle()
         {
             //The math involved with calculated our transformMatrix and screenRect is a little intense, so instead of calling the math whenever we need these variables,
             //we'll calculate them once each frame and store them... when someone needs these variables we will simply return the stored variable instead of re cauclating them every time.
 
             //Calculate the camera transform matrix:
-            transformMatrix = Matrix.CreateTranslation(new Vector3(-position, 0)) * Matrix.CreateRotationZ(rotation) *
+            transformMatrix = Matrix.CreateTranslation(new Vector3(-Position, 0)) * Matrix.CreateRotationZ(Rotation) *
                         Matrix.CreateScale(new Vector3(zoom, zoom, 1)) * Matrix.CreateTranslation(new Vector3(Resolution.VirtualWidth
                             * 0.5f, Resolution.VirtualHeight * 0.5f, 0));
 
@@ -96,13 +80,13 @@ namespace GameEngine.Unuseable
             transformMatrix.M42 = (float)Math.Round(transformMatrix.M42, 0);
 
             //Calculate the rectangle that represents where our camera is at in the world:
-            screenRect = VisibleArea();
+            screenRect = GetVisibleArea();
         }
 
         /// <summary>
         /// Calculates the screenRect based on where the camera currently is.
         /// </summary>
-        private static Rectangle VisibleArea()
+        public Rectangle GetVisibleArea()
         {
             Matrix inverseViewMatrix = Matrix.Invert(transformMatrix);
             Vector2 tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);
@@ -118,7 +102,7 @@ namespace GameEngine.Unuseable
             return new Rectangle((int)min.X, (int)min.Y, (int)(Resolution.VirtualWidth / zoom), (int)(Resolution.VirtualHeight / zoom));
         }
 
-        public static Matrix GetTransformMatrix()
+        public Matrix GetTransformationMatrix()
         {
             return transformMatrix; //Return the transformMatrix we calculated earlier in this frame.
         }

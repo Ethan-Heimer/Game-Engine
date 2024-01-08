@@ -11,7 +11,6 @@ using System.Reflection;
 using GameEngine.Engine.Events;
 using GameEngine.Editor.UI;
 using GameEngine.Rendering;
-using GameEngine.Engine.Rendering;
 using System.IO;
 using System.Windows;
 using System.Diagnostics;
@@ -23,7 +22,9 @@ namespace GameEngine.Editor
 {
     public static class Editor
     {
-        static EditorCamera editorCamera = new EditorCamera();
+        static Camera editorCamera = new Camera();
+        static EditorCameraDirector director;
+
         static Grid grid = new Grid();
         static GameObjectPointer editorPointer = new GameObjectPointer();
 
@@ -35,6 +36,8 @@ namespace GameEngine.Editor
        
         static void Open()
         {
+            director = new EditorCameraDirector(editorCamera, 40);
+
             EngineEventManager.AddEventListener<OnEnterEditMode>((e) => SetToEditorCamera());
             EngineEventManager.AddEventListener<WhileInEditMode>((e) => Update());
 
@@ -61,6 +64,7 @@ namespace GameEngine.Editor
             }, 100);
 
             editorPointer.Update();
+            director.Update();
         }
 
         static void SetToEditorCamera() => CameraManager.SetMainCamera(editorCamera);

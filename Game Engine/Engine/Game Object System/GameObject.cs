@@ -91,16 +91,9 @@ namespace GameEngine
         {
             Behavior behavior = (Behavior)Activator.CreateInstance(typeof(T));
             var component = Component.BindComponent(behavior, this);
-
             components.Add(component);
-            return (T)behavior;
-        }
+            ComponentCacheManager.AddCache(behavior);
 
-        public T AddComponent<T>(Component component) where T : Behavior
-        {
-            Behavior behavior = component.BindingBehavior;
-
-            components.Add(Component.BindComponent(behavior, this));
             return (T)behavior;
         }
 
@@ -111,6 +104,7 @@ namespace GameEngine
 
             var behavior = (Behavior)Activator.CreateInstance(type);
             components.Add(Component.BindComponent(behavior, this));
+            ComponentCacheManager.AddCache(behavior);
 
             return behavior;
         }

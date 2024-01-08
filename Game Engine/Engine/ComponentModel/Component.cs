@@ -23,12 +23,6 @@ namespace GameEngine
             get { return _gameObject; }
             set
             {
-                if(_gameObject == null && value != null)
-                    ComponentCacheManager.AddCache(BindingBehavior);
-                else if (value == null)
-                    ComponentCacheManager.RemoveCache(BindingBehavior);
-                
-
                 _gameObject = value;
                 BindingBehavior.gameObject = value;
             }

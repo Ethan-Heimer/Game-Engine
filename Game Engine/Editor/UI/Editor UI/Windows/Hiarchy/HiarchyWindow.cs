@@ -15,10 +15,12 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
 using GameEngine.Editor.UI.Hiarchy;
+using GameEngine.Debugging;
 
 namespace GameEngine.Editor.Windows
 {
     [OpenWindowByDefault]
+    [Note(note = "To give gameobjects some structure, it might be a good idea to make a scene object that acts as the root node of the gameobject tree. every gameobject is a child of the root, and code might be cleaner because objects would have better structure")]
     public class HiarchyWindow : EditorWindow
     {
         Hiarchy hiarchy = new Hiarchy();

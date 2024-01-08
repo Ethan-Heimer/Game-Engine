@@ -204,12 +204,23 @@ namespace GameEngine.Rendering
 
         public Vector2 positionOne;
         public Vector2 positionTwo;
-        
-        public void Draw(SpriteBatch spriteBatch) => spriteBatch.Draw(texture, new Rectangle((int)positionOne.X, (int)positionOne.Y, 
-            (int)Math.Sqrt(Math.Pow(positionTwo.Y - positionOne.Y, 2) + Math.Pow(positionTwo.X - positionOne.X, 2)), 1), 
-            null, color,
-            (float)(Math.Atan2(positionTwo.Y - positionOne.Y, positionTwo.X - positionOne.X)), 
-            Vector2.Zero, SpriteEffects.None, 0);
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (positionOne.X == positionTwo.X)
+                spriteBatch.Draw(texture, new Rectangle((int)positionOne.X, (int)positionOne.Y, 1, (int)(positionTwo.Y - positionOne.Y)), null, color, 0, Vector2.Zero, SpriteEffects.None, 0);
+            else if(positionOne.Y == positionTwo.Y)
+                spriteBatch.Draw(texture, new Rectangle((int)positionOne.X, (int)positionOne.Y, (int)(positionTwo.X - positionOne.X), 1), null, color, 0, Vector2.Zero, SpriteEffects.None, 0);
+            else
+            {
+                int length = (int)Math.Sqrt(Math.Pow(positionTwo.Y - positionOne.Y, 2) + Math.Pow(positionTwo.X - positionOne.X, 2));
+                Rectangle line = new Rectangle((int)positionOne.X, (int)positionOne.Y, length, 1);
+                float angle = (float)(Math.Atan2(positionTwo.Y - positionOne.Y, positionTwo.X - positionOne.X));
+
+                spriteBatch.Draw(texture, line, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
+            }
+
+        }
     }
 
     public struct RectData : IBufferData

@@ -47,6 +47,8 @@ namespace GameEngine.Editor.UI.Inspector
                     Drawfield(f, o, drawer);
                 }
             }
+
+            Console.WriteLine("All Components Rendered");
         }
 
         TextBlock DrawHeading(string text, EditorGUIDrawer drawer)

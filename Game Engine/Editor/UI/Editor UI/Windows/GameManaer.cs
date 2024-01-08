@@ -18,7 +18,8 @@ namespace GameEngine.Editor.Windows
     {
         public GameManagerWindow() 
         {
-            Height = 300;
+            Height = 100;
+            Width = 500;
         }
 
         public override void OnGUI(EditorGUIDrawer editorGUI)
