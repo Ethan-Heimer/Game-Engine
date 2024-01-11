@@ -184,6 +184,18 @@ namespace GameEngine.Editor.Windows
             }
         }
 
+        public static ElementStyle DefaultCheckboxStyle
+        {
+            get
+            {
+                return new ElementStyle()
+                {
+                    Foreground = Brushes.White,
+                    Padding = new Thickness(1),
+                };
+            }
+        }
+
         public static ElementStyle DefaultGroupStyle => new ElementStyle()
         {
             DynamicSize = true,

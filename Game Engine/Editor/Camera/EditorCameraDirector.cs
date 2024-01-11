@@ -45,14 +45,14 @@ namespace GameEngine.Editor
             prevMousePos = InputManager.RawMousePosition();
 
             Vector2 direction = new Vector2();
-            if (InputManager.IsKeyDown(Keys.A))
+            if (InputManager.IsKeyDown(Keys.J))
                 direction.X = -1;
-            else if (InputManager.IsKeyDown(Keys.D))
+            else if (InputManager.IsKeyDown(Keys.L))
                 direction.X = 1;
 
-            if (InputManager.IsKeyDown(Keys.W))
+            if (InputManager.IsKeyDown(Keys.I))
                 direction.Y = -1;
-            else if (InputManager.IsKeyDown(Keys.S))
+            else if (InputManager.IsKeyDown(Keys.K))
                 direction.Y = 1;
 
             if(direction.X != 0)

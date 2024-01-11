@@ -8,6 +8,7 @@ using GameEngine.Engine;
 using GameEngine.Engine.Events;
 using GameEngine.Rendering;
 using GameEngine.Debugging;
+using GameEngine.Engine.Physics;
 
 namespace GameEngine
 {
@@ -44,6 +45,7 @@ namespace GameEngine
             PlayModeManager.Init();
             TempFileHandler.Init();
             NotesManager.Init();
+            PhysicsSystem.Init(.1f, new Vector2(0, 1));
 
             this.IsMouseVisible = true;
             AfterInit?.Invoke();

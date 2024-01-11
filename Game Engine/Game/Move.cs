@@ -14,8 +14,6 @@ namespace GameEngine
        
         public void Update() 
         {
-            Console.WriteLine(Speed);
-
             if(InputManager.IsKeyDown(Keys.A)) 
             {
                 gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X - Speed, gameObject.Transform.Position.Y);

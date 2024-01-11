@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GameEngine.Rendering;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +22,13 @@ namespace GameEngine.Engine.Physics
                 return _ridgidBody; 
             }
         }
-        //public abstract float getInertiaTensor()
+        
+        public void OnDraw()
+        {
+            Renderer.DrawCircle(transform.GetVerticies()[0], 10, Color.Red);
+            Renderer.DrawCircle(transform.GetVerticies()[1], 10, Color.Red);
+            Renderer.DrawCircle(transform.GetVerticies()[2], 10, Color.Red);
+            Renderer.DrawCircle(transform.GetVerticies()[3], 10, Color.Red);
+        }
     }
 }

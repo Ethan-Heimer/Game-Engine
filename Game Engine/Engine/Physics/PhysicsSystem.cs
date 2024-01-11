@@ -1,4 +1,5 @@
-﻿using GameEngine.Engine.Physics.Forces;
+﻿using GameEngine.Engine.Events;
+using GameEngine.Engine.Physics.Forces;
 using GameEngine.Engine.Physics.Rigidbody;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
@@ -11,33 +12,36 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Engine.Physics
 {
-    public class PhysicsSystem
+    public static class PhysicsSystem
     {
-        ForceRegistry forceRegistry;
-        List<RigidBody> rigidBodies = new List<RigidBody>();
-        Gravity gravity;
-        float fixedUpdate;
+        static ForceRegistry forceRegistry;
+        static List<RigidBody> rigidBodies = new List<RigidBody>();
+        static Gravity gravity;
+        static float fixedUpdate;
 
-        public List<RigidBody> bodies1 = new List<RigidBody>();
-        public List<RigidBody> bodies2 = new List<RigidBody>();
-        public List<CollisionManifold> collisions = new List<CollisionManifold>();
+        static List<RigidBody> bodies1 = new List<RigidBody>();
+        static List<RigidBody> bodies2 = new List<RigidBody>();
+        static List<CollisionManifold> collisions = new List<CollisionManifold>();
 
         const float impulseIterations = 6; 
 
-        public PhysicsSystem(float fixedUpdateDeltaTime, Vector2 gravity) 
+        public static void Init(float fixedUpdateDeltaTime, Vector2 _gravity) 
         {
-            this.forceRegistry = new ForceRegistry();
-            this.gravity = new Gravity(gravity);
+            forceRegistry = new ForceRegistry();
+            gravity = new Gravity(_gravity);
 
-            this.fixedUpdate = fixedUpdateDeltaTime;
+            fixedUpdate = fixedUpdateDeltaTime;
+
+            EngineEventManager.AddEventListener<WhileInPlayMode>((e) => Update(fixedUpdateDeltaTime));
         }
 
-        public void Update(float dt) 
+        //use engine hook
+        public static void Update(float dt) 
         {
             FixedUpdate();
         }
 
-        public void FixedUpdate()
+        public static void FixedUpdate()
         {
             bodies1.Clear();
             bodies2.Clear();
@@ -84,13 +88,13 @@ namespace GameEngine.Engine.Physics
             {
                 for(int j = 0; j < collisions.Count; j++) 
                 {
-                    int kSize = collisions[i].ContactPoints.Length;
+                    int kSize = collisions[j].ContactPoints.Length;
                     for(int k = 0; k < kSize; k++)
                     {
-                        RigidBody r1 = bodies1[i];
-                        RigidBody r2 = bodies2[i];
+                        RigidBody r1 = bodies1[j];
+                        RigidBody r2 = bodies2[j];
 
-                        ApplyImpulse(r1, r2, collisions[i]);
+                        ApplyImpulse(r1, r2, collisions[j]);
                     }
                 }
             }
@@ -102,30 +106,41 @@ namespace GameEngine.Engine.Physics
             }
         }
 
-        public void AddRigidBody(RigidBody rigidBody) 
+        public static void AddRigidBody(RigidBody rigidBody, bool useGravity) 
         {
             rigidBodies.Add(rigidBody);
-            this.forceRegistry.Add(rigidBody, gravity);
+
+            if(useGravity)
+                forceRegistry.Add(rigidBody, gravity);
         }
 
-        void ApplyImpulse(RigidBody r1, RigidBody r2, CollisionManifold m)
+        static void ApplyImpulse(RigidBody r1, RigidBody r2, CollisionManifold m)
         {
+            Console.WriteLine("Trying to Apply Impulse");
+
             float invMass1 = r1.InverseMass;
             float invMass2 = r2.InverseMass;
 
             float invMassSum = invMass1 + invMass2;
 
             if (invMassSum == 0f)
+            {
+                Console.WriteLine("Sum is Zero");
                 return;
+            }
 
             Vector2 relVel = r2.Velocity - r1.Velocity;
             Vector2 relNormal = m.Normal;
 
             relNormal.Normalize();
+            Console.WriteLine(relNormal);
 
             //moving away
             if(Vector2.Dot(relVel, relNormal) > 0)
+            {
+                Console.WriteLine("Objects are moving away");
                 return;
+            }
 
             float e = Math.Min(r1.COR, r2.COR);
 

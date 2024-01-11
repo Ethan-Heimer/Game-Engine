@@ -39,10 +39,14 @@ namespace GameEngine.Engine.Physics.Rigidbody
             IsColliding = false;
         }
 
-        public CollisionManifold(Vector2 normal, List<Vector2> contactPoints, float depth)
+        public CollisionManifold(Vector2 normal, Vector2[] contactPoints, float depth)
         {
             Normal = normal;
-            this.contactPoints = contactPoints;
+
+            if(contactPoints != null)
+                this.contactPoints = contactPoints.ToList();
+            else
+                this.contactPoints = new List<Vector2>();
             Depth = depth;
             
             IsColliding = true;

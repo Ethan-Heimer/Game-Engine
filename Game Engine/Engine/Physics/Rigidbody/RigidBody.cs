@@ -47,16 +47,24 @@ namespace GameEngine.Engine.Physics
             }
         }
 
+        public bool Gravity;
+
         Collider _collider;
         public Collider Collider
         {
             get
             {
-                if(Collider == null)
+                if(_collider == null)
                     _collider = gameObject.GetComponent<Collider>();
 
                 return _collider;
             }
+        }
+
+        public void Start()
+        {
+            //Register into simulation
+            PhysicsSystem.AddRigidBody(this, Gravity);
         }
 
         //could become Magic Function FixedUpdate
