@@ -21,16 +21,38 @@ namespace GameEngine.Engine.Physics
                 return 0;
             }
         }
+
+        public float StaticFriction;
+        public float DynamicFriction;
+
         public Vector2 Velocity
         {
             get; private set;
         }
+        public float AngularVelocity 
+        {
+            get; private set;
+        }
 
-        Vector2 forceAccum;
-        
-        float angularVelocity;
+        public float Inertia
+        {
+            get 
+            {
+                return (1f / 12f) * Mass * (transform.Size.X * transform.Size.X + transform.Size.Y * transform.Size.Y);
+            }
 
-        float linearDamping;
+        }
+
+        public float InverseInertia
+        {
+            get
+            {
+                if(Mass == 0)
+                    return 0;
+                
+                return 1 / Inertia;
+            }
+        }
 
         public float COR
         {
@@ -73,28 +95,20 @@ namespace GameEngine.Engine.Physics
             if (Mass == 0)
                 return;
 
-            //calculate linear velocity
-            Vector2 acceleration = forceAccum * InverseMass;
-
-            Velocity = Velocity + (acceleration * dt);
-
             //update position
+            //Console.WriteLine(Velocity);
             transform.Position += Velocity * dt;
-
-            ClearAccululatiors();
+            transform.Rotation += AngularVelocity * dt;
+        
         }
 
-        void ClearAccululatiors()
-        {
-            forceAccum = Vector2.Zero;  
-        }
-
-        public void AddForce(Vector2 force) 
-        {
-            this.forceAccum += force;
-        }
-
-        public void SetVelocity(Vector2 vel) => Velocity = vel;
+       
         public void SetCoefficientOfRestitution(float coefficient) => COR = coefficient;    
+
+        public void AddForce(Vector2 force) => Velocity += force;
+        public void SetVelocity(Vector2 vel) => Velocity = vel;
+        
+        public void AddTouque(float force) => AngularVelocity += force; 
+        public void SetAngularVelocity(float vel) => AngularVelocity = vel;
     }
 }

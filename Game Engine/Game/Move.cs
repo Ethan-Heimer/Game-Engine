@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Engine.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,25 +12,31 @@ namespace GameEngine
     public class Move : Behavior
     {
         public int Speed;
+        RigidBody body;
+
+        public void Start()
+        {
+            body = gameObject.GetComponent<RigidBody>();
+        }
        
         public void Update() 
         {
             if(InputManager.IsKeyDown(Keys.A)) 
             {
-                gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X - Speed, gameObject.Transform.Position.Y);
+                body.SetVelocity(new Vector2(-1 * Speed, 0));
             }
             if (InputManager.IsKeyDown(Keys.D))
             {
-                gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X + Speed, gameObject.Transform.Position.Y);
+                body.SetVelocity(new Vector2(1 * Speed, 0));
             }
 
             if(InputManager.IsKeyDown(Keys.W))
             {
-                gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X, gameObject.Transform.Position.Y-Speed);
+                body.SetVelocity(new Vector2(0, -1 * Speed));
             }
             if (InputManager.IsKeyDown(Keys.S))
             {
-                gameObject.Transform.Position = new Vector2(gameObject.Transform.Position.X, gameObject.Transform.Position.Y+Speed);
+                body.SetVelocity(new Vector2(0, 1 * Speed));
             }
         }
     }

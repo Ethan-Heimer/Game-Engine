@@ -9,6 +9,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GameEngine.Engine.Physics
 {
@@ -88,14 +91,16 @@ namespace GameEngine.Engine.Physics
             {
                 for(int j = 0; j < collisions.Count; j++) 
                 {
-                    int kSize = collisions[j].ContactPoints.Length;
-                    for(int k = 0; k < kSize; k++)
-                    {
-                        RigidBody r1 = bodies1[j];
-                        RigidBody r2 = bodies2[j];
+                    RigidBody r1 = bodies1[j];
+                    RigidBody r2 = bodies2[j];
 
-                        ApplyImpulse(r1, r2, collisions[j]);
-                    }
+                    if(r1.Mass != 0)
+                        r1.transform.Position += (-collisions[j].Normal * collisions[j].Depth / 2);
+
+                    if(r2.Mass != 0)
+                        r2.transform.Position += (collisions[j].Normal * collisions[j].Depth / 2);
+
+                    ApplyImpulseWithRotation(r1, r2, collisions[j]);
                 }
             }
 
@@ -116,8 +121,6 @@ namespace GameEngine.Engine.Physics
 
         static void ApplyImpulse(RigidBody r1, RigidBody r2, CollisionManifold m)
         {
-            Console.WriteLine("Trying to Apply Impulse");
-
             float invMass1 = r1.InverseMass;
             float invMass2 = r2.InverseMass;
 
@@ -125,7 +128,6 @@ namespace GameEngine.Engine.Physics
 
             if (invMassSum == 0f)
             {
-                Console.WriteLine("Sum is Zero");
                 return;
             }
 
@@ -133,12 +135,11 @@ namespace GameEngine.Engine.Physics
             Vector2 relNormal = m.Normal;
 
             relNormal.Normalize();
-            Console.WriteLine(relNormal);
 
             //moving away
+            //it does not matter the order for a dot product
             if(Vector2.Dot(relVel, relNormal) > 0)
             {
-                Console.WriteLine("Objects are moving away");
                 return;
             }
 
@@ -147,13 +148,96 @@ namespace GameEngine.Engine.Physics
             float n = (-(1f + e) * Vector2.Dot(relVel, relNormal));
             float J = n / invMassSum;
 
-            if (m.ContactPoints.Length > 0 && J != 0f)
-                J /= (float)m.ContactPoints.Length;
-
             Vector2 impulse = relNormal * J;
 
             r1.SetVelocity((r1.Velocity + impulse) * invMass1 * -1);
-            r2.SetVelocity((r2.Velocity + impulse) * invMass2);
+            r2.SetVelocity((r2.Velocity + impulse) * invMass2);   
+        }
+
+        public static void ApplyImpulseWithRotation(RigidBody r1, RigidBody r2, CollisionManifold m)
+        {
+            Vector2 normal = m.Normal;
+            float depth = m.Depth;
+
+            int contactCount = m.ContactPoints.Length;
+
+            float e = Math.Min(r1.COR, r2.COR);
+            Vector2[] contactList = m.ContactPoints;
+
+            Vector2[] impulseList = new Vector2[contactCount];
+            Vector2[] raList = new Vector2[contactCount];
+            Vector2[] rbList = new Vector2[contactCount];
+
+            for(int i = 0; i< contactCount; i++)
+            {
+                Vector2 ra = contactList[i] - r1.transform.Position;
+                Vector2 rb = contactList[i] - r2.transform.Position;
+
+                raList[i] = ra;
+                rbList[i] = rb;
+
+                Vector2 rap = new Vector2(ra.Y, ra.X);
+                Vector2 rbp = new Vector2(rb.Y, rb.X);
+
+                Vector2 angularLinearVelocityA = rap * r1.AngularVelocity;
+                Vector2 angularLinearVelocityB = rbp * r2.AngularVelocity;
+
+                Vector2 relVel = (r2.Velocity + angularLinearVelocityB) - (r1.Velocity + angularLinearVelocityA);
+
+                float invMass1 = r1.InverseMass;
+                float invMass2 = r2.InverseMass;
+
+                float invMassSum = invMass1 + invMass2;
+
+                if (invMassSum == 0f)
+                {
+                    continue;
+                }
+
+                float contactMagnitude = Vector2.Dot(relVel, normal);
+
+                if (contactMagnitude > 0) 
+                {
+                    continue;
+                }
+
+                Console.WriteLine(r1.Inertia);
+
+                float rapDotN = Vector2.Dot(rap, normal);
+                float rbpDotN = Vector2.Dot(rbp, normal);
+                float n = (-(1f + e) * contactMagnitude);
+                float d = invMassSum + (rapDotN * rapDotN) * r1.InverseInertia + (rbpDotN * rbpDotN) * r2.InverseInertia;
+
+                float J = n / d;
+                Console.WriteLine(n);
+                J /= (float)contactCount;
+
+
+                Vector2 impulse = normal * J;
+                impulseList[i] = impulse;
+                
+            }
+
+            for(int i = 0; i < contactCount; i++)
+            {
+                Vector2 impulse = impulseList[i];
+                Vector2 ra = raList[i];
+                Vector2 rb = rbList[i];
+
+                float rotImpualseA = Cross(ra, impulse) * r1.InverseInertia;
+                float rotImpualseB = Cross(rb, impulse) * r2.InverseInertia;
+
+                r1.SetVelocity((r1.Velocity - impulse) * r1.InverseMass);
+                r2.SetVelocity((r2.Velocity + impulse) * r2.InverseMass);
+
+                r1.AddTouque(-(rotImpualseA));
+                r2.AddTouque((rotImpualseB));
+            }
+        }
+        static float Cross(Vector2 a, Vector2 b)
+        {
+            // cz = ax * by − ay * bx
+            return a.X * b.Y - a.Y * b.X;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace GameEngine
             PlayModeManager.Init();
             TempFileHandler.Init();
             NotesManager.Init();
-            PhysicsSystem.Init(.1f, new Vector2(0, 1));
+            PhysicsSystem.Init(.1f, new Vector2(0f, 10f));
 
             this.IsMouseVisible = true;
             AfterInit?.Invoke();

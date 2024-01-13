@@ -1,5 +1,6 @@
 ﻿using GameEngine.Engine.Physics.Rigidbody;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,334 @@ namespace GameEngine.Engine.Physics
 {
     public static class Collisions
     {
+        public static CollisionManifold FindCollisionFeatures(Collider a, Collider b)
+        {
+            Vector2 normal = Vector2.Zero;
+            float depth = float.MaxValue;
+
+            Vector2[] verticesA = a.transform.GetVerticies();
+            Vector2[] verticesB = b.transform.GetVerticies();
+
+            for (int i = 0; i < verticesA.Length; i++)
+            {
+                Vector2 va = verticesA[i];
+                Vector2 vb = verticesA[(i + 1) % verticesA.Length];
+
+                Vector2 edge = vb - va;
+                Vector2 axis = new Vector2(-edge.Y, edge.X);
+                axis = Vector2.Normalize(axis);
+
+                ProjectVertices(verticesA, axis, out float minA, out float maxA);
+                ProjectVertices(verticesB, axis, out float minB, out float maxB);
+
+                if (minA >= maxB || minB >= maxA)
+                {
+                    return null;
+                }
+
+                float axisDepth = Math.Min(maxB - minA, maxA - minB);
+
+                if (axisDepth < depth)
+                {
+                    depth = axisDepth;
+                    normal = axis;
+                }
+            }
+
+            for (int i = 0; i < verticesB.Length; i++)
+            {
+                Vector2 va = verticesB[i];
+                Vector2 vb = verticesB[(i + 1) % verticesB.Length];
+
+                Vector2 edge = vb - va;
+                Vector2 axis = new Vector2(-edge.Y, edge.X);
+                axis = Vector2.Normalize(axis);
+
+                ProjectVertices(verticesA, axis, out float minA, out float maxA);
+                ProjectVertices(verticesB, axis, out float minB, out float maxB);
+
+                if (minA >= maxB || minB >= maxA)
+                {
+                    return null;
+                }
+
+                float axisDepth = Math.Min(maxB - minA, maxA - minB);
+
+                if (axisDepth < depth)
+                {
+                    depth = axisDepth;
+                    normal = axis;
+                }
+            }
+
+            Vector2 centerA = FindPolygonCenter(verticesA);
+            Vector2 centerB = FindPolygonCenter(verticesB);
+
+            Vector2 direction = centerB - centerA;
+
+            if (Vector2.Dot(direction, normal) < 0f)
+            {
+                normal = -normal;
+            }
+
+            FindContactPoints(a, b, out Vector2 point1, out Vector2 point2);
+
+            CollisionManifold manifold = new CollisionManifold(normal, new Vector2[] {point1, point2 }, depth);
+            return manifold;
+        }
+
+        /*
+        public static CollisionManifold FindCollisionFeatures(Collider a, Collider b)
+        {
+
+            Vector2 normal = Vector2.Zero;
+            float depth = float.MaxValue;
+
+            Vector2[] aVerticies = a.transform.GetVerticies();
+            Vector2[] bVerticies = b.transform.GetVerticies();
+
+
+            //Go through each axis of teh polygon and see if:
+            //A. SAT
+            //B. See if it has the minimum depth
+            for(int i = 0; i < aVerticies.Length; i++)
+            {
+                Vector2 vertexA = aVerticies[i];
+                Vector2 vertexB = aVerticies[(i+1)%aVerticies.Length]; //gets naighbor vertex
+
+                Vector2 edge = vertexB - vertexA;
+                Vector2 axis = new Vector2(-edge.Y, edge.X);
+
+                axis.Normalize();
+
+                //SAT
+                ProjectVertices(aVerticies, axis, out float minA, out float maxA);
+                ProjectVertices(bVerticies, axis, out float minB, out float maxB);
+
+                if (minA >= maxB || minB >= maxA)
+                {
+                    //Console.WriteLine("Not Collidign");
+                    return null;
+                }
+
+                //try and find the least depth
+                float axisDepth = Math.Min(maxB - minA, maxA - minB);   
+
+                if(axisDepth < depth)
+                {
+                    depth = axisDepth;
+                    normal = axis;
+                }
+            }
+
+            for (int i = 0; i < bVerticies.Length; i++)
+            {
+                Vector2 vertexA = bVerticies[i];
+                Vector2 vertexB = bVerticies[(i + 1) % bVerticies.Length]; //gets naighbor vertex
+
+                Vector2 edge = vertexB - vertexA;
+                Vector2 axis = new Vector2(-edge.Y, edge.X);
+
+                axis.Normalize();
+
+                //SAT
+                ProjectVertices(aVerticies, axis, out float minA, out float maxA);
+                ProjectVertices(bVerticies, axis, out float minB, out float maxB);
+
+                if (minA >= maxB || minB >= maxA)
+                {
+                    //Console.WriteLine("Not Collidign");
+                    return null;
+                }
+
+                //try and find the least depth
+                float axisDepth = Math.Min(maxB - minA, maxA - minB);
+
+                if (axisDepth < depth)
+                {
+                    depth = axisDepth;
+                    normal = axis;
+                }       
+            }
+
+            //at this point, both of the shapes are fs colliding
+
+            //Console.WriteLine("Colliding");
+
+            Vector2 centerA = FindPolygonCenter(aVerticies);
+            Vector2 centerB = FindPolygonCenter(bVerticies);
+
+            Vector2 direction = centerB - centerA;
+
+            if(Vector2.Dot(direction, normal) < 0f) 
+            {
+                normal = -normal;
+            }
+
+            var manifold = new CollisionManifold(normal, null, depth);
+
+            int points = FindContactPoints(a, b, out Vector2 point1, out Vector2 point2);
+
+            if(points == 1)
+            {
+                manifold.AddContactPoint(point1);
+            }
+            else if(points == 2)
+            {
+                manifold.AddContactPoint(point1);
+                manifold.AddContactPoint(point2);
+            }
+
+            return manifold;
+        }
+        */
+        static void ProjectVertices(Vector2[] verticies, Vector2 axis, out float min, out float max)
+        {
+            min = float.MaxValue;
+            max = float.MinValue;
+
+            for(int i =0; i < verticies.Length; i++) 
+            {
+                Vector2 vertex = verticies[i];
+                float projection = Vector2.Dot(vertex, axis);
+
+                if (projection < min) { min = projection; }
+                if (projection > max) { max = projection; }
+            }
+
+        }
+
+        private static Vector2 FindPolygonCenter(Vector2[] vertices)
+        {
+            float sumX = 0f;
+            float sumY = 0f;
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 v = vertices[i];
+                sumX += v.X;
+                sumY += v.Y;
+            }
+
+            return new Vector2(sumX / (float)vertices.Length, sumY / (float)vertices.Length);
+        }
+
+        public static int FindContactPoints(Collider a, Collider b, out Vector2 point1, out Vector2 point2)
+        {
+            int contactCount = 0;
+
+            point1 = Vector2.Zero;
+            point2 = Vector2.Zero;
+
+            Vector2[] aVerticies = a.transform.GetVerticies();
+            Vector2[] bVerticies = b.transform.GetVerticies();
+
+            float minDistSqr = float.MaxValue;
+
+            for(int i = 0; i < aVerticies.Length; i++)
+            {
+                Vector2 p = aVerticies[i];
+
+                for(int j = 0; j < bVerticies.Length; j++)
+                {
+                    Vector2 va = bVerticies[j];
+                    Vector2 vb = bVerticies[(j+1) % bVerticies.Length];
+
+                    PointSegmentDistance(p, va, vb, out float disSq, out Vector2 cp);
+
+                    if(NearlyEqual(disSq, minDistSqr))
+                    {
+                        if(!NearlyEqual(cp, point1))
+                        {
+                            point2 = cp;
+                            contactCount = 2;
+                        }
+                    }
+                    else if(disSq < minDistSqr)
+                    {
+                        minDistSqr = disSq;
+                        contactCount = 1;
+
+                        point1 = cp;
+                    }
+                }
+            }
+
+            for (int i = 0; i < bVerticies.Length; i++)
+            {
+                Vector2 p = bVerticies[i];
+
+                for (int j = 0; j < aVerticies.Length; j++)
+                {
+                    Vector2 va = aVerticies[j];
+                    Vector2 vb = aVerticies[(j + 1) % bVerticies.Length];
+
+                    PointSegmentDistance(p, va, vb, out float disSq, out Vector2 cp);
+
+                    if (NearlyEqual(disSq, minDistSqr))
+                    {
+                        if (!NearlyEqual(cp, point1))
+                        {
+                            point2 = cp;
+                            contactCount = 2;
+                        }
+                    }
+                    else if (disSq < minDistSqr)
+                    {
+                        minDistSqr = disSq;
+                        contactCount = 1;
+
+                        point1 = cp;
+                    }
+                }
+            }
+
+            return contactCount;
+
+        }
+
+        public static void PointSegmentDistance(Vector2 p, Vector2 a, Vector2 b, out float distanceSquared, out Vector2 contact)
+        {
+            Vector2 ab = b - a;
+            Vector2 ap = p - a;
+
+            float proj = Vector2.Dot(ap, ab);
+            float ablenSq = ab.LengthSquared();
+            float d = proj / ablenSq;
+
+            if(d <= 0f)
+            {
+                contact = a;
+            }
+            else if(d >= 1f)
+            {
+                contact = b;
+            }
+            else
+            {
+                contact = a + ab * d;
+            }
+
+            distanceSquared = Vector2.DistanceSquared(ap, contact);
+        }
+
+        static bool NearlyEqual(float a, float b)
+        {
+            float accuracy = .0005f;
+            return Math.Abs(a - b) < accuracy;
+        }
+
+        static bool NearlyEqual(Vector2 a, Vector2 b)
+        {
+            return NearlyEqual(a.X, b.X) && NearlyEqual(a.Y, b.Y);
+        }
 
         //code from Box2d lite and translated from c++ into c# 
+
+        //transforming the vector with a matrix is the same as multiplting
+        //abs a vector or matrix abs all elements of that data type
+
+        /*
         public static CollisionManifold FindCollisionFeatures(Collider a, Collider b)
         {
             CollisionManifold manifold = new CollisionManifold();
@@ -26,8 +353,6 @@ namespace GameEngine.Engine.Physics
 
             Matrix rotA = Matrix.CreateRotationZ(a.transform.WorldRotation);
             Matrix rotB = Matrix.CreateRotationZ(b.transform.WorldRotation);
-
-            Console.WriteLine(b.transform.WorldRotation);
 
             //transpose means flipping the matrix
             Matrix rotAT = Matrix.Transpose(rotA);
@@ -50,25 +375,23 @@ namespace GameEngine.Engine.Physics
             //SAT
 
             //i dont have hope that is math works right, code found at 12:20
-            Vector2 faceA = AbsVector2(dA) - halfA - Vector2.Transform(halfB, absC);
+            Vector2 faceA = (AbsVector2(dA) - halfA) - (Vector2.Transform(halfB, absC)); //pemdas might cause problems with this line
             if (faceA.X > 0 || faceA.Y > 0)
             {
-                Console.WriteLine("Face A Returned");
                 return new CollisionManifold();
             }
 
             //same thing but for face B
-            Vector2 faceB = AbsVector2(dB) - ((Vector2.Transform(halfA, absCT) * halfB));
+            Vector2 faceB = AbsVector2(dB) - Vector2.Transform(halfA, absCT) - halfB; //was error here | pemdas still might be the problem
             if (faceB.X > 0 || faceB.Y > 0)
             {
-                Console.WriteLine("Face B returned");
                 return new CollisionManifold();
             }
 
             //find the best axis
             Axis axis = Axis.FACE_A_X;
             float separation = faceA.X;
-            Vector2 normal = dA.X > 0f ? new Vector2(rotA.M11, rotA.M21) : -new Vector2(rotA.M11, rotA.M21);
+            Vector2 normal = dA.X > 0f ? new Vector2(rotA.M11, rotA.M21) : new Vector2(-rotA.M11, -rotA.M21);
 
             const float relativeTol = .95f;
             const float absoluteTol = .01f;
@@ -77,7 +400,7 @@ namespace GameEngine.Engine.Physics
             {
                 axis = Axis.FACE_A_Y;
                 separation = faceA.Y;
-                normal = dA.X > 0f ? new Vector2(rotA.M12, rotA.M22) : -new Vector2(rotA.M12, rotA.M22);
+                normal = dA.X > 0f ? new Vector2(rotA.M12, rotA.M22) : new Vector2(-rotA.M12, -rotA.M22);
             }
 
             //b faces
@@ -85,14 +408,14 @@ namespace GameEngine.Engine.Physics
             {
                 axis = Axis.FACE_B_X;
                 separation = faceB.X;
-                normal = dB.X > 0f ? new Vector2(rotB.M11, rotB.M21) : -new Vector2(rotB.M11, rotB.M21);
+                normal = dB.X > 0f ? new Vector2(rotB.M11, rotB.M21) : new Vector2(-rotB.M11, -rotB.M21);
             }
 
             if (faceB.Y > relativeTol * separation + absoluteTol * halfB.Y)
             {
                 axis = Axis.FACE_B_Y;
                 separation = faceB.Y;
-                normal = dB.Y > 0f ? new Vector2(rotB.M12, rotB.M22) : -new Vector2(rotB.M12, rotB.M22);
+                normal = dB.Y > 0f ? new Vector2(rotB.M12, rotB.M22) : new Vector2(-rotB.M12, -rotB.M22);
             }
 
             //---------------------------------------------
@@ -107,7 +430,7 @@ namespace GameEngine.Engine.Physics
                 case Axis.FACE_A_X:
                     frontNormal = normal;
                     front = Vector2.Dot(posA, frontNormal) + halfA.X;
-                    sideNormal = new Vector2(rotA.M11, rotA.M21);
+                    sideNormal = new Vector2(rotA.M12, rotA.M22); //Was Error Here
 
                     float side = Vector2.Dot(posA, sideNormal);
 
@@ -205,7 +528,7 @@ namespace GameEngine.Engine.Physics
                 //seperation is probobly not the same as the depth, so here is a possable bug
                 float seperation = Vector2.Dot(frontNormal, clipPoints2[i].v) - front;
 
-                if(seperation < 0)
+                if(seperation <= 0)
                 {
                     Vector2 point = clipPoints2[i].v - separation * frontNormal;
                     manifold.AddContactPoint(point);
@@ -250,7 +573,7 @@ namespace GameEngine.Engine.Physics
                 {
                     c[0].v = new Vector2(h.X, h.Y);
                     c[0].fp.e.InEdge2 = Edge.Edge4;
-                    c[0].fp.e.OutEdge2 = Edge.Edge4;
+                    c[0].fp.e.OutEdge2 = Edge.Edge1; // Was Error Here  
 
                     c[1].v = new Vector2(-h.X, h.Y);
                     c[1].fp.e.InEdge2 = Edge.Edge1;
@@ -269,7 +592,7 @@ namespace GameEngine.Engine.Physics
             }
 
             c[0].v = pos + Vector2.Transform(c[0].v, rotation);
-            c[1].v = pos + Vector2.Transform(c[1].v, rotation);
+            c[1].v = pos + Vector2.Transform(c[1].v, rotation); 
         }
 
         static int ClipSegmentToLine(ref ClipVertext[] vOut, ref ClipVertext[] vIn, Vector2 Normal, float offset, Edge clipEdge)
@@ -289,7 +612,7 @@ namespace GameEngine.Engine.Physics
             if(distance0 * distance1 < 0f)
             {
                 float interp = distance0 / (distance0 - distance1);
-                vOut[numOut].v = vIn[0].v = interp * (vIn[1].v - vIn[0].v);
+                vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v); //Was error here
 
                 if(distance0 > 0f)
                 {
@@ -353,6 +676,11 @@ namespace GameEngine.Engine.Physics
         }
 
         static Vector2 Sign(Vector2 v) => new Vector2(Math.Sign(v.X), Math.Sign(v.Y));
+
+        static Vector2 MultiplyVectorAndMatrix(Vector2 vector, Matrix matrix)
+        {
+            return new Vector2((matrix.M11 * vector.X) + (matrix.M21 * vector.Y), (matrix.M12 * vector.X + matrix.M22 * vector.Y));
+        }
         
     }
 
@@ -397,5 +725,7 @@ namespace GameEngine.Engine.Physics
         Edge2,
         Edge3,
         Edge4,
+    }
+        */
     }
 }
