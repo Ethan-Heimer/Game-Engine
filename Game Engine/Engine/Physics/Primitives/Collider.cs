@@ -12,6 +12,18 @@ namespace GameEngine.Engine.Physics
     public class Collider : Behavior
     {
         RigidBody _ridgidBody;
+
+        public bool IsColliding;
+        public Vector2[] CollsionNormals
+        {
+            get
+            {
+                return collisionNormals.ToArray();
+            }
+        }
+        
+        List<Vector2> collisionNormals = new List<Vector2>();
+
         public RigidBody RigidBody
         {
             get
@@ -22,6 +34,13 @@ namespace GameEngine.Engine.Physics
                 return _ridgidBody; 
             }
         }
+
+        public void AddNormal(Vector2 normal)
+        {
+            collisionNormals.Add(normal);
+        }
+
+        public void ClearNormals() => collisionNormals.Clear(); 
         
         public void OnDraw()
         {

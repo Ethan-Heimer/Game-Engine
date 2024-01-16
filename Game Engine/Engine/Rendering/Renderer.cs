@@ -18,6 +18,8 @@ namespace GameEngine.Rendering
     [Note(note = "The render uses a buffer which i feel might use alot of memory. when optimizing this might be a good place to start. a fun approch could be rendering with async, blocking the fuctions rendering calls until some blocking method is released")]
     public static class Renderer
     {
+        static GameWindow window;
+
         static GraphicsDevice graphicsDevice;
         static GraphicsDeviceManager graphics;
         static SpriteBatch spriteBatch;
@@ -48,6 +50,8 @@ namespace GameEngine.Rendering
             pixel.SetData<Int32>(data, 0, pixel.Width * pixel.Height);
 
             circle = CreateCircleText(1000);
+
+            window = game.Window;
         }
 
         public static void Draw()

@@ -9,7 +9,6 @@ using GameEngine.Debugging;
 using System.Reflection;
 using GameEngine.Editor.UI.Inspector;
 using GameEngine.Engine;
-using System.Security.Cryptography.X509Certificates;
 using System.Runtime.Serialization;
 using Microsoft.Build.Tasks.Xaml;
 using GameEngine.Engine.ComponentModel;
@@ -25,8 +24,10 @@ namespace GameEngine.Editor.Windows
         Inspector inspector;
         public InspectorWindow() 
         {
-            Width = 200;
+            Width = 500;
             Height = 700;
+
+            RelativePosition = RelativeWindowPosition.Right;
         }
 
         public override void OnGUI(EditorGUIDrawer drawer)
@@ -55,7 +56,6 @@ namespace GameEngine.Editor.Windows
                 {
                     obj.AddComponent(o);
                 });
-            Console.WriteLine("Drawed Shit");
         }
 
         public override void OnUpdateGUI(EditorGUIDrawer drawer)

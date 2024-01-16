@@ -20,6 +20,8 @@ namespace GameEngine.Editor.Windows
         {
             Height = 100;
             Width = 500;
+
+            RelativePosition = RelativeWindowPosition.Top;
         }
 
         public override void OnGUI(EditorGUIDrawer editorGUI)
@@ -73,15 +75,24 @@ namespace GameEngine.Editor.Windows
 
         private void Play(object sender, RoutedEventArgs e)
         {
+            if (PlayModeManager.State != PlayModeManager.PlayMode.Edit)
+                return;
+
             PlayModeManager.SetMode(PlayModeManager.PlayMode.Play);
         }
 
         private void ExitPlay(object sender, RoutedEventArgs e)
         {
+            if (PlayModeManager.State != PlayModeManager.PlayMode.Play)
+                return;
+
             PlayModeManager.SetMode(PlayModeManager.PlayMode.Edit);
         }
         private void EnterPause(object sender, RoutedEventArgs e)
         {
+            if (PlayModeManager.State != PlayModeManager.PlayMode.Play)
+                return;
+
             PlayModeManager.SetMode(PlayModeManager.PlayMode.Pause);
         }
     }

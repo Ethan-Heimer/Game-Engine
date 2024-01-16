@@ -22,6 +22,12 @@
       "FunctionName": "OnDraw",
       "ParamTypes": [],
       "CanExecuteAlways": false
+    },
+
+    {
+      "FunctionName": "OnDisable",
+      "ParamTypes": [],
+      "CanExecuteAlways": false
     }
   ]
 }

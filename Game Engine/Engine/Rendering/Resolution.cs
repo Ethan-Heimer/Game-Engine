@@ -171,6 +171,11 @@ namespace GameEngine
             _Device.GraphicsDevice.Viewport = vp;
         }
 
+        public static Vector2 GetViewPosition()
+        {
+            return new Vector2(_Device.GraphicsDevice.Viewport.X, _Device.GraphicsDevice.Viewport.Y);
+        }
+
         /// <summary>
         /// Get virtual Mode Aspect Ratio
         /// </summary>

@@ -29,6 +29,8 @@ namespace GameEngine.Editor.Windows
         {
             Width = 300;
             Height = 600;
+
+            RelativePosition = RelativeWindowPosition.Left;
         }
 
         public override void OnGUI(EditorGUIDrawer drawer)

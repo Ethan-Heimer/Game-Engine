@@ -1,6 +1,8 @@
 ﻿using GameEngine.Debugging;
 using GameEngine.Editor.Windows;
 using GameEngine.Engine.Events;
+using GameEngine.Engine.Rendering;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,9 +101,44 @@ namespace GameEngine.Editor
                 {
                     var drawer = drawers[o];
                     o.OnUpdateGUI(drawer);
+
+                    UpdatePosition(o);
                 }
 
                 deley = time + 100;
+            }
+        }
+
+        static void UpdatePosition(EditorWindow window)
+        {
+            Vector2 gameWindowPosition = GameWindowManager.WindowPosition(); 
+            Vector2 gameWindowSize = GameWindowManager.WindowSize();
+
+            switch(window.RelativePosition) 
+            {
+                case RelativeWindowPosition.Float:
+                    break;
+
+                case RelativeWindowPosition.Left:
+                    float x = (float)gameWindowPosition.X - (float)window.Width;
+                    window.Position = new Vector2(x, gameWindowPosition.Y);
+                    break;
+
+                case RelativeWindowPosition.Right:
+                    float x2 = (float)gameWindowSize.X + gameWindowPosition.X;
+                    window.Position = new Vector2(x2, gameWindowPosition.Y);
+                    break;
+
+                case RelativeWindowPosition.Top:
+                    float y = (float)gameWindowPosition.Y - (float)window.Height;
+                    window.Position = new Vector2(gameWindowPosition.X, y);
+                    break;
+
+                case RelativeWindowPosition.Bottom:
+                    float y2 = (float)gameWindowSize.Y + gameWindowPosition.Y;
+                    window.Position = new Vector2(gameWindowPosition.X, y2);
+                    break;
+
             }
         }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,13 +34,18 @@ namespace GameEngine.Engine.Physics.Rigidbody
             get; private set;
         }
 
+        public int ContactCount
+        {
+            get; private set;
+        }
+
         public CollisionManifold()
         {
             Depth = 0; 
             IsColliding = false;
         }
 
-        public CollisionManifold(Vector2 normal, Vector2[] contactPoints, float depth)
+        public CollisionManifold(Vector2 normal, int ContactCount, Vector2[] contactPoints, float depth)
         {
             Normal = normal;
 
@@ -50,6 +56,7 @@ namespace GameEngine.Engine.Physics.Rigidbody
             Depth = depth;
             
             IsColliding = true;
+            this.ContactCount = ContactCount;
         }
 
         public void AddContactPoint(Vector2 point) => contactPoints.Add(point); 

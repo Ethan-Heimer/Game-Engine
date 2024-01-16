@@ -1,4 +1,5 @@
 ﻿using GameEngine.Engine.Physics.Rigidbody;
+using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,6 +14,8 @@ namespace GameEngine.Engine.Physics
 {
     public static class Collisions
     {
+        //todo: and broud and narrow phase colllision detection
+
         public static CollisionManifold FindCollisionFeatures(Collider a, Collider b)
         {
             Vector2 normal = Vector2.Zero;
@@ -21,10 +24,25 @@ namespace GameEngine.Engine.Physics
             Vector2[] verticesA = a.transform.GetVerticies();
             Vector2[] verticesB = b.transform.GetVerticies();
 
+            for(int i =0; i < verticesA.Length; i++)
+            {
+                Vector2 va = verticesA[i];
+                Vector2 vb = verticesA[(i + 1) % verticesA.Length];
+                Renderer.DrawLine(va, vb, Color.Red);
+            }
+
+            for (int i = 0; i < verticesB.Length; i++)
+            {
+                Vector2 va = verticesB[i];
+                Vector2 vb = verticesB[(i + 1) % verticesB.Length];
+                Renderer.DrawLine(va, vb, Color.Red);
+            }
+
             for (int i = 0; i < verticesA.Length; i++)
             {
                 Vector2 va = verticesA[i];
                 Vector2 vb = verticesA[(i + 1) % verticesA.Length];
+
 
                 Vector2 edge = vb - va;
                 Vector2 axis = new Vector2(-edge.Y, edge.X);
@@ -52,6 +70,8 @@ namespace GameEngine.Engine.Physics
                 Vector2 va = verticesB[i];
                 Vector2 vb = verticesB[(i + 1) % verticesB.Length];
 
+                Renderer.DrawLine(va, vb, Color.Red);
+
                 Vector2 edge = vb - va;
                 Vector2 axis = new Vector2(-edge.Y, edge.X);
                 axis = Vector2.Normalize(axis);
@@ -73,7 +93,7 @@ namespace GameEngine.Engine.Physics
                 }
             }
 
-            Vector2 centerA = FindPolygonCenter(verticesA);
+            Vector2 centerA = FindPolygonCenter(verticesA); //have transform have center field for optimization
             Vector2 centerB = FindPolygonCenter(verticesB);
 
             Vector2 direction = centerB - centerA;
@@ -83,9 +103,9 @@ namespace GameEngine.Engine.Physics
                 normal = -normal;
             }
 
-            FindContactPoints(a, b, out Vector2 point1, out Vector2 point2);
+            int contacts = FindPolygonsContactPoints(a.transform.GetVerticies(), b.transform.GetVerticies(), out Vector2 point1, out Vector2 point2);
 
-            CollisionManifold manifold = new CollisionManifold(normal, new Vector2[] {point1, point2 }, depth);
+            CollisionManifold manifold = new CollisionManifold(normal, contacts, new Vector2[] {point1, point2 }, depth);
             return manifold;
         }
 
@@ -225,108 +245,105 @@ namespace GameEngine.Engine.Physics
             return new Vector2(sumX / (float)vertices.Length, sumY / (float)vertices.Length);
         }
 
-        public static int FindContactPoints(Collider a, Collider b, out Vector2 point1, out Vector2 point2)
+        private static int FindPolygonsContactPoints(Vector2[] verticesA, Vector2[] verticesB, out Vector2 contact1, out Vector2 contact2)
         {
+            contact1 = Vector2.Zero;
+            contact2 = Vector2.Zero;
             int contactCount = 0;
 
-            point1 = Vector2.Zero;
-            point2 = Vector2.Zero;
+            float minDistSq = float.MaxValue;
 
-            Vector2[] aVerticies = a.transform.GetVerticies();
-            Vector2[] bVerticies = b.transform.GetVerticies();
-
-            float minDistSqr = float.MaxValue;
-
-            for(int i = 0; i < aVerticies.Length; i++)
+            for (int i = 0; i < verticesA.Length; i++)
             {
-                Vector2 p = aVerticies[i];
+                Vector2 p = verticesA[i];
 
-                for(int j = 0; j < bVerticies.Length; j++)
+                for (int j = 0; j < verticesB.Length; j++)
                 {
-                    Vector2 va = bVerticies[j];
-                    Vector2 vb = bVerticies[(j+1) % bVerticies.Length];
+                    Vector2 va = verticesB[j];
+                    Vector2 vb = verticesB[(j + 1) % verticesB.Length];
 
-                    PointSegmentDistance(p, va, vb, out float disSq, out Vector2 cp);
+                    PointSegmentDistance(p, va, vb, out float distSq, out Vector2 cp);
 
-                    if(NearlyEqual(disSq, minDistSqr))
+                    if (NearlyEqual(distSq, minDistSq))
                     {
-                        if(!NearlyEqual(cp, point1))
+                        if (!NearlyEqual(cp, contact1))
                         {
-                            point2 = cp;
+                            contact2 = cp;
                             contactCount = 2;
                         }
                     }
-                    else if(disSq < minDistSqr)
+                    else if (distSq < minDistSq)
                     {
-                        minDistSqr = disSq;
+                        minDistSq = distSq;
                         contactCount = 1;
-
-                        point1 = cp;
+                        contact1 = cp;
                     }
                 }
             }
-
-            for (int i = 0; i < bVerticies.Length; i++)
+            
+            for (int i = 0; i < verticesB.Length; i++)
             {
-                Vector2 p = bVerticies[i];
+                Vector2 p = verticesB[i];
 
-                for (int j = 0; j < aVerticies.Length; j++)
+                for (int j = 0; j < verticesA.Length; j++)
                 {
-                    Vector2 va = aVerticies[j];
-                    Vector2 vb = aVerticies[(j + 1) % bVerticies.Length];
+                    Vector2 va = verticesA[j];
+                    Vector2 vb = verticesA[(j + 1) % verticesA.Length];
 
-                    PointSegmentDistance(p, va, vb, out float disSq, out Vector2 cp);
+                    PointSegmentDistance(p, va, vb, out float distSq, out Vector2 cp);
 
-                    if (NearlyEqual(disSq, minDistSqr))
+                    if (NearlyEqual(distSq, minDistSq))
                     {
-                        if (!NearlyEqual(cp, point1))
+                        if (!NearlyEqual(cp, contact1))
                         {
-                            point2 = cp;
+                            contact2 = cp;
                             contactCount = 2;
                         }
                     }
-                    else if (disSq < minDistSqr)
+                    else if (distSq < minDistSq)
                     {
-                        minDistSqr = disSq;
+                        minDistSq = distSq;
                         contactCount = 1;
-
-                        point1 = cp;
+                        contact1 = cp;
                     }
                 }
             }
+            
 
+           
+
+            Console.WriteLine("Contact Points " +  contactCount);
             return contactCount;
-
         }
 
-        public static void PointSegmentDistance(Vector2 p, Vector2 a, Vector2 b, out float distanceSquared, out Vector2 contact)
+        public static void PointSegmentDistance(Vector2 p, Vector2 a, Vector2 b, out float distanceSquared, out Vector2 cp)
         {
             Vector2 ab = b - a;
             Vector2 ap = p - a;
 
             float proj = Vector2.Dot(ap, ab);
-            float ablenSq = ab.LengthSquared();
-            float d = proj / ablenSq;
+            float abLenSq = ab.LengthSquared();
+            float d = proj / abLenSq;
 
-            if(d <= 0f)
+            if (d <= 0f)
             {
-                contact = a;
+                cp = a;
             }
-            else if(d >= 1f)
+            else if (d >= 1f)
             {
-                contact = b;
+                cp = b;
             }
             else
             {
-                contact = a + ab * d;
+                cp = a + ab * d;
             }
 
-            distanceSquared = Vector2.DistanceSquared(ap, contact);
+            distanceSquared = Vector2.DistanceSquared(p, cp);
         }
 
         static bool NearlyEqual(float a, float b)
         {
-            float accuracy = .0005f;
+            float accuracy = 0.0005f;
             return Math.Abs(a - b) < accuracy;
         }
 

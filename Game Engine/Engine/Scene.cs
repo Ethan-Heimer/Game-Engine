@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 using GameEngine.ComponentManagement;
 using GameEngine.Engine;
+using GameEngine.Engine.Physics;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine
@@ -18,6 +19,19 @@ namespace GameEngine
         public string name;
 
         public GameObject[] gameObjects = new GameObject[0];
+
+        [NonSerialized]
+        PhysicsWorld physicsWorld = new PhysicsWorld();
+        public PhysicsWorld PhysicsWorld
+        {
+            get
+            {
+                if(physicsWorld == null)
+                    physicsWorld = new PhysicsWorld();
+
+                return physicsWorld;
+            }
+        }
         
         public GameObject[] GetGameobjects() => gameObjects.ToArray();
 

@@ -32,11 +32,15 @@ namespace GameEngine.Engine
 
         public enum PlayMode
         {
-            Edit,
             Play,
+            Edit,
             Pause,
         }
-        static PlayMode currentState = PlayMode.Play;
+        public static PlayMode State
+        {
+            get;
+            private set;
+        }
 
         public static void Init()
         {
@@ -58,12 +62,12 @@ namespace GameEngine.Engine
                     break;
             }
 
-            currentState = state;
+            State = state;
         }
 
         static void Tick()
         {
-            switch(currentState) 
+            switch(State) 
             {
                 case PlayMode.Edit:
                     WhileEditMode?.Invoke(editModeArgs);

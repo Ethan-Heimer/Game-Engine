@@ -122,6 +122,7 @@ namespace GameEngine
 
         static void HandleSceneOnEdit()
         {
+
             Scene tempScene = (Scene)TempFileHandler.Deserialize("temp.scene");
 
             if (tempScene != null)

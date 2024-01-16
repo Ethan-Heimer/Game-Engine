@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Engine.Physics;
@@ -11,7 +12,8 @@ namespace GameEngine
 {
     public class Move : Behavior
     {
-        public int Speed;
+        public int Acceleration;
+        public int MaxSpeed;
         RigidBody body;
 
         public void Start()
@@ -21,22 +23,36 @@ namespace GameEngine
        
         public void Update() 
         {
+            Vector2 direction = Vector2.Zero;
+
             if(InputManager.IsKeyDown(Keys.A)) 
             {
-                body.SetVelocity(new Vector2(-1 * Speed, 0));
+                direction.X = -1;
             }
             if (InputManager.IsKeyDown(Keys.D))
             {
-                body.SetVelocity(new Vector2(1 * Speed, 0));
+                direction.X = 1;
             }
 
             if(InputManager.IsKeyDown(Keys.W))
             {
-                body.SetVelocity(new Vector2(0, -1 * Speed));
+                direction.Y = -1;
             }
             if (InputManager.IsKeyDown(Keys.S))
             {
-                body.SetVelocity(new Vector2(0, 1 * Speed));
+                direction.Y = 1;
+            }
+
+            body.AddForce(direction* Acceleration);
+
+            if(!(-MaxSpeed < body.Velocity.X && body.Velocity.X < MaxSpeed))
+            {
+                body.SetVelocity(new Vector2(MaxSpeed * Math.Sign(body.Velocity.X), body.Velocity.Y));
+            }
+
+            if (!(-MaxSpeed < body.Velocity.Y && body.Velocity.Y < MaxSpeed))
+            {
+                body.SetVelocity(new Vector2(body.Velocity.X, MaxSpeed * Math.Sign(body.Velocity.Y)));
             }
         }
     }

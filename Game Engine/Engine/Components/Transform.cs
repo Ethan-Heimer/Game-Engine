@@ -140,8 +140,8 @@ namespace GameEngine
             {
                 new Vector2(-Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y),
                 new Vector2(Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y),
+                new Vector2(Size.X / 2 + WorldPosition.X, Size.Y / 2 + WorldPosition.Y),
                 new Vector2(-Size.X/2 + WorldPosition.X, Size.Y/2 + WorldPosition.Y),
-                new Vector2(Size.X / 2 + WorldPosition.X, Size.Y / 2 + WorldPosition.Y)
             };
 
             for(int i = 0; i < verticies.Length; i++)

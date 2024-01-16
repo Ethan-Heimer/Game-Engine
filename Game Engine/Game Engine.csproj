@@ -54,7 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
-    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
@@ -121,11 +121,8 @@
     <Compile Include="Engine\Debugging\NotesManager.cs" />
     <Compile Include="Engine\Event System\Event.cs" />
     <Compile Include="Engine\Event System\EventManager.cs" />
-    <Compile Include="Engine\Physics\Forces\ForceRegistration.cs" />
-    <Compile Include="Engine\Physics\Forces\ForceRegistry.cs" />
-    <Compile Include="Engine\Physics\Forces\Gravity.cs" />
-    <Compile Include="Engine\Physics\Forces\IForceGenerator.cs" />
     <Compile Include="Engine\Physics\PhysicsSystem.cs" />
+    <Compile Include="Engine\Physics\PhysicsWorld.cs" />
     <Compile Include="Engine\Physics\Primitives\Box2D.cs" />
     <Compile Include="Engine\Physics\Primitives\Collider.cs" />
     <Compile Include="Engine\Physics\Primitives\Ray2D.cs" />
@@ -151,6 +148,7 @@
     <Compile Include="Engine\Game Object System\GameObjectManager.cs" />
     <Compile Include="Engine\GameExecuter.cs" />
     <Compile Include="Engine\Rendering\CameraManager.cs" />
+    <Compile Include="Engine\Rendering\GameWindowManager.cs" />
     <Compile Include="Engine\Rendering\ICamera.cs" />
     <Compile Include="Engine\Rendering\Renderer.cs" />
     <Compile Include="Engine\Rendering\Sprite.cs" />
@@ -165,7 +163,7 @@
     <Compile Include="Engine\Utilities\DelegateTypeFactory.cs" />
     <Compile Include="Engine\Utilities\Input.cs" />
     <Compile Include="Engine\Pointer System\IPointer.cs" />
-    <Compile Include="Engine\Utilities\Resolution.cs" />
+    <Compile Include="Engine\Rendering\Resolution.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
