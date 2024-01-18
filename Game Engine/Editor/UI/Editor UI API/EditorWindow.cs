@@ -21,13 +21,17 @@ namespace GameEngine.Editor.Windows
         {
             get
             {
-                return new Vector2((float)Left, (float)Top);
+                var pos = new Vector2((float)Left, (float)Top);
+                Console.WriteLine(pos + " " + this.GetType().Name);
+                return pos;
             }
 
             set
             {
                 Left = value.X;
-                Top = value.Y;   
+                Top = value.Y;
+
+               
             }
         }
 
@@ -35,6 +39,9 @@ namespace GameEngine.Editor.Windows
         {
             get
             {
+                var pos = new Vector2((float)Width, (float)Height);
+                Console.WriteLine(pos + " " + this.GetType().Name);
+
                 return new Vector2((float)Width, (float)Height);
             }
 
@@ -42,6 +49,7 @@ namespace GameEngine.Editor.Windows
             {
                 Width = value.X;
                 Height = value.Y;
+
             }
         }
 

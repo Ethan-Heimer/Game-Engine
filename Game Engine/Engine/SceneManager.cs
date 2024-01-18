@@ -34,13 +34,12 @@ namespace GameEngine
             {
                 if (_currentScene != null)
                 {
+                    UnloadScene();
                     OnSceneUnloaded?.Invoke(new SceneUnloadedEvent() { Scene = value });
-                    _currentScene.Unload();
                 }
                 
                 _currentScene = value;
                 OnSceneLoaded?.Invoke(new SceneLoadedEvent() { Scene = value });
-                _currentScene.Load();
             }
         }
 
@@ -127,6 +126,13 @@ namespace GameEngine
 
             if (tempScene != null)
                 LoadScene(tempScene);
+        }
+
+        static void UnloadScene()
+        {
+            Console.WriteLine("Unload");
+            if (currentScene != null)
+                GameObjectManager.ClearAll();
         }
     }
 

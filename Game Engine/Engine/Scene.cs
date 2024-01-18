@@ -40,19 +40,6 @@ namespace GameEngine
             gameObjects = GameObjectManager.GetGameObjects();
         }
 
-        public void Load()
-        {
-            if(gameObjects != null)
-                GameObjectManager.RegisterGameobjectGroup(gameObjects);
-        }
-
-        public void Unload()
-        {
-            Console.WriteLine("Unload");
-            if (gameObjects != null)
-                GameObjectManager.ClearAll();
-        }
-
         public void Dispose() 
         {
             Dispose(true);

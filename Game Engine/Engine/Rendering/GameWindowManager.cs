@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameEngine.Debugging;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Engine.Rendering
 {
+    [Note(note ="Pos = (320, 180) Size = (1920, 1080) on home machiene")]
     public static class GameWindowManager
     {
         static GameWindow gameWindow;
@@ -19,12 +21,14 @@ namespace GameEngine.Engine.Rendering
 
         public static Vector2 WindowPosition()
         {
-            return new Vector2(gameWindow.ClientBounds.X, gameWindow.ClientBounds.Y);
+            var pos = new Vector2(gameWindow.ClientBounds.X, gameWindow.ClientBounds.Y);
+            return pos;
         }
 
         public static Vector2 WindowSize() 
         {
-            return new Vector2(gameWindow.ClientBounds.Width, gameWindow.ClientBounds.Height);
+            var size = new Vector2(gameWindow.ClientBounds.Width, gameWindow.ClientBounds.Height);
+            return size;
         }
     }
 }

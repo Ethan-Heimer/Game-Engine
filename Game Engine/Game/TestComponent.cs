@@ -21,7 +21,7 @@ namespace GameEngine.Game
 
         public void Start()
         {
-            Console.WriteLine("Start!!");
+            Console.WriteLine("Start!! " + gameObject.Name);
         }
 
         public void Update()

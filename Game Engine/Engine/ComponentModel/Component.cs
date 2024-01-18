@@ -78,7 +78,6 @@ namespace GameEngine
         {
             Behavior behavior = (Behavior)BindingBehavior.Clone();
             Component clone = new Component(behavior);
-            clone.GameObject = GameObject;
 
             return clone;
 

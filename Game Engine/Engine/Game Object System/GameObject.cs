@@ -58,9 +58,42 @@ namespace GameEngine
         public GameObject() 
         {
             AddComponent<Transform>();
-            GameObjectManager.RegisterGameobject(this);
+            RegisterGameobject(false);
 
             AssetManager.GetIcon("Cube", out Icon);
+        }
+
+        public GameObject(string name)
+        {
+            AddComponent<Transform>();
+            RegisterGameobject(false);
+
+            AssetManager.GetIcon("Cube", out Icon);
+
+            Name = name;
+        }
+
+        public GameObject(bool empty)
+        {
+            if (empty)
+            {
+                AddComponent<Transform>();
+                RegisterGameobject(false);
+            }
+
+            AssetManager.GetIcon("Cube", out Icon);
+        }
+
+        public GameObject(string name, bool empty)
+        {
+            if (empty)
+            {
+                AddComponent<Transform>();
+                RegisterGameobject(false);
+            }
+
+            AssetManager.GetIcon("Cube", out Icon);
+            Name = name;
         }
 
         public GameObject(SerializationInfo info, StreamingContext context)
@@ -72,9 +105,17 @@ namespace GameEngine
                 Parent = (GameObject)info.GetValue("Parent", typeof(GameObject));  
                 Icon = (Icon)info.GetValue("Icon", typeof(Icon));  
                 Name = (string)info.GetValue("Name", typeof(string));
+
+                foreach(Component component in components)
+                {
+                    Console.WriteLine(component);
+                }
+
+                RegisterGameobject(true);
             }
             catch { }
         }
+       
 
         public T GetComponent<T>() where T : Behavior
         {
@@ -181,18 +222,31 @@ namespace GameEngine
 
         public object Clone()
         {
-            GameObject clone = new GameObject();
-
+            GameObject clone = new GameObject(Name + " (Clone)", false);
+            
             foreach(Component o in components)
             {
-                if (o.BindingBehavior.GetType() == typeof(Transform))
-                   continue;
-
                 Component component = (Component)o.Clone();
+                component.GameObject = clone;
+
                 clone.AddComponent(component); 
             }
 
+            foreach(GameObject o in children)
+            {
+                var child = (GameObject)o.Clone();
+                clone.AddChild(child);
+            }
+
             return clone;
+        }
+
+        async void RegisterGameobject(bool yeild)
+        {
+            if(yeild)
+                await Task.Yield();
+
+            GameObjectManager.RegisterGameobject(this);
         }
 
     }

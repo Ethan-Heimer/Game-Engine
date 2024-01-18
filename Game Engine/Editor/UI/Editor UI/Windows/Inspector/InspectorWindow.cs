@@ -25,7 +25,7 @@ namespace GameEngine.Editor.Windows
         public InspectorWindow() 
         {
             Width = 500;
-            Height = 700;
+            Height = 1000;
 
             RelativePosition = RelativeWindowPosition.Right;
         }
