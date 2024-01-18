@@ -27,7 +27,7 @@ namespace GameEngine.Editor.Windows
             set
             {
                 Left = value.X;
-                Top = value.Y;
+                Top = value.Y;   
             }
         }
 

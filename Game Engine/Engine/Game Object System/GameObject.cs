@@ -21,7 +21,7 @@ namespace GameEngine
 {
     [Serializable]
     [Note(note ="IPointerManipulatable might wanna be seperated into multiple interfaced when starting on capture system")]
-    public class GameObject : ISerializable, IPointerManiplatable
+    public class GameObject : ISerializable, IPointerManiplatable, ICloneable
     {
         public string Name = "New Game Object";
 
@@ -109,6 +109,12 @@ namespace GameEngine
             return behavior;
         }
 
+        public void AddComponent(Component component)
+        {
+            components.Add(component);
+            ComponentCacheManager.AddCache(component.BindingBehavior);
+        }
+
         public void RemoveComponent(Component component)
         {
             components.Remove(component);
@@ -173,7 +179,21 @@ namespace GameEngine
         }
 
 
-       
+        public object Clone()
+        {
+            GameObject clone = new GameObject();
+
+            foreach(Component o in components)
+            {
+                if (o.BindingBehavior.GetType() == typeof(Transform))
+                   continue;
+
+                Component component = (Component)o.Clone();
+                clone.AddComponent(component); 
+            }
+
+            return clone;
+        }
 
     }
 }

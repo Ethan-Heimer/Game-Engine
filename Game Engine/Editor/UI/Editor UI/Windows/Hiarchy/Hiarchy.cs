@@ -54,7 +54,8 @@ namespace GameEngine.Editor.UI.Hiarchy
 
             ContextManager contextManager = new ContextManager(group);
             contextManager.AddOption("Add Child", (e, s) => CreateChild(obj))
-            .AddOption("Delete", (e, s) => obj.Destroy());
+            .AddOption("Delete", (e, s) => DeleteObject(obj))
+            .AddOption("Duplicate", (e, s) => DuplicateObject(obj));
 
             foreach (var o in obj.GetChildren())
             {
@@ -73,6 +74,13 @@ namespace GameEngine.Editor.UI.Hiarchy
         {
             GameObject child = CreateGameObject();
             parent.AddChild(child);
+        }
+
+        void DeleteObject(GameObject obj) => obj.Destroy();
+
+        void DuplicateObject(GameObject obj)
+        {
+            obj.Clone();
         }
     }
 }

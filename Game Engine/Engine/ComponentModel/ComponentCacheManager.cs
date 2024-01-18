@@ -64,6 +64,8 @@ namespace GameEngine.ComponentManagement
 
             addedArgs.behaviorAdded = behavior;
             OnCompnentAddedEvent?.Invoke(addedArgs);
+
+            Console.WriteLine(behavior.GetType().Name);
         }
 
  

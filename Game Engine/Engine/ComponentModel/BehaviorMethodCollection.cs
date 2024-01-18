@@ -37,7 +37,10 @@ namespace GameEngine.ComponentManagement
         public void TryCacheBehavior(Behavior behavior) 
         {
             if(TryGetMethod(behavior, out Delegate method) && !cache.ContainsKey(behavior))
+            {
+                Console.WriteLine("Added");
                 cache.Add(behavior, method);
+            }
         }
 
         public void TryRemoveBehavior(Behavior behavior)

@@ -120,8 +120,10 @@ namespace GameEngine.Editor
                     break;
 
                 case RelativeWindowPosition.Left:
-                    float x = (float)gameWindowPosition.X - (float)window.Width;
-                    window.Position = new Vector2(x, gameWindowPosition.Y);
+
+
+                    //float x = (float)gameWindowPosition.X - (float)window.Width;
+                    window.Position = gameWindowPosition;
                     break;
 
                 case RelativeWindowPosition.Right:

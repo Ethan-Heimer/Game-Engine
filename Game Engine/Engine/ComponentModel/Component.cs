@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace GameEngine
 {
     [Serializable]
-    public class Component : ISerializable
+    public class Component : ISerializable, ICloneable
     {
         public Behavior BindingBehavior;
 
@@ -72,6 +72,16 @@ namespace GameEngine
         public FieldInfo[] GetFields()
         {
             return BindingBehavior.GetType().GetFields().Where(x => x.FieldType.IsSerializable && x.FieldType != typeof(Component)).ToArray();
+        }
+
+        public object Clone()
+        {
+            Behavior behavior = (Behavior)BindingBehavior.Clone();
+            Component clone = new Component(behavior);
+            clone.GameObject = GameObject;
+
+            return clone;
+
         }
 
         public static Component BindComponent(Behavior behavior, GameObject obj)
