@@ -55,7 +55,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
-    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
@@ -110,6 +110,7 @@
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\Vector2FieldTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\Inspector.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\InspectorUIFactory.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Settings\SettingsWindow.cs" />
     <Compile Include="Editor\UI\Grid.cs" />
     <Compile Include="Editor\Widgets\Widget.cs" />
     <Compile Include="Editor\Widgets\WidgetDrawer.cs" />

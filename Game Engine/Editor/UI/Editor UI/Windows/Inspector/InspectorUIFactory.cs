@@ -13,7 +13,6 @@ namespace GameEngine.Editor.UI.Inspector
     public class UITemplateFactory<T> where T : UITemplateAttribute
     {
         DataBinderFactory binderFactory;
-
         Type binderType;
 
         public UITemplateFactory(Type binderType) 

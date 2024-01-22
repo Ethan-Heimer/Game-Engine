@@ -63,6 +63,9 @@ namespace GameEngine.Engine.Settings
 
         public static bool GetBool(string key) => bool.Parse(Settings.GetSettingsOfType<bool>().FirstOrDefault(x => x.Option == key).Value);
 
+        public static Setting[] GetSettings() => Settings.Settings;
+        public static Section[] GetSections() => Settings.Sections.ToArray();
+
     }
 
     public class SettingList

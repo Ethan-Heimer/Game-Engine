@@ -110,8 +110,6 @@ namespace GameEngine.Editor.Windows
             return defaultContainer;
         }
 
-        
-
         void Render(FrameworkElement element)
         {
             containerStack.Peek().Children.Add(element);

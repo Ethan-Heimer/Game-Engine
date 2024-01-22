@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace GameEngine.Editor.UI.Inspector
 {
     [Note(note ="Every frame, GetValue() is called AT LEAST once (in HasValueChanged) as well as when ever Get Value is called. while maybe not that big of a performance hit, it is somthing to look into")]
-    public class ComponentFieldBinder<T> : IFieldBinder<T>
+    public class ComponentFieldBinder<T> : IFieldBinder<T> 
     {
         public FieldInfo Field { get; set; }
         public object Owner { get; set; }
