@@ -20,8 +20,8 @@ namespace GameEngine.Engine.Physics
         public bool FixedRotation = false;
 
         public bool Gravity;
-        public Vector2 GravityDirection;
-        public float GravityMagnitude;
+        public Vector2 OffsetGravityDirection;
+        public float OffsetGravityMagnitude;
 
         public float drag;
         public float angularDrag;
@@ -104,7 +104,7 @@ namespace GameEngine.Engine.Physics
         }
 
         //could become Magic Function FixedUpdate
-        public void PhysicsUpdate(float dt)
+        public void PhysicsUpdate(float dt, Vector2 gravity, float intensity)
         {
             if (Static)
             {
@@ -119,7 +119,7 @@ namespace GameEngine.Engine.Physics
             {
                 Console.WriteLine(o);
 
-                if(o == -GravityDirection)
+                if(o == -OffsetGravityDirection)
                     applyGravity = false;
             }
 
@@ -129,7 +129,7 @@ namespace GameEngine.Engine.Physics
 
             if(Gravity && applyGravity)
             {
-                Velocity += GravityDirection * (GravityMagnitude) * dt;
+                Velocity += OffsetGravityDirection + gravity * (OffsetGravityMagnitude * intensity) * dt;
             }
             else
             {

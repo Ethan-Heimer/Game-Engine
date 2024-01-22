@@ -1,0 +1,69 @@
+{
+  "Sections": [
+    {
+      "Title": "Editor",
+      "Values": [
+        {
+          "Option": "Primary Color",
+          "X": "255",
+          "Y": "255",
+          "Z": "255",
+          "Type": "Microsoft.Xna.Framework.Color"
+        },
+        {
+          "Option": "Accent Color",
+          "X": "255",
+          "Y": "255",
+          "Z": "255",
+          "Type": "Microsoft.Xna.Framework.Color"
+        },
+        {
+          "Option": "Tertiary Color",
+          "X": "255",
+          "Y": "255",
+          "Z": "255",
+          "Type": "Microsoft.Xna.Framework.Color"
+        }
+      ]
+    },
+
+    {
+      "Title": "Physics",
+      "Values": [
+        {
+          "Option": "Default Gravity Direction",
+          "X": "0",
+          "Y": "1",
+          "Type": "Microsoft.Xna.Framework.Vector2"
+        },
+        {
+          "Option": "Gravity Strength",
+          "Value": "10",
+          "Type": "System.Single"
+        },
+        {
+          "Option": "Delta Time",
+          "Value": ".1",
+          "Type": "System.Single"
+        }
+      ]
+    },
+
+    {
+      "Title": "Game",
+      "Values": [
+        {
+          "Option": "Title",
+          "Value": "Game Title",
+          "Type": "System.String"
+        },
+
+        {
+          "Option": "Fullscreen",
+          "Value": "False",
+          "Type": "System.Boolean"
+        }
+      ]
+    }
+  ]
+}

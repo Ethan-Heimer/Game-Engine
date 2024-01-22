@@ -10,6 +10,7 @@ using GameEngine.Rendering;
 using GameEngine.Debugging;
 using GameEngine.Engine.Physics;
 using GameEngine.Engine.Rendering;
+using GameEngine.Engine.Settings;
 
 namespace GameEngine
 {
@@ -52,7 +53,7 @@ namespace GameEngine
             this.IsMouseVisible = true;
             AfterInit?.Invoke();
 
-            
+            Console.WriteLine(typeof(Vector2).FullName);
 
             base.Initialize();
         }

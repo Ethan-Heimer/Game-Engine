@@ -1,6 +1,7 @@
 ﻿using GameEngine.Debugging;
 using GameEngine.Engine.Events;
 using GameEngine.Engine.Physics.Rigidbody;
+using GameEngine.Engine.Settings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
@@ -20,6 +21,8 @@ namespace GameEngine.Engine.Physics
     public static class PhysicsSystem
     {
         static float fixedUpdate;
+        static Vector2 gravitydDirection;
+        static float gravityIntensity;
 
         static List<(int, int)> contactPairs = new List<(int, int)> ();
         static List<CollisionManifold> collisions = new List<CollisionManifold>();
@@ -31,14 +34,24 @@ namespace GameEngine.Engine.Physics
             fixedUpdate = fixedUpdateDeltaTime;
 
             EngineEventManager.AddEventListener<WhileInPlayMode>((e) => Update(fixedUpdateDeltaTime));
+            EngineEventManager.AddEventListener<OnEnterPlayMode>((e) => GetSettings());
+        }
+
+        static void GetSettings()
+        {
+            gravitydDirection = EngineSettings.GetVector2("Default Gravity Direction");
+            gravityIntensity = EngineSettings.GetFloat("Gravity Strength");
+
+            Console.WriteLine(gravitydDirection);
+            Console.WriteLine(gravityIntensity);
         }
 
         public static void Update(float dt) 
         {
-            FixedUpdate();
+            FixedUpdate(gravitydDirection, gravityIntensity);
         }
 
-        public static void FixedUpdate()
+        public static void FixedUpdate(Vector2 gravityDirection, float gravityIntensity)
         {
             var rigidBodies = PhysicsWorld.GetRigidBodies();
 
@@ -52,7 +65,7 @@ namespace GameEngine.Engine.Physics
             //FixedUpdate magic function can be ran here
             foreach (var o in rigidBodies)
             {
-                o.PhysicsUpdate(fixedUpdate);
+                o.PhysicsUpdate(fixedUpdate, gravityDirection, gravityIntensity);
             }
         }
 

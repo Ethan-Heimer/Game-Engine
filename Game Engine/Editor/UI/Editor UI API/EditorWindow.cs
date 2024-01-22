@@ -11,6 +11,29 @@ namespace GameEngine.Editor.Windows
 {
     public abstract class EditorWindow : Window
     {
+        Vector2 _dpi;
+        Vector2 DPI
+        {
+            get
+            {
+                if(_dpi == Vector2.Zero)
+                {
+                    PresentationSource source = PresentationSource.FromVisual(this);
+
+                    double dpiX = 0, dpiY = 0;
+                    if (source != null)
+                    {
+                        dpiX = source.CompositionTarget.TransformToDevice.M11;
+                        dpiY = source.CompositionTarget.TransformToDevice.M22;
+                    }
+
+                    _dpi = new Vector2((float)dpiX, (float)dpiY);
+                }
+
+                return _dpi;
+            }
+        }
+
         public RelativeWindowPosition RelativePosition
         {
             get;
@@ -22,16 +45,13 @@ namespace GameEngine.Editor.Windows
             get
             {
                 var pos = new Vector2((float)Left, (float)Top);
-                Console.WriteLine(pos + " " + this.GetType().Name);
                 return pos;
             }
 
             set
             {
-                Left = value.X;
-                Top = value.Y;
-
-               
+                Left = value.X * (1/DPI.X);
+                Top = value.Y * (1/DPI.Y);
             }
         }
 
@@ -39,16 +59,13 @@ namespace GameEngine.Editor.Windows
         {
             get
             {
-                var pos = new Vector2((float)Width, (float)Height);
-                Console.WriteLine(pos + " " + this.GetType().Name);
-
                 return new Vector2((float)Width, (float)Height);
             }
 
             set
             {
-                Width = value.X;
-                Height = value.Y;
+                Width = value.X * (1 / DPI.X);
+                Height = value.Y * (1 / DPI.Y);
 
             }
         }

@@ -16,6 +16,7 @@ using GameEngine.ComponentManagement;
 using System.Windows.Forms;
 using GameEngine.Pointers;
 using GameEngine.Debugging;
+using System.Runtime.InteropServices;
 
 namespace GameEngine
 {
@@ -100,18 +101,7 @@ namespace GameEngine
         {
             try
             {
-                components = (List<Component>)info.GetValue("Components", typeof(List<Component>));
-                children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
-                Parent = (GameObject)info.GetValue("Parent", typeof(GameObject));  
-                Icon = (Icon)info.GetValue("Icon", typeof(Icon));  
-                Name = (string)info.GetValue("Name", typeof(string));
-
-                foreach(Component component in components)
-                {
-                    Console.WriteLine(component);
-                }
-
-                RegisterGameobject(true);
+                InitData(info, context);
             }
             catch { }
         }
@@ -247,6 +237,22 @@ namespace GameEngine
                 await Task.Yield();
 
             GameObjectManager.RegisterGameobject(this);
+        }
+
+        async void InitData(SerializationInfo info, StreamingContext content)
+        {
+            components = (List<Component>)info.GetValue("Components", typeof(List<Component>));
+            children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
+            Parent = (GameObject)info.GetValue("Parent", typeof(GameObject));
+            Icon = (Icon)info.GetValue("Icon", typeof(Icon));
+            Name = (string)info.GetValue("Name", typeof(string));
+
+            while (components[0] == null)
+            {
+                await Task.Yield(); 
+            }
+
+            RegisterGameobject(true);
         }
 
     }
