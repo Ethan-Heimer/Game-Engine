@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace GameEngine.Engine.Physics
 {

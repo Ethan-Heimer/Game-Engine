@@ -53,7 +53,7 @@ namespace GameEngine
             this.IsMouseVisible = true;
             AfterInit?.Invoke();
 
-            Console.WriteLine(typeof(Vector2).FullName);
+            EngineSettings.SetString("Title", "FBLA Game");
 
             base.Initialize();
         }

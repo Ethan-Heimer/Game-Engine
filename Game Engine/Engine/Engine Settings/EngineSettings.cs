@@ -8,11 +8,16 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace GameEngine.Engine.Settings
 {
     public static class EngineSettings
     {
+        const string path = "..\\..\\engine\\Engine Settings\\Settings.json";
+
         static SettingList _settings;
         static SettingList Settings
         {
@@ -20,18 +25,17 @@ namespace GameEngine.Engine.Settings
             {
                 if (_settings == null)
                 {
-                    string data = File.ReadAllText("..\\..\\engine\\Engine Settings\\Settings.json");
-                    _settings = JsonSerializer.Deserialize<SettingList>(data);
+                    _settings = LoadSettings();
                 }
 
                 return _settings;
             }
         }
 
-        public static string GetString(string key) => Settings.GetSettingsOfType<string>().FirstOrDefault(x => x.Option == key).Value;
+        public static string GetString(string key) => FetchSetting<string>(key).Value;
         public static Color GetColor(string key) 
         {
-            Setting colorSetting = Settings.GetSettingsOfType<Color>().FirstOrDefault(x => x.Option == key);
+            Setting colorSetting = FetchSetting<Color>(key);
 
             float R = int.Parse(colorSetting.X);
             float G = int.Parse(colorSetting.Y);
@@ -39,11 +43,11 @@ namespace GameEngine.Engine.Settings
 
             return new Color(R, G, B);
         }
-        public static float GetFloat(string key) => float.Parse(Settings.GetSettingsOfType<float>().FirstOrDefault(x => x.Option == key).Value);
-        public static float GetInt(string key) => int.Parse(Settings.GetSettingsOfType<int>().FirstOrDefault(x => x.Option == key).Value);
+        public static float GetFloat(string key) => float.Parse(FetchSetting<float>(key).Value);
+        public static float GetInt(string key) => int.Parse(FetchSetting<int>(key).Value);
         public static Vector2 GetVector2(string key)
         {
-            Setting setting = Settings.GetSettingsOfType<Vector2>().FirstOrDefault(x => x.Option == key);
+            Setting setting = FetchSetting<Vector2>(key);
 
             float X = int.Parse(setting.X);
             float Y = int.Parse(setting.Y);
@@ -61,10 +65,37 @@ namespace GameEngine.Engine.Settings
             return new Vector3(X, Y, Z);
         }
 
-        public static bool GetBool(string key) => bool.Parse(Settings.GetSettingsOfType<bool>().FirstOrDefault(x => x.Option == key).Value);
+        public static bool GetBool(string key) => bool.Parse(FetchSetting<bool>(key).Value);
+
+
+        public static void SetFloat(string key, float value) => FetchSetting<float>(key).Value = value.ToString();
+        public static void SetString(string key, string value) => FetchSetting<string>(key).Value = value.ToString();
 
         public static Setting[] GetSettings() => Settings.Settings;
         public static Section[] GetSections() => Settings.Sections.ToArray();
+
+        static SettingList LoadSettings()
+        {
+            string data = File.ReadAllText(path);
+            SettingList settings = JsonSerializer.Deserialize<SettingList>(data);
+            foreach(var o in settings.Settings)
+            {
+                o.OnValueChanged += (s, v) => SaveSettings();
+            }
+
+            return settings;
+        }
+
+        static void SaveSettings()
+        {
+            FileStream createStream = File.Create(path);
+            JsonSerializer.Serialize(createStream, Settings);
+
+            Console.WriteLine("Save");
+        }
+
+        static Setting FetchSetting<T>(string name) => Settings.GetSettingsOfType<T>().FirstOrDefault(s => s.Option == name);
+        
 
     }
 
@@ -103,13 +134,77 @@ namespace GameEngine.Engine.Settings
         public List<Setting> Values { get; set; }
     }
 
-    public struct Setting
+    public class Setting
     {
-        public string Value { get; set; }
-        public string Option { get; set; }
-        public string X { get; set; }
-        public string Y { get; set; }
-        public string Z { get; set; }
-        public string Type { get; set; }
+        public event Action<Setting, string> OnValueChanged;
+
+        string _value;
+        public string Value 
+        {
+            get
+            {
+                return _value;
+            }
+            
+            set
+            {
+                _value = value;
+                OnValueChanged?.Invoke(this, value);
+            }
+        }
+
+        public string Option 
+        {
+            get; set;
+        }
+
+        string _x;
+        public string X 
+        {
+            get
+            {
+                return _x;
+            }
+            set
+            {
+                _x = value;
+                OnValueChanged?.Invoke(this, value);
+            } 
+        }
+
+        string _y;
+        public string Y 
+        {
+            get
+            {
+                return _y;
+            }
+            set
+            {
+                _y = value;
+                OnValueChanged?.Invoke(this, value);
+            }
+        }
+
+        string _z;
+        public string Z 
+        {
+            get
+            {
+                return _z;
+            }
+            set
+            {
+                _z = value;
+                OnValueChanged?.Invoke(this, value);
+            }
+        }
+
+        public string Type 
+        {
+            get; set;
+        }
+
+
     }
 }
