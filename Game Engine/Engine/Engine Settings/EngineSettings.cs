@@ -33,6 +33,9 @@ namespace GameEngine.Engine.Settings
         }
 
         public static string GetString(string key) => FetchSetting<string>(key).Value;
+        public static float GetFloat(string key) => float.Parse(FetchSetting<float>(key).Value);
+        public static float GetInt(string key) => int.Parse(FetchSetting<int>(key).Value);
+        public static bool GetBool(string key) => bool.Parse(FetchSetting<bool>(key).Value);
         public static Color GetColor(string key) 
         {
             Setting colorSetting = FetchSetting<Color>(key);
@@ -43,8 +46,6 @@ namespace GameEngine.Engine.Settings
 
             return new Color(R, G, B);
         }
-        public static float GetFloat(string key) => float.Parse(FetchSetting<float>(key).Value);
-        public static float GetInt(string key) => int.Parse(FetchSetting<int>(key).Value);
         public static Vector2 GetVector2(string key)
         {
             Setting setting = FetchSetting<Vector2>(key);
@@ -65,20 +66,46 @@ namespace GameEngine.Engine.Settings
             return new Vector3(X, Y, Z);
         }
 
-        public static bool GetBool(string key) => bool.Parse(FetchSetting<bool>(key).Value);
 
 
         public static void SetFloat(string key, float value) => FetchSetting<float>(key).Value = value.ToString();
+        public static void SetInt(string key, int value) => FetchSetting<int>(key).Value = value.ToString();
         public static void SetString(string key, string value) => FetchSetting<string>(key).Value = value.ToString();
+        public static void SetBool(string key, bool value) => FetchSetting<bool>(key).Value = value.ToString();
+        public static void SetColor(string key, Color value)
+        {
+            Setting colorSetting = FetchSetting<Color>(key);
 
-        public static Setting[] GetSettings() => Settings.Settings;
+            colorSetting.X = value.R.ToString();
+            colorSetting.Y = value.G.ToString();
+            colorSetting.Z = value.B.ToString();
+        }
+
+        public static void SetVector3(string key, Vector3 value)
+        {
+            Setting colorSetting = FetchSetting<Vector3>(key);
+
+            colorSetting.X = value.X.ToString();
+            colorSetting.Y = value.Y.ToString();
+            colorSetting.Z = value.Z.ToString();
+        }
+
+        public static void SetVector2(string key, Vector2 value)
+        {
+            Setting colorSetting = FetchSetting<Vector3>(key);
+
+            colorSetting.X = value.X.ToString();
+            colorSetting.Y = value.Y.ToString();
+        }
+
+        public static Setting[] GetSettings() => Settings.GetAllSettings();
         public static Section[] GetSections() => Settings.Sections.ToArray();
 
         static SettingList LoadSettings()
         {
             string data = File.ReadAllText(path);
             SettingList settings = JsonSerializer.Deserialize<SettingList>(data);
-            foreach(var o in settings.Settings)
+            foreach(var o in settings.GetAllSettings())
             {
                 o.OnValueChanged += (s, v) => SaveSettings();
             }
@@ -104,7 +131,7 @@ namespace GameEngine.Engine.Settings
         public List<Section> Sections {get; set;}
 
         Setting[] _setting;
-        public Setting[] Settings
+        Setting[] Settings
         {
             get
             {
@@ -126,6 +153,8 @@ namespace GameEngine.Engine.Settings
        {
             return Settings.Where(x => x.Type == typeof(T).FullName).ToArray();
        }
+
+        public Setting[] GetAllSettings() => Settings;
     }
 
     public struct Section
