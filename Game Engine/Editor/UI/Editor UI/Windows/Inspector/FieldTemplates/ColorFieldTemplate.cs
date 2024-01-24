@@ -32,23 +32,25 @@ namespace GameEngine.Editor.UI.Inspector
 
             var fieldR = drawer.DrawField(data.GetValue().R.ToString(), (val) =>
             {
-                HandleInput(val, ref color.X);
+                color.X = HandleInput(val);
                 Console.WriteLine(val.ToString());
             }, "R", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.Red));
 
             var fieldG = drawer.DrawField(data.GetValue().G.ToString(), (val) =>
             {
-                HandleInput(val, ref color.Y);
+                color.Y = HandleInput(val);
                 Console.WriteLine(val.ToString());
             }, "G", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.LawnGreen));
 
             var fieldB = drawer.DrawField(data.GetValue().B.ToString(), (val) =>
             {
-                HandleInput(val, ref color.Z);
+                color.Z = HandleInput(val);
                 Console.WriteLine(val.ToString());
             }, "B", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.DeepSkyBlue));
 
             drawer.EndGroup();
+
+            UpdateColor();
 
             drawer.DrawBox("Color", new ElementStyle()
             {
@@ -84,18 +86,12 @@ namespace GameEngine.Editor.UI.Inspector
 
         }
 
-        void HandleInput(string value, ref float output)
+        float HandleInput(string value)
         {
-            try
-            {
-                float number = float.Parse(value);
-                output = number/255f;
+            float number = float.Parse(value);
+            float output = number / 255f;
 
-                UpdateColor();
-                Console.WriteLine(color);
-                Console.WriteLine(new Microsoft.Xna.Framework.Color(color));
-            }
-            catch { }
+            return output;
         }
 
         void UpdateColor()

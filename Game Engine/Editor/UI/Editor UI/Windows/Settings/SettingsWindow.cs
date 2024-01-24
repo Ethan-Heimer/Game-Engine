@@ -25,6 +25,7 @@ namespace GameEngine.Editor.UI
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
+            /*
             var sections = EngineSettings.GetSections();
 
             foreach (var section in sections) 
@@ -44,6 +45,8 @@ namespace GameEngine.Editor.UI
                         return;
                 }
             }
+
+            */
         }
 
         

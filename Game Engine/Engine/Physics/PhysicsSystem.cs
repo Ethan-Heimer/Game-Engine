@@ -38,8 +38,8 @@ namespace GameEngine.Engine.Physics
 
         static void GetSettings()
         {
-            gravitydDirection = EngineSettings.GetVector2("Default Gravity Direction");
-            gravityIntensity = EngineSettings.GetFloat("Gravity Strength");
+            gravitydDirection = Vector2.Zero;//EngineSettings.GetVector2("Default Gravity Direction");
+            gravityIntensity = 10;//EngineSettings.GetFloat("Gravity Strength");
 
             Console.WriteLine(gravitydDirection);
             Console.WriteLine(gravityIntensity);

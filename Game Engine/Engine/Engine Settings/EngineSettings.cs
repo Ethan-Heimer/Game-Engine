@@ -18,6 +18,37 @@ namespace GameEngine.Engine.Settings
     {
         const string path = "..\\..\\engine\\Engine Settings\\Settings.json";
 
+        static List<Setting> _settings;
+        public static List<Setting> settings
+        {
+            get
+            {
+                if (_settings == null)
+                {
+                    _settings = new List<Setting>();
+
+                    var s1 = new Setting(10);
+                    var s2 = new Setting(17);
+                    var s3 = new Setting(new Vector2(10, 2));
+
+                    _settings.Add(s1);
+                    _settings.Add(s2);
+                    _settings.Add(s3);
+                }
+
+                return _settings;
+            }
+        }
+
+        public static void SaveSettings()
+        {
+            FileStream createStream = File.Create(path);
+            JsonSerializer.Serialize(createStream, settings);
+
+            Console.WriteLine("Save");
+        }
+
+        /*
         static SettingList _settings;
         static SettingList Settings
         {
@@ -123,123 +154,47 @@ namespace GameEngine.Engine.Settings
 
         static Setting FetchSetting<T>(string name) => Settings.GetSettingsOfType<T>().FirstOrDefault(s => s.Option == name);
         
+        */
+    }
+
+    public class Setting 
+    {
+        public object value;
+
+        public object Data
+        {
+            get
+            {
+                return value;
+            }
+
+            set { }
+        }
+
+        public string Type
+        {
+            get
+            {
+                return value.GetType().FullName;
+            }
+        }
+
+        public Setting(object val)
+        {
+            value = val;
+        }
 
     }
 
-    public class SettingList
+    
+
+    public interface ISetting<T> : ISetting
     {
-        public List<Section> Sections {get; set;}
-
-        Setting[] _setting;
-        Setting[] Settings
-        {
-            get
-            {
-                if(_setting == null)
-                {
-                    List<Setting> s = new List<Setting>();
-                    foreach (Section section in Sections) 
-                    {
-                        s.AddRange(section.Values);
-                    }
-
-                    _setting = s.ToArray();
-                }
-                return _setting;
-            }
-        }
-
-       public Setting[] GetSettingsOfType<T>()
-       {
-            return Settings.Where(x => x.Type == typeof(T).FullName).ToArray();
-       }
-
-        public Setting[] GetAllSettings() => Settings;
-    }
-
-    public struct Section
-    {
-        public string Title { get; set; }
-        public List<Setting> Values { get; set; }
-    }
-
-    public class Setting : ISetting
-    {
-        public event Action<Setting, string> OnValueChanged;
-
-        string _value;
-        public string Value 
-        {
-            get
-            {
-                return _value;
-            }
-            
-            set
-            {
-                _value = value;
-                OnValueChanged?.Invoke(this, value);
-            }
-        }
-
-        public string Option 
-        {
-            get; set;
-        }
-
-        string _x;
-        public string X 
-        {
-            get
-            {
-                return _x;
-            }
-            set
-            {
-                _x = value;
-                OnValueChanged?.Invoke(this, value);
-            } 
-        }
-
-        string _y;
-        public string Y 
-        {
-            get
-            {
-                return _y;
-            }
-            set
-            {
-                _y = value;
-                OnValueChanged?.Invoke(this, value);
-            }
-        }
-
-        string _z;
-        public string Z 
-        {
-            get
-            {
-                return _z;
-            }
-            set
-            {
-                _z = value;
-                OnValueChanged?.Invoke(this, value);
-            }
-        }
-
-        public string Type 
-        {
-            get; set;
-        }
-
-
+        T Data { get; set; }
     }
 
     public interface ISetting
     {
-        object Date { get; set; }
-        string Type { get; set; }
+        string Type { get; }
     }
 }
