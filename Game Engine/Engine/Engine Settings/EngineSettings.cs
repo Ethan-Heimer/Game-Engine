@@ -163,7 +163,7 @@ namespace GameEngine.Engine.Settings
         public List<Setting> Values { get; set; }
     }
 
-    public class Setting
+    public class Setting : ISetting
     {
         public event Action<Setting, string> OnValueChanged;
 
@@ -235,5 +235,11 @@ namespace GameEngine.Engine.Settings
         }
 
 
+    }
+
+    public interface ISetting
+    {
+        object Date { get; set; }
+        string Type { get; set; }
     }
 }

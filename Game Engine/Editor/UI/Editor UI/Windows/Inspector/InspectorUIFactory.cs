@@ -21,16 +21,36 @@ namespace GameEngine.Editor.UI.Inspector
 
             binderFactory = new DataBinderFactory();
         }
-
         public IFieldTemplate TryGetTemplate(FieldInfo field, object owner)
         {
-            Type fieldType = field.FieldType;
+            return TryGetTemplate(field, field.FieldType, owner);
+        }
 
+        public IFieldTemplate TryGetTemplate(FieldInfo field, Type fieldType, object owner)
+        {
             if (!fieldType.IsSerializable)
                 return null;
 
             var template = InvokeGetTemplateType(fieldType);
-            if(template == null) return null;
+            if (template == null) return null;
+
+            Type binder = binderFactory.TryGetBinder(field, binderType);
+
+            return (IFieldTemplate)Activator.CreateInstance(template, new object[] { binder, field, owner });
+        }
+
+        public IFieldTemplate TryGetTemplate(PropertyInfo field, object owner)
+        {
+            return TryGetTemplate(field, field.PropertyType, owner);
+        }
+
+        public IFieldTemplate TryGetTemplate(PropertyInfo field, Type fieldType, object owner)
+        {
+            if (!fieldType.IsSerializable)
+                return null;
+
+            var template = InvokeGetTemplateType(fieldType);
+            if (template == null) return null;
 
             Type binder = binderFactory.TryGetBinder(field, binderType);
 

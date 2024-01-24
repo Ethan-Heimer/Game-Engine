@@ -1,1 +1,83 @@
-{"Sections":[{"Title":"Editor","Values":[{"Value":null,"Option":"Primary Color","X":"255","Y":"255","Z":"255","Type":"Microsoft.Xna.Framework.Color"},{"Value":null,"Option":"Accent Color","X":"255","Y":"255","Z":"255","Type":"Microsoft.Xna.Framework.Color"},{"Value":null,"Option":"Tertiary Color","X":"255","Y":"255","Z":"255","Type":"Microsoft.Xna.Framework.Color"}]},{"Title":"Physics","Values":[{"Value":null,"Option":"Default Gravity Direction","X":"0","Y":"1","Z":null,"Type":"Microsoft.Xna.Framework.Vector2"},{"Value":"10","Option":"Gravity Strength","X":null,"Y":null,"Z":null,"Type":"System.Single"},{"Value":".1","Option":"Delta Time","X":null,"Y":null,"Z":null,"Type":"System.Single"}]},{"Title":"Game","Values":[{"Value":"FBLA Game","Option":"Title","X":null,"Y":null,"Z":null,"Type":"System.String"},{"Value":"False","Option":"Fullscreen","X":null,"Y":null,"Z":null,"Type":"System.Boolean"}]}]}
+{
+  "Sections": [
+    {
+      "Title": "Editor",
+      "Values": [
+        {
+          "Value": null,
+          "Option": "Primary Color",
+          "X": "255",
+          "Y": "255",
+          "Z": "255",
+          "Type": "Microsoft.Xna.Framework.Color"
+        },
+        {
+          "Value": null,
+          "Option": "Accent Color",
+          "X": "255",
+          "Y": "255",
+          "Z": "255",
+          "Type": "Microsoft.Xna.Framework.Color"
+        },
+        {
+          "Value": null,
+          "Option": "Tertiary Color",
+          "X": "255",
+          "Y": "255",
+          "Z": "255",
+          "Type": "Microsoft.Xna.Framework.Color"
+        }
+      ]
+    },
+    {
+      "Title": "Physics",
+      "Values": [
+        {
+          "Value": null,
+          "Option": "Default Gravity Direction",
+          "X": "0",
+          "Y": "1",
+          "Z": null,
+          "Type": "Microsoft.Xna.Framework.Vector2"
+        },
+        {
+          "Value": "10",
+          "Option": "Gravity Strength",
+          "X": null,
+          "Y": null,
+          "Z": null,
+          "Type": "System.Single"
+        },
+        {
+          "Value": ".1",
+          "Option": "Delta Time",
+          "X": null,
+          "Y": null,
+          "Z": null,
+          "Type": "System.Single"
+        }
+      ]
+    },
+    {
+      "Title": "Game",
+      "Values": [
+        {
+          "Value": "FBLA Game",
+          "Option": "Title",
+          "X": null,
+          "Y": null,
+          "Z": null,
+          "Type": "System.String"
+        },
+        {
+          "Value": "False",
+          "Option": "Fullscreen",
+          "X": null,
+          "Y": null,
+          "Z": null,
+          "Type": "System.Boolean"
+        }
+      ]
+    }
+  ]
+}

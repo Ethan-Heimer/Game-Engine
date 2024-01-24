@@ -1,4 +1,5 @@
 ﻿using GameEngine.Debugging;
+using GameEngine.Engine.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,24 @@ using System.Windows.Forms;
 namespace GameEngine.Editor.UI.Inspector
 {
     [Note(note ="Every frame, GetValue() is called AT LEAST once (in HasValueChanged) as well as when ever Get Value is called. while maybe not that big of a performance hit, it is somthing to look into")]
-    public class ComponentFieldBinder<T> : IFieldBinder<T>   
+    public class ComponentFieldBinder<T> : IFieldBinder<T> 
     {
-        public FieldInfo Field { get; set; }
+        public ClassInfo Info { get; private set; }
+
         public object Owner { get; set; }
 
         T Value;
         public ComponentFieldBinder(FieldInfo field, object owner)
         {
-            Field = field;
+            Info = new ClassInfo(field);
+            Owner = owner;
+
+            Value = GetValue();
+        }
+
+        public ComponentFieldBinder(PropertyInfo property, object owner)
+        {
+            Info = new ClassInfo(property);
             Owner = owner;
 
             Value = GetValue();
@@ -28,19 +38,19 @@ namespace GameEngine.Editor.UI.Inspector
         {
             get
             {
-                return Field.Name;
+                return Info.Name;
             }
         }
 
         public T GetValue()
         {
-            return (T)Field.GetValue(Owner);
+            return (T)Info.GetValue(Owner);
         }
 
         public void SetValue(T value)
         {
             Value = value;
-            Field.SetValue(Owner, value);
+            Info.SetValue(Owner, value);
         }
 
         public bool HasValueChange()

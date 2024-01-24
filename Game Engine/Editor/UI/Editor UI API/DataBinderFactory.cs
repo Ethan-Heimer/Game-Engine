@@ -19,5 +19,15 @@ namespace GameEngine.Editor.UI.Inspector
 
             return BinderType.MakeGenericType(fieldType);
         }
+
+        public Type TryGetBinder(PropertyInfo field, Type BinderType)
+        {
+            Type fieldType = field.PropertyType;
+
+            if (!fieldType.IsSerializable)
+                return null;
+
+            return BinderType.MakeGenericType(fieldType);
+        }
     }
 }
