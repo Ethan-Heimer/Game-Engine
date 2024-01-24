@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -24,19 +25,17 @@ namespace GameEngine.Engine.Settings
             get
             {
                 if (_settings == null)
-                {
-                    _settings = new List<Setting>();
-
-                    var s1 = new Setting(10);
-                    var s2 = new Setting(17);
-                    var s3 = new Setting(new Vector2(10, 2));
-
-                    _settings.Add(s1);
-                    _settings.Add(s2);
-                    _settings.Add(s3);
-                }
+                    _settings = LoadSettings();
 
                 return _settings;
+            }
+        }
+
+        public static string[] Sections
+        {
+            get
+            {
+                return settings.Select(x => x.Section).Distinct().ToArray();
             }
         }
 
@@ -47,6 +46,28 @@ namespace GameEngine.Engine.Settings
 
             Console.WriteLine("Save");
         }
+
+        static List<Setting> LoadSettings()
+        {
+            string data = File.ReadAllText(path);
+            List<Setting> settings = JsonSerializer.Deserialize<List<Setting>>(data);
+            foreach (var o in settings)
+            {
+               // o.OnValueChanged += (s, v) => SaveSettings();
+            }
+
+            return settings;
+        }
+
+        public static T GetSetting<T>(string name) =>
+            (T)settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T))?.Data;
+        public static void SetSetting<T>(string name, T value) =>
+            settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T)).Data = value;
+
+
+        public static Setting[] GetSettings() => settings.ToArray();
+        public static Setting[] GetSettings(string section) => settings.Where(x => x.Section == section).ToArray();
+
 
         /*
         static SettingList _settings;
@@ -159,29 +180,37 @@ namespace GameEngine.Engine.Settings
 
     public class Setting 
     {
-        public object value;
+        public string Name { get; set; }
+        public string Section { get; set; }
 
+        object _data;
         public object Data
         {
             get
             {
-                return value;
+                return _data;
             }
 
-            set { }
+            set 
+            {
+                _data = value;
+            }
         }
 
         public string Type
         {
             get
             {
-                return value.GetType().FullName;
+                return Data.GetType().FullName;
             }
         }
 
-        public Setting(object val)
+        public Setting(string name, string settingSection, object val)
         {
-            value = val;
+            Name = name;
+            Data = val;
+
+            Section = settingSection;
         }
 
     }

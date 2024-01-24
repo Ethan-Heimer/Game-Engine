@@ -53,7 +53,7 @@ namespace GameEngine
             this.IsMouseVisible = true;
             AfterInit?.Invoke();
 
-            EngineSettings.SaveSettings();
+           // EngineSettings.SaveSettings();
 
             base.Initialize();
         }
