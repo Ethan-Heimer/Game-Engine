@@ -17,10 +17,14 @@ using System.Windows.Media;
 namespace GameEngine.Engine.Physics
 {
     [Note(note ="A. gravity and impulse Iterations should be Engine settings. \n B. this class handles stoting all rigid bodys in the world and resolving collisions, might be better to seperate")]
+    [ContainsSettings]
     public static class PhysicsSystem
     {
         static float fixedUpdate;
-        static Vector2 gravitydDirection;
+
+        [EngineSettings(Section = "Physics")]
+        static Vector2 gravityDirection;
+
         static float gravityIntensity;
 
         static List<(int, int)> contactPairs = new List<(int, int)> ();
@@ -33,21 +37,12 @@ namespace GameEngine.Engine.Physics
             fixedUpdate = fixedUpdateDeltaTime;
 
             EngineEventManager.AddEventListener<WhileInPlayMode>((e) => Update(fixedUpdateDeltaTime));
-            EngineEventManager.AddEventListener<OnEnterPlayMode>((e) => GetSettings());
-        }
-
-        static void GetSettings()
-        {
-            gravitydDirection = EngineSettings.GetSetting<Vector2>("Default Gravity Direction");
-            gravityIntensity = EngineSettings.GetSetting<int>("Gravity Intensity");
-
-            Console.WriteLine(gravitydDirection);
-            Console.WriteLine(gravityIntensity);
+            Console.WriteLine(gravityDirection);
         }
 
         public static void Update(float dt) 
         {
-            FixedUpdate(gravitydDirection, gravityIntensity);
+            FixedUpdate(gravityDirection, gravityIntensity);
         }
 
         public static void FixedUpdate(Vector2 gravityDirection, float gravityIntensity)

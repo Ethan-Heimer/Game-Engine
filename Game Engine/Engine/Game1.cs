@@ -37,6 +37,7 @@ namespace GameEngine
         {
             EngineEventManager.Init();
 
+            EngineSettings.Init();
             AssetManager.Init(Content);
             ComponentCacheManager.Init();
             GameExecuter.Init();
