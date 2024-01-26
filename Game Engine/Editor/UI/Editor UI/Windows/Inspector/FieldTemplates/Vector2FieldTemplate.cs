@@ -16,7 +16,7 @@ namespace GameEngine.Editor.UI.Inspector
     [InspectingFieldTemplate]
     public class Vector2FieldTemplate : FieldTemplate<Vector2>
     {
-        public Vector2FieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner){}
+        public Vector2FieldTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner){}
 
         protected override void Template(EditorGUIDrawer drawer, object[] args)
         {

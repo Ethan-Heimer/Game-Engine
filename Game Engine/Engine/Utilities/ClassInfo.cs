@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Engine.Utilities
 {
-    public class ClassInfo
+    public class MemberValue
     {
         FieldInfo field;
         PropertyInfo property;
-
 
         public bool IsProperty
         { 
@@ -41,13 +40,13 @@ namespace GameEngine.Engine.Utilities
             }
         }
 
-        public ClassInfo(FieldInfo field)
+        public MemberValue(FieldInfo field)
         { 
             this.field = field;
             IsField = true;
         }
 
-        public ClassInfo(PropertyInfo property) 
+        public MemberValue(PropertyInfo property) 
         {
             this.property = property;
             IsProperty = true;
@@ -70,7 +69,13 @@ namespace GameEngine.Engine.Utilities
                 field.SetValue(owner, value);   
 
             if(IsProperty)
-                field.SetValue(owner, value);
+                property.SetValue(owner, value);
         }
+    }
+
+    public static class MemberValueExtension
+    {
+        public static MemberValue ToMemberValue(this FieldInfo info) => new MemberValue(info);
+        public static MemberValue ToMemberValue(this PropertyInfo info) => new MemberValue(info);
     }
 }

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Utilities;
+using GameEngine.Engine.Utilities;
 
 namespace GameEngine.Editor.UI.Inspector
 {
@@ -34,9 +36,9 @@ namespace GameEngine.Editor.UI.Inspector
             var template = InvokeGetTemplateType(fieldType);
             if (template == null) return null;
 
-            Type binder = binderFactory.TryGetBinder(field, binderType);
+            Type binder = binderFactory.TryGetBinder(fieldType, binderType);
 
-            return (IFieldTemplate)Activator.CreateInstance(template, new object[] { binder, field, owner });
+            return (IFieldTemplate)Activator.CreateInstance(template, new object[] { binder, field.ToMemberValue(), owner });
         }
 
         public IFieldTemplate TryGetTemplate(PropertyInfo field, object owner)
@@ -52,9 +54,9 @@ namespace GameEngine.Editor.UI.Inspector
             var template = InvokeGetTemplateType(fieldType);
             if (template == null) return null;
 
-            Type binder = binderFactory.TryGetBinder(field, binderType);
+            Type binder = binderFactory.TryGetBinder(fieldType, binderType);
 
-            return (IFieldTemplate)Activator.CreateInstance(template, new object[] { binder, field, owner });
+            return (IFieldTemplate)Activator.CreateInstance(template, new object[] { binder, field.ToMemberValue(), owner });
         }
 
         public Type InvokeGetTemplateType(Type fieldType)

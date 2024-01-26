@@ -36,6 +36,12 @@ namespace GameEngine.Editor.UI
                 foreach(var o in settings)
                 {
                     drawer.DrawText(o.Name.Spaced());
+
+                    Type dataType = o.DataType();
+                    PropertyInfo property = o.GetType().GetProperty("Value");
+
+                    IFieldTemplate template = factory.TryGetTemplate(property, dataType, o);
+                    template.Display(drawer);
                 }
             }
 

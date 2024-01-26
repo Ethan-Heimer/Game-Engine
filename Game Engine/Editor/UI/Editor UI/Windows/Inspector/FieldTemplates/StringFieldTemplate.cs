@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Windows.Markup;
 using System.Windows;
 using System.Windows.Controls;
+using GameEngine.Engine.Utilities;
 
 namespace GameEngine.Editor.UI.Inspector
 {
     [InspectingFieldTemplate]
     internal class StringFieldTemplate : FieldTemplate<string>
     {
-        public StringFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) { }
+        public StringFieldTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner) { }
 
         protected override void Template(EditorGUIDrawer drawer, object[] args)
         {

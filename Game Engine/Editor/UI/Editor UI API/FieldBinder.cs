@@ -13,14 +13,23 @@ namespace GameEngine.Editor.UI.Inspector
     [Note(note ="Every frame, GetValue() is called AT LEAST once (in HasValueChanged) as well as when ever Get Value is called. while maybe not that big of a performance hit, it is somthing to look into")]
     public class ComponentFieldBinder<T> : IFieldBinder<T> 
     {
-        public ClassInfo Info { get; private set; }
+        public MemberValue Info { get; private set; }
 
         public object Owner { get; set; }
 
         T Value;
+
+        public ComponentFieldBinder(MemberValue value, object owner)
+        {
+            Info = value;
+            Owner = owner;
+
+            Value = GetValue();
+        }
+
         public ComponentFieldBinder(FieldInfo field, object owner)
         {
-            Info = new ClassInfo(field);
+            Info = field.ToMemberValue();
             Owner = owner;
 
             Value = GetValue();
@@ -28,7 +37,7 @@ namespace GameEngine.Editor.UI.Inspector
 
         public ComponentFieldBinder(PropertyInfo property, object owner)
         {
-            Info = new ClassInfo(property);
+            Info = property.ToMemberValue();
             Owner = owner;
 
             Value = GetValue();

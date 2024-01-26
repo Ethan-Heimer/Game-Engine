@@ -10,6 +10,14 @@ namespace GameEngine.Editor.UI.Inspector
 {
     public class DataBinderFactory
     {
+        public Type TryGetBinder(Type dataType, Type BinderType)
+        {
+            if (!dataType.IsSerializable)
+                return null;
+
+            return BinderType.MakeGenericType(dataType);
+        }
+
         public Type TryGetBinder(FieldInfo field, Type BinderType)
         {
             Type fieldType = field.FieldType;

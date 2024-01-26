@@ -10,13 +10,14 @@ using System.Windows;
 using Microsoft.Xna.Framework;
 using System.Windows.Media;
 using System.Windows.Controls;
+using GameEngine.Engine.Utilities;
 
 namespace GameEngine.Editor.UI.Inspector
 {
     [InspectingFieldTemplate]
     public class ColorFieldTemplate : FieldTemplate<Microsoft.Xna.Framework.Color>
     {
-        public ColorFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) { }
+        public ColorFieldTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner) { }
 
         Vector3 color;
 
@@ -33,19 +34,19 @@ namespace GameEngine.Editor.UI.Inspector
             var fieldR = drawer.DrawField(data.GetValue().R.ToString(), (val) =>
             {
                 color.X = HandleInput(val);
-                Console.WriteLine(val.ToString());
+                UpdateColor();
             }, "R", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.Red));
 
             var fieldG = drawer.DrawField(data.GetValue().G.ToString(), (val) =>
             {
                 color.Y = HandleInput(val);
-                Console.WriteLine(val.ToString());
+                UpdateColor();
             }, "G", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.LawnGreen));
 
             var fieldB = drawer.DrawField(data.GetValue().B.ToString(), (val) =>
             {
                 color.Z = HandleInput(val);
-                Console.WriteLine(val.ToString());
+                UpdateColor();
             }, "B", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.DeepSkyBlue));
 
             drawer.EndGroup();
@@ -66,7 +67,7 @@ namespace GameEngine.Editor.UI.Inspector
             });
 
             drawer.EndGroup();
-            UpdateColor();
+           
         }
 
 
@@ -82,12 +83,13 @@ namespace GameEngine.Editor.UI.Inspector
 
             SetColorDisplay(color);
 
-            Console.WriteLine(data.GetValue() + " data");
-
         }
 
         float HandleInput(string value)
         {
+            if (value == "")
+                return 0;
+
             float number = float.Parse(value);
             float output = number / 255f;
 

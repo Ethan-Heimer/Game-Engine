@@ -20,16 +20,16 @@ namespace GameEngine.Engine.Physics
     [ContainsSettings]
     public static class PhysicsSystem
     {
-        [EngineSettings(Section = "Physics")]
+        [EngineSettings("Physics")]
         static float fixedUpdate;
 
-        [EngineSettings(Section = "Physics")]
+        [EngineSettings("Physics")]
         static Vector2 gravityDirection;
 
-        [EngineSettings(Section = "Physics")]
+        [EngineSettings("Physics")]
         static float gravityIntensity;
 
-        [EngineSettings(Section = "Physics")]
+        [EngineSettings("Physics")]
         static float impulseIterations = 3; 
 
         static List<(int, int)> contactPairs = new List<(int, int)> ();

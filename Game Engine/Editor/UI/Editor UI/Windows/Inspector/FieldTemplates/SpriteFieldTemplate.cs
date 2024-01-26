@@ -13,13 +13,14 @@ using System.Windows.Controls;
 using GameEngine.Rendering;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
+using GameEngine.Engine.Utilities;
 
 namespace GameEngine.Editor.UI.Inspector
 {
     [InspectingFieldTemplate]
     public class SpriteFieldTemplate : FieldTemplate<Sprite>
     {
-        public SpriteFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) { }
+        public SpriteFieldTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner) { }
 
         protected override void Template(EditorGUIDrawer drawer, object[] args)
         {

@@ -1,4 +1,5 @@
 ﻿using GameEngine.Editor.Windows;
+using GameEngine.Engine.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace GameEngine.Editor.UI.Inspector
     [InspectingFieldTemplate]
     public class FloatFieldTemplate : FieldTemplate<float>
     {
-        public FloatFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner){}
+        public FloatFieldTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner){}
 
         protected override void Template(EditorGUIDrawer drawer, object[] args)
         {

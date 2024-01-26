@@ -1,6 +1,7 @@
 ﻿using GameEngine.Debugging;
 using GameEngine.Editor.UI.Inspector;
 using GameEngine.Editor.Windows;
+using GameEngine.Engine.Utilities;
 using Microsoft.Build.Tasks.Xaml;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace GameEngine.Editor.UI.Hiarchy
     [Note(note ="Make Icon Manager")]
     public class HiarchyNameTemplate : FieldTemplate<string>
     {
-        public HiarchyNameTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) 
+        public HiarchyNameTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner) 
         {
             templateStyle = new ElementStyle()
             {

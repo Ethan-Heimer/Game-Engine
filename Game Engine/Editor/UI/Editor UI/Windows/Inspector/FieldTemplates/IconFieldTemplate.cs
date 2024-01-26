@@ -1,5 +1,6 @@
 ﻿using GameEngine.Editor.Windows;
 using GameEngine.Engine;
+using GameEngine.Engine.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace GameEngine.Editor.UI.Inspector
     [InspectingFieldTemplate]
     public class IconFieldTemplate : FieldTemplate<Icon>
     {
-        public IconFieldTemplate(Type bindertype, FieldInfo info, object owner) : base(bindertype, info, owner) { }
+        public IconFieldTemplate(Type bindertype, MemberValue info, object owner) : base(bindertype, info, owner) { }
 
         protected override void Template(EditorGUIDrawer drawer, object[] args)
         {

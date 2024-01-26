@@ -9,15 +9,44 @@ using GameEngine.Debugging;
 using GameEngine.Engine;
 using System.Data.SqlClient;
 using System.Reflection;
+using GameEngine.Engine.Settings;
 
 namespace GameEngine.Editor.Windows
 {
-    [Note(note = "Make Defaults are properties instead of functions")]
+    [ContainsSettings]
     public class ElementStyle
     {
-        public readonly static Brush PrimaryBackgroundColor = new SolidColorBrush(Color.FromRgb(63, 65, 79));
-        public readonly static Brush AccentBackgroundColor = new SolidColorBrush(Color.FromRgb(48, 50, 61));
-        public readonly static Brush TertiaryBackgroundColor = new SolidColorBrush(Color.FromRgb(77, 80, 97));
+        [EngineSettings("Editor")]
+        static Microsoft.Xna.Framework.Color PrimaryColor;
+
+        [EngineSettings("Editor")]
+        static Microsoft.Xna.Framework.Color AccentColor;
+
+        [EngineSettings("Editor")]
+        static Microsoft.Xna.Framework.Color TertiaryColor;
+
+        public static Brush PrimaryBackgroundColor
+        {
+            get
+            {
+                Console.WriteLine(PrimaryColor);
+                return new SolidColorBrush(Color.FromRgb(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B));
+            }
+        }
+        public static Brush AccentBackgroundColor
+        {
+            get
+            {
+                return new SolidColorBrush(Color.FromRgb(AccentColor.R, AccentColor.G, AccentColor.B));
+            }
+        }
+        public static Brush TertiaryBackgroundColor
+        {
+            get
+            {
+                return new SolidColorBrush(Color.FromRgb(TertiaryColor.R, TertiaryColor.G, TertiaryColor.B));
+            }
+        }
 
         public readonly static int LargeTextSize = 32;
         public readonly static int MediumTextSize = 24;
@@ -58,6 +87,11 @@ namespace GameEngine.Editor.Windows
 
         public Brush OnHoverBackground;
         public Brush OnDragBackground;
+
+        public ElementStyle()
+        {
+            Console.WriteLine(PrimaryColor);
+        }
 
         public ElementStyle OverrideFontSize(int value)
         {

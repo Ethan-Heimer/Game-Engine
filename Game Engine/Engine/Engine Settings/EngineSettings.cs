@@ -40,14 +40,13 @@ namespace GameEngine.Engine.Settings
             FieldInfo[] foundSettings = FindSettings();
 
             settings = LoadSettings(json, foundSettings);
-            InjectEngineSettings(settings, foundSettings);
 
-            SaveSettings();
+            SetSettingsHook(settings, SaveSettings);
         }
         public static T GetSetting<T>(string name) =>
-            (T)settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T))?.Data;
+            (T)settings.FirstOrDefault(settings => settings.Name == name && settings.DataType() == typeof(T))?.Value;
         public static void SetSetting<T>(string name, T value) =>
-            settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T)).Data = value;
+            settings.FirstOrDefault(settings => settings.Name == name && settings.DataType() == typeof(T)).Value = value;
 
         public static Setting[] GetSettings() => settings.ToArray();
         public static Setting[] GetSettings(string section) => settings.Where(x => x.Section == section).ToArray();
@@ -61,37 +60,12 @@ namespace GameEngine.Engine.Settings
             return settings;
         }
 
-
-        static void InjectEngineSettings(Setting[] settings, FieldInfo[] settingFields)
+        static void SetSettingsHook(Setting[] settings, Action action)
         {
-            for(int i = 0; i < settings.Length; i++)
+            foreach(var o in settings)
             {
-                Setting setting = settings[i];
-                FieldInfo field = settingFields[i];
-
-                object value = ((JsonElement)setting.Data).ToRuntimeObject(field.FieldType);
-
-                field.SetValue(null, value);
+                o.OnDataChanged += action;
             }
-        }
-        
-        static Setting[] LoadSettings(IEnumerable<Setting> settings, FieldInfo[] foundSettings)
-        {
-            List<Setting> engineSettings = new List<Setting>();
-
-            foreach (var o in foundSettings)
-            {
-                Setting setting = settings.FirstOrDefault(x => x.Name == o.Name);
-
-                if (setting != null)
-                    setting.Section = ((EngineSettingsAttribute)o.GetCustomAttribute(typeof(EngineSettingsAttribute))).Section;
-                else
-                    setting = new Setting(o);
-
-                engineSettings.Add(setting);
-            }
-
-            return engineSettings.ToArray();
         }
 
         static FieldInfo[] FindSettings()
@@ -106,10 +80,33 @@ namespace GameEngine.Engine.Settings
 
             return setting.ToArray();
         }
-        static void SaveSettings()
+        static Setting[] LoadSettings(IEnumerable<Setting> settings, FieldInfo[] foundSettings)
         {
+            List<Setting> engineSettings = new List<Setting>();
+
+            foreach (var o in foundSettings)
+            {
+                Setting setting = settings.FirstOrDefault(x => x.Name == o.Name);
+
+                if (setting != null)
+                    setting.Init(o);
+                else
+                    setting = new Setting(o);
+
+                engineSettings.Add(setting);
+            }
+
+            return engineSettings.ToArray();
+        }
+
+        async static void SaveSettings()
+        {
+            Console.WriteLine("Save");
+
             FileStream createStream = File.Create(path);
             JsonSerializer.Serialize(createStream, settings);
+
+            createStream.Close();
         }
 
         static Type[] FindSettingTypes() => Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetCustomAttribute(typeof(ContainsSettingsAttribute)) != null).ToArray();
@@ -117,38 +114,90 @@ namespace GameEngine.Engine.Settings
 
     public class Setting 
     {
+        public event Action OnDataChanged;
+
         public string Name { get; set; }
         public string Section { get; set; }
-        public object Data { get; set; }
-        
-        public string Type { get; set; }
+
+        object _data;
+        public object Value
+        {
+            get 
+            {
+                if(_data.GetType() == typeof(JsonElement))
+                {
+                    _data = ((JsonElement)_data).ToRuntimeObject(DataType());
+                }
+
+                return _data;
+                
+            }
+            set
+            {
+                Console.WriteLine(isLoaded);
+
+                _data = value;
+
+                if (isLoaded)
+                {
+                    bindingField.SetValue(null, value);
+                    OnDataChanged?.Invoke();
+                }
+                else
+                    isLoaded = true;
+            } 
+        }
+        public string StringRepresentedType { get; set; }
+
+        FieldInfo bindingField;
+        bool isLoaded = false;
         
 
-        public Setting() { }
+
+        public Setting() 
+        {
+            isLoaded = false;
+        }
 
         public Setting(FieldInfo field)
         {
             Name = field.Name;
-            Data = field.GetValue(null);
+            Value = field.GetValue(null);
 
             Section = ((EngineSettingsAttribute)field.GetCustomAttribute(typeof(EngineSettingsAttribute))).Section;
-            Type = Data.GetType().AssemblyQualifiedName;
+            StringRepresentedType = Value.GetType().AssemblyQualifiedName;
+
+            bindingField = field;
         }
 
         public Setting(string name, string settingSection, object val)
         {
             Name = name;
-            Data = val;
+            Value = val;
 
             Section = settingSection;
-            Type = val.GetType().AssemblyQualifiedName;
+            StringRepresentedType = val.GetType().AssemblyQualifiedName;
         }
 
+        public void Init(FieldInfo field)
+        {
+            BindField(field);
+            GetSection();
+        }
+
+        public void BindField(FieldInfo field) => bindingField = field;
+        public string GetSection() => ((EngineSettingsAttribute)bindingField.GetCustomAttribute(typeof(EngineSettingsAttribute))).Section;
+        public Type DataType() => Type.GetType(StringRepresentedType);
     }
 
     public class ContainsSettingsAttribute : Attribute { }
     public class EngineSettingsAttribute : Attribute
     {
         public string Section;
+
+        public EngineSettingsAttribute(string section)
+        {
+            Section = section;
+        }
     }
 }

@@ -33,15 +33,16 @@ namespace GameEngine.Editor.UI.Inspector
             HorizontalAlignment = HorizontalAlignment.Stretch
         };
 
-        public FieldTemplate(Type binderType, FieldInfo field, object owner)
+        public FieldTemplate(Type binderType, MemberValue field, object owner)
         {
+            Console.WriteLine(typeof(IFieldBinder<T>).Name);
+
             data = (IFieldBinder<T>)Activator.CreateInstance(binderType, new object[] { field, owner });
             Value = data.GetValue();
 
             this.owner = owner;
         }
 
-        
         public void Display(EditorGUIDrawer drawer, params object[] args)
         {
             template = drawer.StartHorizontalGroup(templateStyle);
