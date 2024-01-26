@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public static class StringSpacer
 {
-    public static string Space(string input)
+    public static string Spaced(this string input)
     {
         StringBuilder newString = new StringBuilder(input);
         int offset = 0;

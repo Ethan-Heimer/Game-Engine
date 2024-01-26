@@ -50,7 +50,6 @@ namespace GameEngine.Editor.UI.Inspector
 
             drawer.EndGroup();
 
-            UpdateColor();
 
             drawer.DrawBox("Color", new ElementStyle()
             {
@@ -67,6 +66,7 @@ namespace GameEngine.Editor.UI.Inspector
             });
 
             drawer.EndGroup();
+            UpdateColor();
         }
 
 
@@ -103,6 +103,7 @@ namespace GameEngine.Editor.UI.Inspector
         void SetColorDisplay(Vector3 color)
         {
             var colorDisplay = FindElementInTemplate<Border>("Color");
+           
             colorDisplay.Background = new SolidColorBrush(new System.Windows.Media.Color()
             {
                 R = (byte)(color.X * 255),

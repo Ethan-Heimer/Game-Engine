@@ -4,6 +4,7 @@ using GameEngine.Engine.Utilities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,21 +36,24 @@ namespace GameEngine.Engine.Settings
 
         public static void Init()
         {
-            var json = LoadSettings();
+            var json = LoadJson();
             FieldInfo[] foundSettings = FindSettings();
-            InjectEngineSettings(json, foundSettings, out settings);
+
+            settings = LoadSettings(json, foundSettings);
+            InjectEngineSettings(settings, foundSettings);
+
             SaveSettings();
         }
+        public static T GetSetting<T>(string name) =>
+            (T)settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T))?.Data;
+        public static void SetSetting<T>(string name, T value) =>
+            settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T)).Data = value;
 
-        public static void SaveSettings()
-        {
-            FileStream createStream = File.Create(path);
-            JsonSerializer.Serialize(createStream, settings);
+        public static Setting[] GetSettings() => settings.ToArray();
+        public static Setting[] GetSettings(string section) => settings.Where(x => x.Section == section).ToArray();
 
-            Console.WriteLine("Save");
-        }
 
-        static List<Setting> LoadSettings()
+        static List<Setting> LoadJson()
         {
             string data = File.ReadAllText(path);
             List<Setting> settings = JsonSerializer.Deserialize<List<Setting>>(data);
@@ -57,39 +61,37 @@ namespace GameEngine.Engine.Settings
             return settings;
         }
 
-        public static T GetSetting<T>(string name) =>
-            (T)settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T))?.Data;
-        public static void SetSetting<T>(string name, T value) =>
-            settings.FirstOrDefault(settings => settings.Name == name && Type.GetType(settings.Type) == typeof(T)).Data = value;
 
+        static void InjectEngineSettings(Setting[] settings, FieldInfo[] settingFields)
+        {
+            for(int i = 0; i < settings.Length; i++)
+            {
+                Setting setting = settings[i];
+                FieldInfo field = settingFields[i];
 
-        public static Setting[] GetSettings() => settings.ToArray();
-        public static Setting[] GetSettings(string section) => settings.Where(x => x.Section == section).ToArray();
+                object value = ((JsonElement)setting.Data).ToRuntimeObject(field.FieldType);
 
-        static void InjectEngineSettings(List<Setting> json, FieldInfo[] foundSettings, out Setting[] settings)
+                field.SetValue(null, value);
+            }
+        }
+        
+        static Setting[] LoadSettings(IEnumerable<Setting> settings, FieldInfo[] foundSettings)
         {
             List<Setting> engineSettings = new List<Setting>();
 
-            Console.WriteLine(foundSettings.Length + " settings");
-
             foreach (var o in foundSettings)
             {
-                Setting jsonSetting = json.FirstOrDefault(x => x.Name == o.Name);
-                Setting newSetting = new Setting(o.Name, ((EngineSettingsAttribute)o.GetCustomAttribute(typeof(EngineSettingsAttribute))).Section, o.GetValue(null));
+                Setting setting = settings.FirstOrDefault(x => x.Name == o.Name);
 
+                if (setting != null)
+                    setting.Section = ((EngineSettingsAttribute)o.GetCustomAttribute(typeof(EngineSettingsAttribute))).Section;
+                else
+                    setting = new Setting(o);
 
-                if (jsonSetting != null)
-                {
-                    Type dataType = Type.GetType(jsonSetting.Type);
-
-                    object data = JsonExtensions.ToRuntimeObject((JsonElement)jsonSetting.Data, Type.GetType(jsonSetting.Type));
-                    o.SetValue(null, data);
-                }
-
-                engineSettings.Add(newSetting);
+                engineSettings.Add(setting);
             }
 
-            settings = engineSettings.ToArray();
+            return engineSettings.ToArray();
         }
 
         static FieldInfo[] FindSettings()
@@ -104,8 +106,13 @@ namespace GameEngine.Engine.Settings
 
             return setting.ToArray();
         }
-        static Type[] FindSettingTypes() => Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetCustomAttribute(typeof(ContainsSettingsAttribute)) != null).ToArray();
+        static void SaveSettings()
+        {
+            FileStream createStream = File.Create(path);
+            JsonSerializer.Serialize(createStream, settings);
+        }
 
+        static Type[] FindSettingTypes() => Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetCustomAttribute(typeof(ContainsSettingsAttribute)) != null).ToArray();
     }
 
     public class Setting 
@@ -118,6 +125,15 @@ namespace GameEngine.Engine.Settings
         
 
         public Setting() { }
+
+        public Setting(FieldInfo field)
+        {
+            Name = field.Name;
+            Data = field.GetValue(null);
+
+            Section = ((EngineSettingsAttribute)field.GetCustomAttribute(typeof(EngineSettingsAttribute))).Section;
+            Type = Data.GetType().AssemblyQualifiedName;
+        }
 
         public Setting(string name, string settingSection, object val)
         {

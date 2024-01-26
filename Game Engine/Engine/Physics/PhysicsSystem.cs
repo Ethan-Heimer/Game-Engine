@@ -20,17 +20,20 @@ namespace GameEngine.Engine.Physics
     [ContainsSettings]
     public static class PhysicsSystem
     {
+        [EngineSettings(Section = "Physics")]
         static float fixedUpdate;
 
         [EngineSettings(Section = "Physics")]
         static Vector2 gravityDirection;
 
+        [EngineSettings(Section = "Physics")]
         static float gravityIntensity;
+
+        [EngineSettings(Section = "Physics")]
+        static float impulseIterations = 3; 
 
         static List<(int, int)> contactPairs = new List<(int, int)> ();
         static List<CollisionManifold> collisions = new List<CollisionManifold>();
-
-        const float impulseIterations = 3; 
 
         public static void Init(float fixedUpdateDeltaTime) 
         {

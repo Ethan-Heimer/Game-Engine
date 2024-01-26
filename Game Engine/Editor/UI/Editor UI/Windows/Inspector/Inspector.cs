@@ -38,7 +38,9 @@ namespace GameEngine.Editor.UI.Inspector
 
             foreach (Component o in gameObject.GetAllComponents())
             {
-                var title = DrawHeading(StringSpacer.Space(o.BindingBehavior.GetType().Name), drawer);
+                string componentName = o.BindingBehavior.GetType().Name.Spaced();
+
+                var title = DrawHeading(componentName, drawer);
                 ContextManager context = new ContextManager(title);
                 context.AddOption("Remove Component", (e, s) => gameObject.RemoveComponent(o));
 

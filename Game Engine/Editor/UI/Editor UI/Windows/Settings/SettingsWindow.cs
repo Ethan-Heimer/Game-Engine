@@ -25,6 +25,20 @@ namespace GameEngine.Editor.UI
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
+            string[] sections = EngineSettings.Sections;
+
+            foreach(string section in sections) 
+            {
+                drawer.DrawText(section);
+
+                Setting[] settings = EngineSettings.GetSettings(section);
+                
+                foreach(var o in settings)
+                {
+                    drawer.DrawText(o.Name.Spaced());
+                }
+            }
+
             /*
             var sections = EngineSettings.GetSections();
 

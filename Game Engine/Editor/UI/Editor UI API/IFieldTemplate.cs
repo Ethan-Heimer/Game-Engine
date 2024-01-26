@@ -151,7 +151,7 @@ namespace GameEngine.Editor.UI.Inspector
 
         protected T2 FindElementInTemplate<T2>(string name) where T2 : DependencyObject
         {
-            return UIHelper.FindChild<T2>(template, name);
+            return template.FindChild<T2>(name);
         }
     } 
     

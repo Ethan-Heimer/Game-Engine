@@ -49,7 +49,7 @@ namespace GameEngine.Editor
         {
             //window type should be passed, not refrence value
 
-            window.Title = StringSpacer.Space(window.GetType().Name);
+            window.Title = window.GetType().Name.Spaced();
 
             window.Style = (Style)Application.Current.Resources["Window"];
 

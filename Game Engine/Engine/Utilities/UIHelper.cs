@@ -10,7 +10,7 @@ namespace GameEngine.Engine.Utilities
 {
     public static class UIHelper
     {
-        public static T FindChild<T>(DependencyObject parent, string childName) where T : DependencyObject
+        public static T FindChild<T>(this DependencyObject parent, string childName) where T : DependencyObject
         {
             // Confirm parent and childName are valid. 
             if (parent == null) return null;
