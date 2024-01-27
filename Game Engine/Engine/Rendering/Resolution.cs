@@ -59,6 +59,7 @@ namespace GameEngine
             _Device = device;
             _dirtyMatrix = true;
             ApplyResolutionSettings();
+            
         }
 
         static public Matrix getTransformationMatrix()

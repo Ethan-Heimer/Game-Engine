@@ -47,7 +47,7 @@ namespace GameEngine.Editor.UI.Inspector
         {
             get
             {
-                return Info.Name.Spaced();
+                return Info.Name.Annunciated();
             }
         }
 

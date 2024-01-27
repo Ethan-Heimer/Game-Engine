@@ -26,11 +26,11 @@ namespace GameEngine.Editor.UI.Inspector
         {
             drawer.DrawText(data.Name, ElementStyle.DefaultTextStyle.OverrideMargin(new Thickness(10)));
 
-            var display = drawer.DrawField(SetSprite, "field", ElementStyle.DefaultFieldStyle.OverrideWidth(200).OverrideMargin(new Thickness(10, 0, 0, 0)));
+            var display = drawer.DrawField(SetSprite, "field", ElementStyle.DefaultFieldStyle.OverrideWidth(100));
             drawer.FileSelector("+", "png", OnFileSelected, new ElementStyle()
             {
-                Width = 25,
-                Height = 25,
+                Width = 20,
+                Height = 20,
                 Background = ElementStyle.TertiaryBackgroundColor,
                 BorderBrush = Brushes.Black
             });

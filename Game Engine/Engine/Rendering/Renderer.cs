@@ -1,6 +1,7 @@
 ﻿using GameEngine.ComponentManagement;
 using GameEngine.Debugging;
 using GameEngine.Engine.Events;
+using GameEngine.Engine.Settings;
 using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,9 +16,13 @@ using System.Windows.Media.Imaging;
 namespace GameEngine.Rendering
 {
     [ContainsEvents]
+    [ContainsSettings]
     [Note(note = "The render uses a buffer which i feel might use alot of memory. when optimizing this might be a good place to start. a fun approch could be rendering with async, blocking the fuctions rendering calls until some blocking method is released")]
     public static class Renderer
     {
+        [EngineSettings("Rendering")]
+        public static float scale = 1;
+
         static GameWindow window;
 
         static GraphicsDevice graphicsDevice;
@@ -36,10 +41,13 @@ namespace GameEngine.Rendering
         {
             graphics = _graphicsDeviceManager;
             graphicsDevice = _graphicDevice;
+
+            int width = (int)(1920 / scale);
+            int height = (int)(1080 / scale);
             
             Resolution.Init(ref graphics);
             Resolution.SetVirtualResolution(1280, 700);
-            Resolution.SetResolution(1920, 1080, false);
+            Resolution.SetResolution(width, height, false);
 
             spriteBatch = new SpriteBatch(_graphicDevice);
 

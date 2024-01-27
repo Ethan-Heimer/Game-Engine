@@ -41,6 +41,7 @@ namespace GameEngine.Engine.Settings
 
             settings = LoadSettings(json, foundSettings);
 
+            InjectSettings(settings, foundSettings); ;
             SetSettingsHook(settings, SaveSettings);
         }
         public static T GetSetting<T>(string name) =>
@@ -50,6 +51,14 @@ namespace GameEngine.Engine.Settings
 
         public static Setting[] GetSettings() => settings.ToArray();
         public static Setting[] GetSettings(string section) => settings.Where(x => x.Section == section).ToArray();
+
+        static void InjectSettings(Setting[] settings, FieldInfo[] fields)
+        {
+            for(int i = 0; i < fields.Length; i++)
+            {
+                fields[i].SetValue(null, settings[i].Value);
+            }
+        }
 
 
         static List<Setting> LoadJson()

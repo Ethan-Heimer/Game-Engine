@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,30 +27,26 @@ namespace GameEngine.Editor
            OpenDefaultWindows();
             EngineEventManager.AddEventListener<OnEngineTickEvent>(e => Update());
         }
-        public static void OpenDefaultWindows()
-        {
-            List<EditorWindow> defaultWindows = FindDefaultWindows();
-            defaultWindows.ForEach(x => CreateWindow(x));
-        }
-
-        static List<EditorWindow> FindDefaultWindows()
+       
+        static List<EditorWindow> OpenDefaultWindows()
         {
             List<EditorWindow> windows = new List<EditorWindow>();
             foreach (Type type in
                 Assembly.GetAssembly(typeof(EditorWindow)).GetTypes()
                 .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(EditorWindow)) && myType.GetCustomAttribute(typeof(OpenWindowByDefaultAttribute)) != null))
             {
-                windows.Add((EditorWindow)Activator.CreateInstance(type, new object[0]));
+                Console.WriteLine(type + " type");
+                CreateWindow(type);
             }
 
             return windows;
         }
 
-        public static Window CreateWindow(EditorWindow window)
+        public static Window CreateWindow(Type type)
         {
+            var window = (EditorWindow)Activator.CreateInstance(type, new object[0]);
             //window type should be passed, not refrence value
-
-            window.Title = window.GetType().Name.Spaced();
+            window.Title = window.GetType().Name.Annunciated();
 
             window.Style = (Style)Application.Current.Resources["Window"];
 

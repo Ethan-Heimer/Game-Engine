@@ -54,9 +54,9 @@ namespace GameEngine.Editor.UI.Inspector
 
             drawer.DrawBox("Color", new ElementStyle()
             {
-                Width = 340,
-                Height = 25,
-                Margin = new Thickness(10),
+                Width = 120,
+                Height = 20,
+                Margin = new Thickness(0),
                 Background = new SolidColorBrush(new System.Windows.Media.Color()
                 {
                     R = (byte)(color.X * 255),

@@ -48,9 +48,9 @@ namespace GameEngine.Editor.Windows
             }
         }
 
-        public readonly static int LargeTextSize = 32;
-        public readonly static int MediumTextSize = 24;
-        public readonly static int SmallTextSize = 16;
+        public readonly static int LargeTextSize = 24;
+        public readonly static int MediumTextSize = 16;
+        public readonly static int SmallTextSize = 12;
 
         public static Brush GetColor(byte r, byte g, byte b) => new SolidColorBrush(Color.FromRgb(r, g, b));
         public static ImageBrush GetImage(Icon icon) => new ImageBrush(icon?.GetImage());
@@ -197,8 +197,10 @@ namespace GameEngine.Editor.Windows
                 return new ElementStyle()
                 {
                     Background = AccentBackgroundColor,
-                    Padding = new Thickness(1),
-                    Margin = new Thickness(10, 0, 10, 0)
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 1, 0),
+                    Width = 40,
+                    Height = 20
                 };
             }
         }

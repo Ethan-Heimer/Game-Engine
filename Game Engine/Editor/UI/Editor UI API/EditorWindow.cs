@@ -70,6 +70,11 @@ namespace GameEngine.Editor.Windows
             }
         }
 
+        public EditorWindow()
+        {
+            Background = ElementStyle.PrimaryBackgroundColor;
+        }
+
         public abstract void OnGUI(EditorGUIDrawer drawer);
         public virtual void OnUpdateGUI(EditorGUIDrawer drawer) { }
 

@@ -38,7 +38,7 @@ namespace GameEngine.Editor.UI.Inspector
 
             foreach (Component o in gameObject.GetAllComponents())
             {
-                string componentName = o.BindingBehavior.GetType().Name.Spaced();
+                string componentName = o.BindingBehavior.GetType().Name.Annunciated();
 
                 var title = DrawHeading(componentName, drawer);
                 ContextManager context = new ContextManager(title);

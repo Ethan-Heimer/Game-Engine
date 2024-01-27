@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
+
 
 namespace GameEngine.Engine.Physics
 {
@@ -30,7 +30,10 @@ namespace GameEngine.Engine.Physics
         static float gravityIntensity;
 
         [EngineSettings("Physics")]
-        static float impulseIterations = 3; 
+        static float impulseIterations = 3;
+
+        [EngineSettings("Physics")]
+        static Color test;
 
         static List<(int, int)> contactPairs = new List<(int, int)> ();
         static List<CollisionManifold> collisions = new List<CollisionManifold>();
@@ -41,6 +44,7 @@ namespace GameEngine.Engine.Physics
 
             EngineEventManager.AddEventListener<WhileInPlayMode>((e) => Update(fixedUpdateDeltaTime));
             Console.WriteLine(gravityDirection);
+            Console.WriteLine(test);
         }
 
         public static void Update(float dt) 

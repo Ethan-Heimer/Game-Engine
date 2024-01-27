@@ -15,6 +15,7 @@ using GameEngine.Engine.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Controls;
 using GameEngine.ComponentManagement;
+using GameEngine.Engine.Rendering;
 
 namespace GameEngine.Editor.Windows
 {
@@ -24,8 +25,8 @@ namespace GameEngine.Editor.Windows
         Inspector inspector;
         public InspectorWindow() 
         {
-            Width = 500;
-            Height = 1000;
+            Width = 300;
+            Height = 500;
 
             RelativePosition = RelativeWindowPosition.Right;
         }

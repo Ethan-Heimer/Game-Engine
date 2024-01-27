@@ -29,13 +29,21 @@ namespace GameEngine.Editor.UI
 
             foreach(string section in sections) 
             {
-                drawer.DrawText(section);
+                ElementStyle header = ElementStyle.DefaultTextStyle
+                    .OverrideFontSize(ElementStyle.LargeTextSize)
+                    .OverridePadding(new System.Windows.Thickness(0, 10, 10, 10));
+
+                drawer.DrawText(section, header);
 
                 Setting[] settings = EngineSettings.GetSettings(section);
                 
                 foreach(var o in settings)
                 {
-                    drawer.DrawText(o.Name.Spaced());
+                    ElementStyle textStyle = ElementStyle.DefaultTextStyle
+                        .OverrideFontSize(ElementStyle.MediumTextSize)
+                        .OverridePadding(new System.Windows.Thickness(10, 0, 0, 0));
+
+                    drawer.DrawText(o.Name.Annunciated(), textStyle);
 
                     Type dataType = o.DataType();
                     PropertyInfo property = o.GetType().GetProperty("Value");
@@ -44,29 +52,6 @@ namespace GameEngine.Editor.UI
                     template.Display(drawer);
                 }
             }
-
-            /*
-            var sections = EngineSettings.GetSections();
-
-            foreach (var section in sections) 
-            {
-                drawer.DrawText(section.Title);
-
-                foreach(var option in  section.Values) 
-                {
-                    drawer.DrawText(option.Option);
-
-                    Type fieldType = Type.GetType(option.Type);
-                    PropertyInfo property = option.GetType().GetProperty("Value");
-
-                    IFieldTemplate template = factory.TryGetTemplate(property, fieldType, option);
-
-                    if (template == null)
-                        return;
-                }
-            }
-
-            */
         }
 
         
