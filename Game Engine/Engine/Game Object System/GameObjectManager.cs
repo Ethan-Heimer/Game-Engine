@@ -1,4 +1,5 @@
 ﻿using GameEngine.Engine.Events;
+using Microsoft.Build.Tasks.Xaml;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace GameEngine.Engine
                 AddedGameObject = gameObject,
                 TotalGameObjects = gameObjects.ToArray()
             });
+
+            AlertTreeChange(gameObject);
         }
 
         public static void RegisterGameobjectGroup(GameObject[] _gameObjects)
@@ -36,7 +39,6 @@ namespace GameEngine.Engine
             {
                 RegisterGameobject(o);
             }
-        
         }
 
         public static void DispatchGameobject(GameObject gameObject) 
@@ -50,6 +52,8 @@ namespace GameEngine.Engine
                 RemovedGameObject = gameObject,
                 TotalGameObjects = gameObjects.ToArray()
             });
+
+            AlertTreeChange(gameObject);
         }
 
         public static void DispatchGameobjectGroup(GameObject[] _gameObjects)

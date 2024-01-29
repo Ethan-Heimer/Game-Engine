@@ -11,6 +11,7 @@ using GameEngine.Debugging;
 using GameEngine.Engine.Physics;
 using GameEngine.Engine.Rendering;
 using GameEngine.Engine.Settings;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine
 {
@@ -53,8 +54,6 @@ namespace GameEngine
 
             this.IsMouseVisible = true;
             AfterInit?.Invoke();
-
-           // EngineSettings.SaveSettings();
 
             base.Initialize();
         }

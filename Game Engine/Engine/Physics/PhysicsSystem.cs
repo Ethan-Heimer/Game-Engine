@@ -16,7 +16,6 @@ using System.Windows.Input;
 
 namespace GameEngine.Engine.Physics
 {
-    [Note(note ="A. gravity and impulse Iterations should be Engine settings. \n B. this class handles stoting all rigid bodys in the world and resolving collisions, might be better to seperate")]
     [ContainsSettings]
     public static class PhysicsSystem
     {
@@ -32,9 +31,6 @@ namespace GameEngine.Engine.Physics
         [EngineSettings("Physics")]
         static float impulseIterations = 3;
 
-        [EngineSettings("Physics")]
-        static Color test;
-
         static List<(int, int)> contactPairs = new List<(int, int)> ();
         static List<CollisionManifold> collisions = new List<CollisionManifold>();
 
@@ -43,8 +39,6 @@ namespace GameEngine.Engine.Physics
             fixedUpdate = fixedUpdateDeltaTime;
 
             EngineEventManager.AddEventListener<WhileInPlayMode>((e) => Update(fixedUpdateDeltaTime));
-            Console.WriteLine(gravityDirection);
-            Console.WriteLine(test);
         }
 
         public static void Update(float dt) 

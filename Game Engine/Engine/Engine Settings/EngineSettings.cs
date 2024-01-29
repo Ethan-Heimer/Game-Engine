@@ -108,10 +108,8 @@ namespace GameEngine.Engine.Settings
             return engineSettings.ToArray();
         }
 
-        async static void SaveSettings()
+        static void SaveSettings()
         {
-            Console.WriteLine("Save");
-
             FileStream createStream = File.Create(path);
             JsonSerializer.Serialize(createStream, settings);
 

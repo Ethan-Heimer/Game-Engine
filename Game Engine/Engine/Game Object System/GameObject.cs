@@ -76,23 +76,23 @@ namespace GameEngine
 
         public GameObject(bool empty)
         {
-            if (empty)
+            if (!empty)
             {
                 AddComponent<Transform>();
-                RegisterGameobject(false);
             }
 
+            RegisterGameobject(false);
             AssetManager.GetIcon("Cube", out Icon);
         }
 
         public GameObject(string name, bool empty)
         {
-            if (empty)
+            if (!empty)
             {
                 AddComponent<Transform>();
-                RegisterGameobject(false);
             }
 
+            RegisterGameobject(false);
             AssetManager.GetIcon("Cube", out Icon);
             Name = name;
         }
@@ -212,7 +212,8 @@ namespace GameEngine
 
         public object Clone()
         {
-            GameObject clone = new GameObject(Name + " (Clone)", false);
+            //GameObject clone = new GameObject(Name + " (Clone)", false);
+            GameObject clone = new GameObject(Name + " (Clone)", true);
             
             foreach(Component o in components)
             {
@@ -227,6 +228,7 @@ namespace GameEngine
                 var child = (GameObject)o.Clone();
                 clone.AddChild(child);
             }
+            00
 
             return clone;
         }
