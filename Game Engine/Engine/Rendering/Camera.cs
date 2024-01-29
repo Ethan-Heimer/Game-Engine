@@ -9,8 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-//Thanks to David Amador and o KB o.   since we will only have one camera.
-
 namespace GameEngine.Rendering
 {
     class Camera : ICamera

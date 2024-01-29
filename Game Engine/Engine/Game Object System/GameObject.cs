@@ -228,7 +228,6 @@ namespace GameEngine
                 var child = (GameObject)o.Clone();
                 clone.AddChild(child);
             }
-            00
 
             return clone;
         }

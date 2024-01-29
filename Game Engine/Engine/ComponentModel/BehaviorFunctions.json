@@ -28,6 +28,12 @@
       "FunctionName": "OnDisable",
       "ParamTypes": [],
       "CanExecuteAlways": false
+    },
+
+    {
+      "FunctionName": "WhileInEditor",
+      "ParamTypes": [],
+      "CanExecuteAlways": false
     }
   ]
 }

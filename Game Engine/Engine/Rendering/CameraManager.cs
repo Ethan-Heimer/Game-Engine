@@ -11,7 +11,7 @@ namespace GameEngine.Rendering
 {
     public static class CameraManager
     {
-        static ICamera MainCamera = null;
+        public static ICamera MainCamera = null;
 
         
         public static void Init()
