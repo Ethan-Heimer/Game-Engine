@@ -10,9 +10,6 @@ using System.Threading.Tasks;
 using GameEngine.Editor;
 using GameEngine.Engine.Events;
 using GameEngine.Engine;
-using Microsoft.Xna.Framework.Graphics;
-using static GameEngine.Engine.PlayModeManager;
-using System.Windows.Markup;
 
 namespace GameEngine
 {
@@ -39,6 +36,7 @@ namespace GameEngine
                 }
                 
                 _currentScene = value;
+                _currentScene.Load();
                 OnSceneLoaded?.Invoke(new SceneLoadedEvent() { Scene = value });
             }
         }
@@ -121,7 +119,6 @@ namespace GameEngine
 
         static void HandleSceneOnEdit()
         {
-
             Scene tempScene = (Scene)TempFileHandler.Deserialize("temp.scene");
 
             if (tempScene != null)

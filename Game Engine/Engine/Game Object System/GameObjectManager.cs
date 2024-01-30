@@ -12,8 +12,8 @@ namespace GameEngine.Engine
     [ContainsEvents]
     public static class GameObjectManager
     {
-        static EngineEvent<GameObjectAddedEvent> OnObjectAdded;
-        static EngineEvent<GameObjectRemovedEvent> OnObjectRemoved;
+        static EngineEvent<GameObjectsAddedEvent> OnObjectsAdded;
+        static EngineEvent<GameObjectsRemovedEvent> OnObjectsRemoved;
 
         static EngineEvent<GameObjectTreeChanged> OnTreeChanged;
        
@@ -24,21 +24,28 @@ namespace GameEngine.Engine
         public static void RegisterGameobject(GameObject gameObject) 
         {
             gameObjects.Add(gameObject);
-            OnObjectAdded?.Invoke(new GameObjectAddedEvent()
+            OnObjectsAdded?.Invoke(new GameObjectsAddedEvent()
             {
-                AddedGameObject = gameObject,
+                AddedGameObjects = new GameObject[] { gameObject },
                 TotalGameObjects = gameObjects.ToArray()
             });
+            Console.WriteLine("Gameobject Added");
 
-            AlertTreeChange(gameObject);
+            AlertTreeChange();
         }
 
         public static void RegisterGameobjectGroup(GameObject[] _gameObjects)
         {
-           foreach(GameObject o in _gameObjects)
+            gameObjects.AddRange(_gameObjects);
+
+            OnObjectsAdded?.Invoke(new GameObjectsAddedEvent()
             {
-                RegisterGameobject(o);
-            }
+                AddedGameObjects = _gameObjects,
+                TotalGameObjects = gameObjects.ToArray()
+            });
+            Console.WriteLine("Gameobject Added");
+
+            AlertTreeChange();
         }
 
         public static void DispatchGameobject(GameObject gameObject) 
@@ -47,36 +54,47 @@ namespace GameEngine.Engine
 
             gameObject.ClearComponents();
 
-            OnObjectRemoved?.Invoke(new GameObjectRemovedEvent()
+            OnObjectsRemoved?.Invoke(new GameObjectsRemovedEvent()
             {
-                RemovedGameObject = gameObject,
+                RemovedGameObjects = new GameObject[] { gameObject },
                 TotalGameObjects = gameObjects.ToArray()
             });
 
-            AlertTreeChange(gameObject);
+            Console.WriteLine("Removed");
+
+            AlertTreeChange();
         }
 
         public static void DispatchGameobjectGroup(GameObject[] _gameObjects)
         {
-            foreach (GameObject o in _gameObjects) 
+            foreach(GameObject o in _gameObjects)
+                gameObjects.Remove(o);
+
+            OnObjectsRemoved?.Invoke(new GameObjectsRemovedEvent()
             {
-                DispatchGameobject(o);
-            }
+                RemovedGameObjects = _gameObjects,
+                TotalGameObjects = gameObjects.ToArray()
+            });
+            Console.WriteLine("Gameobject Added");
+
+            AlertTreeChange();
         }
 
         public static void ClearAll()
         {
             while(gameObjects.Count > 0) 
             {
-                DispatchGameobject(gameObjects[0]);
+                GameObject gameObject = gameObjects[0];
+                gameObject.Destroy();
             }
+
+            AlertTreeChange();
         }
 
-        public static void AlertTreeChange(GameObject changed)
+        public static void AlertTreeChange()
         {
             OnTreeChanged?.Invoke(new GameObjectTreeChanged()
             {
-                ChangedObject = changed,
                 TotalGameObjects = gameObjects.ToArray(),
             });
         }
@@ -101,13 +119,13 @@ namespace GameEngine.Engine
         }
     }
 
-    public class GameObjectAddedEvent : GameObjectEvent 
+    public class GameObjectsAddedEvent : GameObjectEvent 
     {
-        public GameObject AddedGameObject;
+        public GameObject[] AddedGameObjects;
     }
-    public class GameObjectRemovedEvent : GameObjectEvent 
+    public class GameObjectsRemovedEvent : GameObjectEvent 
     {
-        public GameObject RemovedGameObject;
+        public GameObject[] RemovedGameObjects;
     }
 
     public class GameObjectTreeChanged : GameObjectEvent

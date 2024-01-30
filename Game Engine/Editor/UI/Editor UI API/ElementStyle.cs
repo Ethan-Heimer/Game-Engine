@@ -29,7 +29,6 @@ namespace GameEngine.Editor.Windows
         {
             get
             {
-                Console.WriteLine(PrimaryColor);
                 return new SolidColorBrush(Color.FromRgb(PrimaryColor.R, PrimaryColor.G, PrimaryColor.B));
             }
         }
@@ -87,11 +86,6 @@ namespace GameEngine.Editor.Windows
 
         public Brush OnHoverBackground;
         public Brush OnDragBackground;
-
-        public ElementStyle()
-        {
-            Console.WriteLine(PrimaryColor);
-        }
 
         public ElementStyle OverrideFontSize(int value)
         {

@@ -35,8 +35,6 @@ namespace GameEngine.Editor.UI.Inspector
 
         public FieldTemplate(Type binderType, MemberValue field, object owner)
         {
-            Console.WriteLine(typeof(IFieldBinder<T>).Name);
-
             data = (IFieldBinder<T>)Activator.CreateInstance(binderType, new object[] { field, owner });
             Value = data.GetValue();
 

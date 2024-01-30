@@ -117,8 +117,6 @@ namespace GameEngine.Engine.Physics
             
             foreach(Vector2 o in Collider.CollsionNormals)
             {
-                Console.WriteLine(o);
-
                 if(o == -OffsetGravityDirection)
                     applyGravity = false;
             }

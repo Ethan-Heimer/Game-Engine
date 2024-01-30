@@ -9,22 +9,29 @@ using GameEngine.Engine.ComponentModel;
 
 namespace GameEngine.Engine.Components
 {
-    [ExecuteAlways]
     public class GameCamera : Behavior
     {
+        public float Zoom;
+
         Camera camera = new Camera();
 
         public void Start()
         {
-            ICamera editorCamera = CameraManager.MainCamera;
             CameraManager.SetMainCamera(camera);
+            
         }
 
         public void Update()
         {
-            camera.Position = new Vector2(0,0);
-            
-           
+            camera.Position = transform.WorldPosition;
+            camera.Zoom = Zoom;
+
+            Console.WriteLine(camera.GetVisibleArea());  
+        }
+
+        public void WhileInEditor()
+        {
+            Renderer.DrawCircle(transform.Position, 10, Color.Red);
         }
     }
 }

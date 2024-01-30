@@ -35,8 +35,6 @@ namespace GameEngine.Editor.Windows
 
         public override void OnGUI(EditorGUIDrawer drawer)
         {
-            EngineEventManager.AddEventListener<GameObjectAddedEvent>((e) => Draw(drawer));
-            EngineEventManager.AddEventListener<GameObjectRemovedEvent>((e) => Draw(drawer));
             EngineEventManager.AddEventListener<GameObjectTreeChanged>((e) => Draw(drawer));
 
             Draw(drawer);

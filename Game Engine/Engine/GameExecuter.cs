@@ -23,6 +23,7 @@ namespace GameEngine.Engine
             EngineEventManager.AddEventListener<OnEnterEditMode>(e => ExecuteDisable());
 
             EngineEventManager.AddEventListener<WhileInEditMode>(e => ExecutePersistantUpdate());
+            EngineEventManager.AddEventListener<WhileInEditMode>(e => WhileInEdit());
         }
 
         public static void Tick()
@@ -45,5 +46,7 @@ namespace GameEngine.Engine
         static void ExecutePersistantUpdate() => BehaviorFunctionExecuter.Execute.UpdateInEditor();
 
         static void ResetStart() => started = false;
+
+        static void WhileInEdit() => BehaviorFunctionExecuter.Execute.WhileInEditor();
     }
 }

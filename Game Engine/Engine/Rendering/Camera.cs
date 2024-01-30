@@ -20,7 +20,7 @@ namespace GameEngine.Rendering
 
         private Rectangle screenRect;
 
-        public void Initialize()
+        public Camera()
         {
             zoom = 1.0f;
             Rotation = 0.0f;

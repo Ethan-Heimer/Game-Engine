@@ -171,7 +171,7 @@ namespace GameEngine
             child.Parent = this;
             children.Add(child);
 
-            GameObjectManager.AlertTreeChange(this);
+            GameObjectManager.AlertTreeChange();
         }
 
         public void RemoveChild(GameObject child)
@@ -179,7 +179,7 @@ namespace GameEngine
             child.Parent = null;
             children.Remove(child);
 
-            GameObjectManager.AlertTreeChange(this);
+            GameObjectManager.AlertTreeChange();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext content)
@@ -252,8 +252,6 @@ namespace GameEngine
             {
                 await Task.Yield(); 
             }
-
-            RegisterGameobject(true);
         }
 
     }

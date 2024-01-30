@@ -37,13 +37,16 @@ namespace GameEngine.ComponentManagement
                 }
             }
 
-            EngineEventManager.AddEventListener<GameObjectAddedEvent>(AddCache);
-            EngineEventManager.AddEventListener<GameObjectRemovedEvent>(RemoveCache);
+            EngineEventManager.AddEventListener<GameObjectsAddedEvent>(AddCache);
+            EngineEventManager.AddEventListener<GameObjectsRemovedEvent>(RemoveCache);
         }
 
-        public static void AddCache(GameObjectAddedEvent e)
+        public static void AddCache(GameObjectsAddedEvent e)
         {
-            AddCache(e.AddedGameObject);
+            foreach (var o in e.AddedGameObjects)
+            {
+                AddCache(o);
+            }
         }
         public static void AddCache(GameObject e)
         {
@@ -69,9 +72,12 @@ namespace GameEngine.ComponentManagement
         }
 
  
-        public static void RemoveCache(GameObjectRemovedEvent e)
+        public static void RemoveCache(GameObjectsRemovedEvent e)
         {
-            RemoveCache(e.RemovedGameObject);
+            foreach(var o in e.RemovedGameObjects)
+            {
+                RemoveCache(o);
+            }
         }
         public static void RemoveCache(GameObject e)
         {
