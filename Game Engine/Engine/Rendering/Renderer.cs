@@ -27,7 +27,9 @@ namespace GameEngine.Rendering
 
         static GraphicsDevice graphicsDevice;
         static GraphicsDeviceManager graphics;
+
         static SpriteBatch spriteBatch;
+        static SpriteBatch uiBatch;
 
         static Texture2D pixel;
         static Texture2D circle;
@@ -50,6 +52,7 @@ namespace GameEngine.Rendering
             Resolution.SetResolution(width, height, false);
 
             spriteBatch = new SpriteBatch(_graphicDevice);
+            uiBatch = new SpriteBatch(_graphicDevice);
 
             pixel = new Texture2D(graphicsDevice, 1, 1, false,
             SurfaceFormat.Color);
@@ -67,12 +70,14 @@ namespace GameEngine.Rendering
             graphicsDevice.Clear(new Color(55,55,55));
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, CameraManager.GetTransformantionMaxtrix());
+            uiBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
 
             BehaviorFunctionExecuter.Execute.OnDraw();
             OnDraw?.Invoke(OnEngineDrawEvent);
             RenderBuffer();
 
             spriteBatch.End();
+            uiBatch.End();
         }
 
         public static void RenderTexture(Sprite texture, Vector2 position)
@@ -92,6 +97,11 @@ namespace GameEngine.Rendering
 
         public static void RenderTexture(Sprite texture, Vector2 position, float rotation, float scale, Color color, Vector2 origin)
         {
+            RenderTexture(texture, position, rotation, scale, color, origin, Layer.Game);
+        }
+
+        public static void RenderTexture(Sprite texture, Vector2 position, float rotation, float scale, Color color, Vector2 origin, Layer layer)
+        {
             buffer.Push(new SpriteData()
             {
                 texture = texture.Texture,
@@ -99,7 +109,8 @@ namespace GameEngine.Rendering
                 rotation = rotation,
                 scale = scale,
                 color = color,
-                origin = origin
+                origin = origin,
+                layer = layer
             });
         }
 
@@ -110,14 +121,21 @@ namespace GameEngine.Rendering
 
         public static void DrawLine(Vector2 pos1, Vector2 pos2, Color color)
         {
+            DrawLine(pos1, pos2, color, Layer.Game);
+        }
+
+        public static void DrawLine(Vector2 pos1, Vector2 pos2, Color color, Layer layer)
+        {
             buffer.Push(new LineData()
             {
                 texture = pixel,
                 color = color,
                 positionOne = pos1,
                 positionTwo = pos2,
+                layer = layer
             });
         }
+
 
         public static void RenderRect(Rectangle rect)
         {
@@ -136,14 +154,22 @@ namespace GameEngine.Rendering
 
         public static void DrawCircle(Vector2 center, float radius, Color color)
         {
+           DrawCircle(center, radius, color, Layer.Game);
+        }
+
+        public static void DrawCircle(Vector2 center, float radius, Color color, Layer layer)
+        {
             buffer.Push(new CircleData()
             {
                 texture = circle,
                 color = color,
                 center = center,
-                radius = radius
+                radius = radius,
+                layer = layer
             });
-        }    
+        }
+
+        public static void 
 
         static Texture2D CreateCircleText(int radius)
         {
@@ -179,7 +205,17 @@ namespace GameEngine.Rendering
             while(buffer.Count > 0)
             {
                 var data = buffer.Pop();
-                data.Draw(spriteBatch);
+
+                switch (data.layer)
+                {
+                    case Layer.Game:
+                        data.Draw(spriteBatch);
+                        break;
+
+                    case Layer.UI:
+                        data.Draw(uiBatch);
+                        break;
+                }
             }
         }
     }
@@ -188,6 +224,8 @@ namespace GameEngine.Rendering
     {
         Texture2D texture { get; set; }
         Color color { get; set; }
+
+        Layer layer { get; set; }
 
         void Draw(SpriteBatch spriteBatch);
     }
@@ -201,6 +239,8 @@ namespace GameEngine.Rendering
         public float rotation;
         public float scale;
         public Vector2 origin;
+
+        public Layer layer { get; set; }
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -216,6 +256,8 @@ namespace GameEngine.Rendering
 
         public Vector2 positionOne;
         public Vector2 positionTwo;
+
+        public Layer layer { get; set; }
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -241,6 +283,8 @@ namespace GameEngine.Rendering
         public Color color { get; set; }
         public Rectangle rectangle;
 
+        public Layer layer { get; set; }
+
         public void Draw(SpriteBatch spriteBatch) => spriteBatch.Draw(texture, rectangle, null, color, 0, Vector2.Zero, SpriteEffects.None, 1);
     }
 
@@ -252,6 +296,7 @@ namespace GameEngine.Rendering
         public Vector2 center;
 
         public float radius;
+        public Layer layer { get; set; }
 
         public void Draw(SpriteBatch spriteBatch) => spriteBatch.Draw(texture, center, null, color, 0f, new Vector2(texture.Width/2, texture.Height/2), radius/1000, SpriteEffects.None, 0);
     }
@@ -262,5 +307,10 @@ namespace GameEngine.Rendering
         {
             get; set;
         }
+    }
+
+    public enum Layer
+    {
+        Game, UI
     }
 }

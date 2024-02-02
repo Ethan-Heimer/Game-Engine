@@ -9,21 +9,7 @@ namespace GameEngine.Engine.Physics
 {
     public class Box2D : Collider
     {
-        Vector2 size
-        {
-            get
-            {
-                return transform.Size;
-            }
-        }
-        Vector2 halfSize
-        {
-            get
-            {
-                return transform.Size/2;
-            }
-        }
-
+       
 
         public Vector2 LocalMin
         {
@@ -40,6 +26,5 @@ namespace GameEngine.Engine.Physics
                 return transform.Position + halfSize;
             }
         }
-
     }
 }

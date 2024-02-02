@@ -27,7 +27,7 @@ namespace GameEngine.Editor.UI.Inspector
                 Height = 25,
             });
 
-            var (menu, button) =drawer.DrawContextButton(icon, "button", new ElementStyle()
+            var (menu, button) =drawer.DrawContextButton(icon, "button", new ElementStyle() 
             {
                 Width = 25,
                 Height = 25,

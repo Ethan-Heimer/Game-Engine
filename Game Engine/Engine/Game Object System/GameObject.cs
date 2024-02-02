@@ -33,6 +33,31 @@ namespace GameEngine
         
         List<GameObject> children = new List<GameObject>();
 
+        bool _isActive = true;
+        public bool IsActive
+        {
+            get
+            {
+                return _isActive;
+            }
+
+            set
+            {
+                if (value == _isActive)
+                    return;
+
+                if(value)
+                    ComponentCacheManager.AddCache(this);
+                else
+                    ComponentCacheManager.RemoveCache(this);
+
+                foreach (var o in children)
+                    o.IsActive = value;
+
+                _isActive = value;
+            }
+        }
+
 
         Transform _transform;
         public Transform Transform
@@ -241,7 +266,7 @@ namespace GameEngine
         }
 
         async void InitData(SerializationInfo info, StreamingContext content)
-        {
+        { 
             components = (List<Component>)info.GetValue("Components", typeof(List<Component>));
             children = (List<GameObject>)info.GetValue("Children", typeof(List<GameObject>));
             Parent = (GameObject)info.GetValue("Parent", typeof(GameObject));

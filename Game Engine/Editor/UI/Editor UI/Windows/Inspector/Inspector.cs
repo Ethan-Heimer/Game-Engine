@@ -34,6 +34,7 @@ namespace GameEngine.Editor.UI.Inspector
             drawer.StartHorizontalGroup();
                 DrawIconField(gameObject, drawer);
                 DrawNameField(gameObject, drawer);
+                DrawActiveField(gameObject, drawer);
             drawer.EndGroup();
 
             foreach (Component o in gameObject.GetAllComponents())
@@ -95,6 +96,16 @@ namespace GameEngine.Editor.UI.Inspector
             FieldInfo icon = gameObject.GetType().GetField("Icon");
 
             IFieldTemplate template = factory.TryGetTemplate(icon, gameObject);
+            template.Display(drawer);
+
+            fields.Add(template);
+        }
+
+        void DrawActiveField(GameObject gameObject, EditorGUIDrawer drawer)
+        {
+            PropertyInfo isActive = gameObject.GetType().GetProperty("IsActive");
+
+            IFieldTemplate template = factory.TryGetTemplate(isActive, gameObject);
             template.Display(drawer);
 
             fields.Add(template);

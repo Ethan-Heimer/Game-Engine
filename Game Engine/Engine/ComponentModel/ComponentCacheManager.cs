@@ -30,11 +30,6 @@ namespace GameEngine.ComponentManagement
             foreach (var o in BehaviorFunctions.functionTypes)
             {
                 cache.Add(o.FunctionName, new BehaviorMethodCollection(o));
-
-                if (o.CanExecuteAlways)
-                {
-                    cache.Add(o.FunctionName + "InEditor", new BehaviorMethodCollection(o));
-                }
             }
 
             EngineEventManager.AddEventListener<GameObjectsAddedEvent>(AddCache);
@@ -60,9 +55,6 @@ namespace GameEngine.ComponentManagement
             foreach (var o in BehaviorFunctions.functionTypes)
             {
                 cache[o.FunctionName].TryCacheBehavior(behavior);
-
-                if (o.CanExecuteAlways && ExecuteAlways(behavior))
-                    cache[o.FunctionName + "InEditor"].TryCacheBehavior(behavior);
             }
 
             addedArgs.behaviorAdded = behavior;
@@ -91,9 +83,6 @@ namespace GameEngine.ComponentManagement
             foreach (var o in BehaviorFunctions.functionTypes)
             {
                 cache[o.FunctionName].TryRemoveBehavior(c);
-
-                if (o.CanExecuteAlways && ExecuteAlways(c))
-                    cache[o.FunctionName + "InEditor"].TryCacheBehavior(c);
             }
 
             removeArgs.behaviorRemoved = c;
@@ -111,12 +100,6 @@ namespace GameEngine.ComponentManagement
         public static BehaviorMethodCollection GetCache(string name)
         {
             return cache[name];
-        }
-
-        static bool ExecuteAlways(Behavior behavior)
-        {
-            return behavior.GetType().GetCustomAttribute(typeof(ExecuteAlwaysAttribute)) != null;
-          
         }
     }
 

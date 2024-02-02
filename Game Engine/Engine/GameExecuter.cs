@@ -22,14 +22,11 @@ namespace GameEngine.Engine
             EngineEventManager.AddEventListener<OnEnterEditMode>(e => ResetStart());
             EngineEventManager.AddEventListener<OnEnterEditMode>(e => ExecuteDisable());
 
-            EngineEventManager.AddEventListener<WhileInEditMode>(e => ExecutePersistantUpdate());
             EngineEventManager.AddEventListener<WhileInEditMode>(e => WhileInEdit());
         }
 
         public static void Tick()
         {
-            //Console.WriteLine("Tick");
-
             if(!started) 
             {
                 BehaviorFunctionExecuter.Execute.Awake();
@@ -42,8 +39,6 @@ namespace GameEngine.Engine
         }
 
         static void ExecuteDisable() => BehaviorFunctionExecuter.Execute.OnDisable();
-
-        static void ExecutePersistantUpdate() => BehaviorFunctionExecuter.Execute.UpdateInEditor();
 
         static void ResetStart() => started = false;
 

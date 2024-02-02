@@ -43,7 +43,7 @@ namespace GameEngine
                 direction.Y = 1;
             }
 
-            body.AddForce(direction* Acceleration);
+            body.AddForce(direction * Acceleration);
 
             if(!(-MaxSpeed < body.Velocity.X && body.Velocity.X < MaxSpeed))
             {

@@ -38,9 +38,11 @@ namespace GameEngine.Editor.UI.Hiarchy
         {
             IFieldTemplate nameTemplate = factory.TryGetTemplate(obj.GetType().GetField("Name"), obj);
             IFieldTemplate iconTemplate = factory.TryGetTemplate(obj.GetType().GetField("Icon"), obj);
+            IFieldTemplate activeTemplate = factory.TryGetTemplate(obj.GetType().GetProperty("IsActive"), obj);
 
             fields.Add(nameTemplate);
             fields.Add(iconTemplate);
+            fields.Add(activeTemplate);
 
             ElementStyle groupStyle = ElementStyle.DefaultGroupStyle;
 
@@ -48,6 +50,8 @@ namespace GameEngine.Editor.UI.Hiarchy
             groupStyle.OnHoverBackground = ElementStyle.AccentBackgroundColor;
 
             var group = drawer.StartHorizontalGroup(groupStyle);
+
+            activeTemplate.Display(drawer);
             iconTemplate.Display(drawer, indentLevel);
             nameTemplate.Display(drawer);
             drawer.EndGroup();

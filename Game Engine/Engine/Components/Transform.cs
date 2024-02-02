@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 namespace GameEngine
 {
-    [ExecuteAlways]
     public class Transform : Behavior
     {
         public Vector2 Position;
@@ -138,7 +137,7 @@ namespace GameEngine
         {
             Vector2[] verticies = new Vector2[]
             {
-                new Vector2(-Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y),
+                new Vector2(-Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y), 
                 new Vector2(Size.X/2 + WorldPosition.X, -Size.Y/2 + WorldPosition.Y),
                 new Vector2(Size.X / 2 + WorldPosition.X, Size.Y / 2 + WorldPosition.Y),
                 new Vector2(-Size.X/2 + WorldPosition.X, Size.Y/2 + WorldPosition.Y),
@@ -154,11 +153,21 @@ namespace GameEngine
 
         public void Update()
         {
+            UpdateTransform();
+        }
+
+        public void WhileInEditor()
+        {
+            UpdateTransform();
+        }
+
+        private void UpdateTransform()
+        {
             var pos = Matrix.CreateTranslation(new Vector3(Position, 0));
             var rot = Matrix.CreateRotationZ((float)GetRotationInRad());
             var scale = Matrix.CreateScale(Scale);
 
-            TransformMatrix =  (scale * rot * pos) * (gameObject.Parent != null ? gameObject.Parent.Transform.TransformMatrix : Matrix.Identity);
+            TransformMatrix = (scale * rot * pos) * (gameObject.Parent != null ? gameObject.Parent.Transform.TransformMatrix : Matrix.Identity);
         }
 
         public double GetRotationInRad()

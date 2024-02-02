@@ -12,6 +12,9 @@ using GameEngine.Engine.Physics;
 using GameEngine.Engine.Rendering;
 using GameEngine.Engine.Settings;
 using Microsoft.Xna.Framework.Graphics;
+using System.Windows.Documents;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace GameEngine
 {
@@ -27,7 +30,9 @@ namespace GameEngine
         OnEngineTickEvent OnEngineTickEvent = new OnEngineTickEvent();
 
         static EngineEvent<OnEngineExitEvent> OnExit;
-        OnEngineExitEvent OnEngineExitEvent = new OnEngineExitEvent();  
+        OnEngineExitEvent OnEngineExitEvent = new OnEngineExitEvent();
+
+       
 
         public Game1()
         {
@@ -36,22 +41,41 @@ namespace GameEngine
 
         protected override void Initialize()
         {
+            List<Thread> threads = new List<Thread>();
+
             EngineEventManager.Init();
+            ComponentCacheManager.Init();
+
+            Thread loadThread = new Thread(() =>
+            {
+                SceneManager.Init();
+            });
+
+            Thread renderThread = new Thread(() =>
+            {
+                Renderer.Init(this, graphics, GraphicsDevice);
+                CameraManager.Init();
+            });
+
+            renderThread.Start();
+            loadThread.Start();
+
+            renderThread.Join();
+            loadThread.Join();
 
             EngineSettings.Init();
             AssetManager.Init(Content);
-            ComponentCacheManager.Init();
             GameExecuter.Init();
-            SceneManager.Init();
             InputManager.Init();
-            Renderer.Init(this, graphics, GraphicsDevice);
-            CameraManager.Init();
             PlayModeManager.Init();
             TempFileHandler.Init();
             NotesManager.Init();
             PhysicsSystem.Init(.1f);
             GameWindowManager.Init(this.Window);
 
+          
+
+            
             this.IsMouseVisible = true;
             AfterInit?.Invoke();
 

@@ -1,22 +1,23 @@
-1/29/2024 6:33:12 PM: In class TextureRenderer: The Standard Rectangle Only Allows for int values, a coustom one with floting point values might be better
-1/29/2024 6:33:12 PM: In class Game1: Theres a lot of init functions. Maybe a system to call static init functions might be better?
-1/29/2024 6:33:12 PM: In class GameObject: IPointerManipulatable might wanna be seperated into multiple interfaced when starting on capture system
-1/29/2024 6:33:12 PM: In class Renderer: The render uses a buffer which i feel might use alot of memory. when optimizing this might be a good place to start. a fun approch could be rendering with async, blocking the fuctions rendering calls until some blocking method is released
-1/29/2024 6:33:12 PM: In class GameWindowManager: Pos = (320, 180) Size = (1920, 1080) on home machiene
-1/29/2024 6:33:12 PM: In class WindowManager: Time between window draws can be a engine setting in a json file / Drawer in update might be able to be cashed
-1/29/2024 6:33:12 PM: In class HiarchyIconTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class HiarchyNameTemplate: Make Icon Manager
-1/29/2024 6:33:12 PM: In class ComponentFieldBinder`1: Every frame, GetValue() is called AT LEAST once (in HasValueChanged) as well as when ever Get Value is called. while maybe not that big of a performance hit, it is somthing to look into
-1/29/2024 6:33:12 PM: In class FieldTemplate`1: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class BoolFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class ColorFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class FloatFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class IconFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class IntFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class SpriteFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class StringFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class Vector2FieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
-1/29/2024 6:33:12 PM: In class UITemplateFactory`1: GetTemplateType is the slowest thing ever written by man O(N^3) type beat
-1/29/2024 6:33:12 PM: In class EditorGUIDrawer: Split Class Into formatter and drawer? // cache frequent classes like Thickness? || draw methods and get methods (returns without drawing)?
-1/29/2024 6:33:12 PM: In class GameManagerWindow: Crash when loading scene
-1/29/2024 6:33:12 PM: In class HiarchyWindow: To give gameobjects some structure, it might be a good idea to make a scene object that acts as the root node of the gameobject tree. every gameobject is a child of the root, and code might be cleaner because objects would have better structure
+1/31/2024 9:21:51 PM: In class TextureRenderer: The Standard Rectangle Only Allows for int values, a coustom one with floting point values might be better
+1/31/2024 9:21:51 PM: In class Game1: Theres a lot of init functions. Maybe a system to call static init functions might be better?
+1/31/2024 9:21:51 PM: In class GameObject: IPointerManipulatable might wanna be seperated into multiple interfaced when starting on capture system
+1/31/2024 9:21:51 PM: In class Renderer: The render uses a buffer which i feel might use alot of memory. when optimizing this might be a good place to start. a fun approch could be rendering with async, blocking the fuctions rendering calls until some blocking method is released
+1/31/2024 9:21:51 PM: In class GameWindowManager: Pos = (320, 180) Size = (1920, 1080) on home machiene
+1/31/2024 9:21:51 PM: In class WindowManager: Time between window draws can be a engine setting in a json file / Drawer in update might be able to be cashed
+1/31/2024 9:21:51 PM: In class HiarchyActiveTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class HiarchyIconTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class HiarchyNameTemplate: Make Icon Manager
+1/31/2024 9:21:51 PM: In class ComponentFieldBinder`1: Every frame, GetValue() is called AT LEAST once (in HasValueChanged) as well as when ever Get Value is called. while maybe not that big of a performance hit, it is somthing to look into
+1/31/2024 9:21:51 PM: In class FieldTemplate`1: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class BoolFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class ColorFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class FloatFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class IconFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class IntFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class SpriteFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class StringFieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class Vector2FieldTemplate: Instead of tagging templates with interfaces, it might be better to use attributes
+1/31/2024 9:21:51 PM: In class UITemplateFactory`1: GetTemplateType is the slowest thing ever written by man O(N^3) type beat
+1/31/2024 9:21:51 PM: In class EditorGUIDrawer: Split Class Into formatter and drawer? // cache frequent classes like Thickness? || draw methods and get methods (returns without drawing)?
+1/31/2024 9:21:51 PM: In class GameManagerWindow: Crash when loading scene
+1/31/2024 9:21:51 PM: In class HiarchyWindow: To give gameobjects some structure, it might be a good idea to make a scene object that acts as the root node of the gameobject tree. every gameobject is a child of the root, and code might be cleaner because objects would have better structure

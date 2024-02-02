@@ -21,21 +21,19 @@ namespace GameEngine.Engine.Physics
             Vector2 normal = Vector2.Zero;
             float depth = float.MaxValue;
 
-            Vector2[] verticesA = a.transform.GetVerticies();
-            Vector2[] verticesB = b.transform.GetVerticies();
+            Vector2[] verticesA = a.GetVerticies();
+            Vector2[] verticesB = b.GetVerticies();
 
             for(int i =0; i < verticesA.Length; i++)
             {
                 Vector2 va = verticesA[i];
                 Vector2 vb = verticesA[(i + 1) % verticesA.Length];
-                Renderer.DrawLine(va, vb, Color.Red);
             }
 
             for (int i = 0; i < verticesB.Length; i++)
             {
                 Vector2 va = verticesB[i];
                 Vector2 vb = verticesB[(i + 1) % verticesB.Length];
-                Renderer.DrawLine(va, vb, Color.Red);
             }
 
             for (int i = 0; i < verticesA.Length; i++)

@@ -97,6 +97,7 @@
     <Compile Include="Editor\UI\Editor UI\Windows\GameManaer.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Hiarchy.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\HiarchyWindow.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyActiveTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyIconTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyNameTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\BoolFieldTemplate.cs" />
@@ -194,9 +195,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Engine\Asset Management\Icons\Active.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Engine\Asset Management\Icons\Child Icon.png" />
     <Content Include="Engine\Asset Management\Icons\Cube.png" />
     <Content Include="Engine\Asset Management\Icons\Cube2.png" />
+    <Content Include="Engine\Asset Management\Icons\Inactive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Engine\Asset Management\Icons\placeholder.png" />
     <Content Include="Game\Content\crate.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

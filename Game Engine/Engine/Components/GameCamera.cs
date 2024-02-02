@@ -32,6 +32,8 @@ namespace GameEngine.Engine.Components
         public void WhileInEditor()
         {
             Renderer.DrawCircle(transform.Position, 10, Color.Red);
+
+           
         }
     }
 }
