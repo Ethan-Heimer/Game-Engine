@@ -74,6 +74,7 @@ namespace GameEngine.Rendering
 
             BehaviorFunctionExecuter.Execute.OnDraw();
             OnDraw?.Invoke(OnEngineDrawEvent);
+
             RenderBuffer();
 
             spriteBatch.End();
@@ -169,7 +170,45 @@ namespace GameEngine.Rendering
             });
         }
 
-        public static void 
+        public static void DrawWireframe(Vector2[] verticies)
+        {
+            for (int i = 0; i < verticies.Length; i++)
+            {
+                DrawLine(verticies[i], verticies[(i + 1) % verticies.Length], Color.White);
+            }
+        }
+
+        public static void DrawWireframe(Vector2[] verticies, Color color)
+        {
+            for (int i = 0; i < verticies.Length; i++)
+            {
+                DrawLine(verticies[i], verticies[(i + 1) % verticies.Length], color, Layer.Game);
+            }
+        }
+
+        public static void DrawWireframe(Vector2[] verticies, Color color, Layer layer)
+        {
+            for (int i = 0; i < verticies.Length; i++)
+            {
+                DrawLine(verticies[i], verticies[(i + 1) % verticies.Length], color, layer);
+            }
+        }
+
+        public static void DrawWireRect(Rectangle rect) => DrawWireRect(rect, Color.White);
+        public static void DrawWireRect(Rectangle rect, Color color) => DrawWireRect(rect, color, Layer.Game);
+
+        public static void DrawWireRect(Rectangle rect, Color color, Layer layer)
+        {
+            Vector2[] verticies = new Vector2[]
+            {
+                new Vector2(rect.Left, rect.Top),
+                new Vector2(rect.Right, rect.Top),
+                new Vector2(rect.Right, rect.Bottom),
+                new Vector2(rect.Left, rect.Bottom),
+            };
+
+            DrawWireframe(verticies, color, layer);
+        }
 
         static Texture2D CreateCircleText(int radius)
         {

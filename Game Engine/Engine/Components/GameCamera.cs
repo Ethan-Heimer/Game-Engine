@@ -26,13 +26,28 @@ namespace GameEngine.Engine.Components
             camera.Position = transform.WorldPosition;
             camera.Zoom = Zoom;
 
-            Console.WriteLine(camera.GetVisibleArea());  
+            Console.WriteLine(camera.GetVisibleArea());
         }
 
         public void WhileInEditor()
         {
-            Renderer.DrawCircle(transform.Position, 10, Color.Red);
+            camera.Position = transform.WorldPosition;
+            camera.Zoom = Zoom;
 
+            Renderer.DrawCircle(transform.WorldPosition, 10, Color.Red);
+
+            float width = camera.GetVisibleArea().Width;
+            float height = camera.GetVisibleArea().Height;
+
+            Vector2[] verticies = new Vector2[]
+            {
+                new Vector2(transform.WorldPosition.X - width/2, transform.WorldPosition.Y - height/2),
+                new Vector2(transform.WorldPosition.X + width/2, transform.WorldPosition.Y - height/2),
+                new Vector2(transform.WorldPosition.X + width/2, transform.WorldPosition.Y + height/2),
+                new Vector2(transform.WorldPosition.X - width/2, transform.WorldPosition.Y + height/2),
+            };
+
+            Renderer.DrawWireframe(verticies);
            
         }
     }

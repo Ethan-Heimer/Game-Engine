@@ -10,12 +10,17 @@ using System.Threading.Tasks;
 using GameEngine.Editor;
 using GameEngine.Engine.Events;
 using GameEngine.Engine;
+using GameEngine.Engine.Settings;
 
 namespace GameEngine
 {
     [ContainsEvents]
+    [ContainsSettings]
     public static class SceneManager
     {
+        [EngineSettings("Game")]
+        static string StartingScene = "";
+
         static readonly EngineEvent<SceneLoadedEvent> OnSceneLoaded;
 
         static readonly EngineEvent<SceneUnloadedEvent> OnSceneUnloaded;
@@ -97,17 +102,17 @@ namespace GameEngine
 
         static void LoadFirst()
         {
-            if (scenes.Count() == 0)
-            {
-                LoadScene(new Scene());
-                Console.WriteLine("Loaded New");
-            }
-            else
+            try
             {
                 if (currentScene != null)
                     LoadScene(currentScene);
                 else
-                    LoadScene(scenes.First().Key);
+                    LoadScene(StartingScene);
+            }
+            catch
+            {
+                LoadScene(new Scene());
+                Console.WriteLine("Loaded New");
             }
         }
 

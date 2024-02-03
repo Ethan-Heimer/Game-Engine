@@ -45,6 +45,7 @@ namespace GameEngine
 
             EngineEventManager.Init();
             ComponentCacheManager.Init();
+            EngineSettings.Init();
 
             Thread loadThread = new Thread(() =>
             {
@@ -63,7 +64,6 @@ namespace GameEngine
             renderThread.Join();
             loadThread.Join();
 
-            EngineSettings.Init();
             AssetManager.Init(Content);
             GameExecuter.Init();
             InputManager.Init();

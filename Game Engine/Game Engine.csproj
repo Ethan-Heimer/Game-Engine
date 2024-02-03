@@ -55,7 +55,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
-    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
@@ -120,6 +120,7 @@
     <Compile Include="Engine\Asset Management\Icon.cs" />
     <Compile Include="Engine\ComponentModel\ExecuteAlways.cs" />
     <Compile Include="Engine\ComponentModel\ObservableObject.cs" />
+    <Compile Include="Engine\Components\UI\Canvas.cs" />
     <Compile Include="Engine\Components\DrawBounds.cs" />
     <Compile Include="Engine\Components\GameCamera.cs" />
     <Compile Include="Engine\Debugging\NotesManager.cs" />
