@@ -15,6 +15,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Windows.Documents;
 using System.Threading;
 using System.Collections.Generic;
+using GameEngine.Engine.Components.UI;
+using GameEngine.Engine.Utilities;
 
 namespace GameEngine
 {
@@ -74,12 +76,12 @@ namespace GameEngine
             GameWindowManager.Init(this.Window);
 
           
-
             
             this.IsMouseVisible = true;
             AfterInit?.Invoke();
 
             base.Initialize();
+            Console.WriteLine(typeof(Panel).GetRootType());
         }
 
         protected override void LoadContent()
@@ -93,6 +95,7 @@ namespace GameEngine
             OnEngineTickEvent.Sender = this;
 
             OnTick?.Invoke(OnEngineTickEvent);
+
         }
         
         protected override void Draw(GameTime gameTime)

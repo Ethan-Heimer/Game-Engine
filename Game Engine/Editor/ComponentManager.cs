@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameEngine.Engine.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +13,7 @@ namespace GameEngine.Engine.ComponentModel
     {
         public static Type[] GetAllComponents()
         {
-            return Assembly.GetCallingAssembly().GetTypes().Where(x => x.BaseType == typeof(Behavior)).ToArray();
+            return Assembly.GetCallingAssembly().GetTypes().Where(x => x.GetRootType() == typeof(Behavior) && !x.IsAbstract).ToArray();
         }
     }
 }

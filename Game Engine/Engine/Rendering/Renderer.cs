@@ -1,5 +1,6 @@
 ﻿using GameEngine.ComponentManagement;
 using GameEngine.Debugging;
+using GameEngine.Editor;
 using GameEngine.Engine.Events;
 using GameEngine.Engine.Settings;
 using GameEngine.Rendering;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace GameEngine.Rendering
@@ -145,11 +147,17 @@ namespace GameEngine.Rendering
 
         public static void RenderRect(Rectangle rect, Color color)
         {
+            RenderRect(rect, color, Layer.Game);
+        }
+
+        public static void RenderRect(Rectangle rect, Color color, Layer layer)
+        {
             buffer.Push(new RectData()
             {
                 texture = pixel,
                 color = color,
                 rectangle = rect,
+                layer = layer
             });
         }
 
@@ -210,6 +218,33 @@ namespace GameEngine.Rendering
             DrawWireframe(verticies, color, layer);
         }
 
+        public static void DrawText(SpriteFont font, string text)
+        {
+            DrawText(font, text, Vector2.Zero);
+        }
+
+        public static void DrawText(SpriteFont font, string text, Vector2 position)
+        {
+            DrawText(font, text, position, Color.White);
+        }
+
+        public static void DrawText(SpriteFont font, string text, Vector2 position, Color color)
+        {
+            DrawText(font, text, position, color, Layer.Game);
+        }
+
+        public static void DrawText(SpriteFont font, string text, Vector2 position, Color color, Layer layer)
+        {
+            buffer.Push(new TextData
+            {
+                color = color,
+                Text = text,
+                Font = font,
+                layer = layer,
+                Position = position
+            });
+        }
+
         static Texture2D CreateCircleText(int radius)
         {
             Texture2D texture = new Texture2D(graphicsDevice, radius, radius);
@@ -261,7 +296,6 @@ namespace GameEngine.Rendering
 
     public interface IBufferData
     {
-        Texture2D texture { get; set; }
         Color color { get; set; }
 
         Layer layer { get; set; }
@@ -338,6 +372,21 @@ namespace GameEngine.Rendering
         public Layer layer { get; set; }
 
         public void Draw(SpriteBatch spriteBatch) => spriteBatch.Draw(texture, center, null, color, 0f, new Vector2(texture.Width/2, texture.Height/2), radius/1000, SpriteEffects.None, 0);
+    }
+
+    public struct TextData : IBufferData
+    {
+        public Color color { get; set; }
+        public Layer layer { get; set; }
+
+        public string Text;
+        public SpriteFont Font;
+
+        public Vector2 Position;
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(Font, Text, Position, color);
+        }
     }
 
     public struct OnEngineDrawEvent : IEventArgs

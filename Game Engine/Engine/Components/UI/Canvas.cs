@@ -1,4 +1,5 @@
 ﻿using GameEngine.Engine.Rendering;
+using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -74,5 +75,23 @@ namespace GameEngine.Engine.Components
 
         public float PercentWidth(float percent) => Width * percent; 
         public float PercentHeight(float percent) => Height * percent; 
+
+        public void Start()
+        {
+            transform.Position = new Vector2(0, 0);
+        }
+
+        public void WhileInEditor()
+        {
+            Vector2[] verticies = new Vector2[]
+            {
+                new Vector2(transform.WorldPosition.X ,transform.WorldPosition.Y),
+                new Vector2(Width + transform.WorldPosition.X, transform.WorldPosition.Y),
+                new Vector2(Width + transform.WorldPosition.X, Height + transform.WorldPosition.Y),
+                new Vector2(transform.WorldPosition.X, Height + transform.WorldPosition.Y),
+            };
+
+            Renderer.DrawWireframe(verticies, Color.Aqua);
+        }
     }
 }

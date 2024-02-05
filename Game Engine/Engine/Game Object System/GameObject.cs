@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using GameEngine.Pointers;
 using GameEngine.Debugging;
 using System.Runtime.InteropServices;
+using GameEngine.Engine.Utilities;
 
 namespace GameEngine
 {
@@ -155,7 +156,7 @@ namespace GameEngine
 
         public Behavior AddComponent(Type type) 
         {
-            if(type.BaseType != typeof(Behavior))
+            if(type.GetRootType() != typeof(Behavior))
                 return null;
 
             var behavior = (Behavior)Activator.CreateInstance(type);
@@ -255,6 +256,21 @@ namespace GameEngine
             }
 
             return clone;
+        }
+
+        public GameObject GetRoot()
+        {
+            GameObject root = this;
+
+            while (true)
+            {
+                if (root.Parent == null)
+                    break;
+
+                root = root.Parent;
+            }
+
+            return root;
         }
 
         async void RegisterGameobject(bool yeild)

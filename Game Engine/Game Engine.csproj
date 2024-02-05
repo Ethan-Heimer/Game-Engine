@@ -43,6 +43,9 @@
     <None Include="App.config" />
     <None Include="Engine\ComponentModel\BehaviorFunctions.json" />
     <None Include="Engine\Engine Settings\Settings.json" />
+    <None Include="Game\Content\Fonts\Arial.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FNA">
@@ -55,7 +58,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
-    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
@@ -123,6 +126,9 @@
     <Compile Include="Engine\Components\UI\Canvas.cs" />
     <Compile Include="Engine\Components\DrawBounds.cs" />
     <Compile Include="Engine\Components\GameCamera.cs" />
+    <Compile Include="Engine\Components\UI\Panel.cs" />
+    <Compile Include="Engine\Components\UI\Text.cs" />
+    <Compile Include="Engine\Components\UI\UIElement.cs" />
     <Compile Include="Engine\Debugging\NotesManager.cs" />
     <Compile Include="Engine\Engine Settings\EngineSettings.cs" />
     <Compile Include="Engine\Event System\Event.cs" />
@@ -176,6 +182,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Engine\Utilities\JsonExtensions.cs" />
+    <Compile Include="Engine\Utilities\ReflectionExtention.cs" />
     <Compile Include="Engine\Utilities\State.cs" />
     <Compile Include="Engine\Utilities\StateMachiene.cs" />
     <Compile Include="Engine\Utilities\StringSpacer.cs" />
