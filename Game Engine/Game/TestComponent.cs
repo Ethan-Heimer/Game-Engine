@@ -1,5 +1,6 @@
 ﻿using GameEngine.Editor.Windows;
 using GameEngine.Engine.ComponentModel;
+using GameEngine.Engine.Components.UI;
 using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using System;
@@ -13,7 +14,7 @@ namespace GameEngine.Game
     [ExecuteAlways]
     public class TestComponent : Behavior
     {
-       
+        Button button;
         public void Awake()
         {
             //Console.WriteLine(gameObject.Transform);
@@ -22,6 +23,9 @@ namespace GameEngine.Game
         public void Start()
         {
             Console.WriteLine("Start!! " + gameObject.Name);
+            button = gameObject.GetComponent<Button>();
+
+            button.OnClick += () => Console.WriteLine("Click");
         }
 
         public void Update()

@@ -30,6 +30,22 @@ namespace GameEngine.Engine.Components.UI
             }
         }
 
+        public bool IsClicked
+        {
+            get
+            {
+                return IsMouseHover && InputManager.MouseLeftClicked();
+            }
+        }
+
+        public bool IsHeld
+        {
+            get
+            {
+                return IsMouseHover && InputManager.MouseLeftDown();
+            }
+        }
+
         Canvas _canvas;
         Canvas Canvas
         {

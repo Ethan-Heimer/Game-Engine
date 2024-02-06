@@ -11,8 +11,11 @@ namespace GameEngine.Engine.Components.UI
 {
     public class Button : UIElement
     {
+        public event Action OnClick;
+
         public Color BaseColor;
         public Color HoverColor;
+        public Color ClickedColor;
 
         public override void Update()
         {
@@ -22,10 +25,15 @@ namespace GameEngine.Engine.Components.UI
         {
             Color color;
 
-            if (IsMouseHover)
+            if (IsHeld)
+                color = ClickedColor;
+            else if (IsMouseHover)
                 color = HoverColor;
             else
                 color = BaseColor;
+
+            if (IsClicked)
+                OnClick?.Invoke();
 
             Rectangle rectangle = new Rectangle
             {

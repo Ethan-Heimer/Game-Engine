@@ -25,8 +25,6 @@ namespace GameEngine.Engine.Components
         {
             camera.Position = transform.WorldPosition;
             camera.Zoom = Zoom;
-
-            Console.WriteLine(camera.GetVisibleArea());
         }
 
         public void WhileInEditor()
