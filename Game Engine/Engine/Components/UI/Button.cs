@@ -1,4 +1,5 @@
-﻿using GameEngine.Rendering;
+﻿using GameEngine.Engine.Utilities;
+using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,24 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Engine.Components.UI
 {
-    public class Panel : UIElement
+    public class Button : UIElement
     {
-        public Color Color;
+        public Color BaseColor;
+        public Color HoverColor;
 
+        public override void Update()
+        {
+            base.Update();
+        }
         protected override void OnGUI(Layer layer, Canvas canvas)
         {
+            Color color;
+
+            if (IsMouseHover)
+                color = HoverColor;
+            else
+                color = BaseColor;
+
             Rectangle rectangle = new Rectangle
             {
                 X = (int)UIPosition.X,
@@ -23,7 +36,9 @@ namespace GameEngine.Engine.Components.UI
                 Height = (int)Size.Y
             };
 
-            Renderer.RenderRect(rectangle, Color, layer);
+            Renderer.RenderRect(rectangle, color, layer);
         }
+
+        
     }
 }

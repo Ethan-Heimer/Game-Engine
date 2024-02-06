@@ -36,6 +36,7 @@ namespace GameEngine.Editor
 
                 if (File.Exists(filePath))
                 {
+                    Console.WriteLine("Exists " + filePath);
                     fileStream = File.OpenRead(filePath);
                     data = formatter.Deserialize(fileStream);
                     fileStream.Close();

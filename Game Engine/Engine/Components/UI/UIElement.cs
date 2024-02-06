@@ -1,4 +1,5 @@
-﻿using GameEngine.Rendering;
+﻿using GameEngine.Engine.Utilities;
+using GameEngine.Rendering;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,24 @@ namespace GameEngine.Engine.Components.UI
 {
     public abstract class UIElement : Behavior
     {
+        public Vector2 Size;
+        public Rectangle ElementRect
+        {
+            get
+            {
+                return new Rectangle((int)transform.Position.X, (int)transform.Position.Y, (int)Size.X, (int)Size.Y);
+            }
+        }
+        public bool IsMouseHover
+        {
+            get
+            {
+                Vector2 mousePos = InputManager.RawMousePosition();
+
+                return ElementRect.Intersects(mousePos);
+            }
+        }
+
         Canvas _canvas;
         Canvas Canvas
         {
@@ -23,6 +42,7 @@ namespace GameEngine.Engine.Components.UI
             }
         }
 
+
         bool render
         {
             get
@@ -31,12 +51,13 @@ namespace GameEngine.Engine.Components.UI
             }
         }
 
+
         protected Vector2 UIPosition;
         
 
         protected abstract void OnGUI(Layer layer, Canvas canvas);
 
-        public void Update()
+        public virtual void Update()
         {
             if(render)
                 OnGUI(Layer.UI, Canvas);
