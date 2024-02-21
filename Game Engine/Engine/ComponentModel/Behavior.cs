@@ -1,4 +1,5 @@
-﻿using GameEngine.Engine.ComponentModel;
+﻿using GameEngine.Editor.UI.Inspector;
+using GameEngine.Engine.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace GameEngine
     public class Behavior : ICloneable
     {
 
-
+        [HideInInspector]
         public GameObject gameObject;
         public Transform transform
         {

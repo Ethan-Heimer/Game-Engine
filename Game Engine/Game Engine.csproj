@@ -58,7 +58,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
-    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Windows.Forms" />
@@ -76,6 +76,7 @@
     <Compile Include="Editor\ComponentManager.cs" />
     <Compile Include="Editor\Editor.cs" />
     <Compile Include="Editor\EditorEventManager.cs" />
+    <Compile Include="Editor\Pointer Functions\GameObjectDragDropManipulator.cs" />
     <Compile Include="Editor\Pointer Functions\GameObjectRotationManipulator.cs" />
     <Compile Include="Editor\Pointer Functions\GameObjectScaleManipulator.cs" />
     <Compile Include="Editor\Pointer Functions\GameObjectTranslateManipulator.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyIconTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Hiarchy\Templates\HiarchyNameTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\BoolFieldTemplate.cs" />
+    <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\GameObjectFieldTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\InspectorWindow.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\ColorFieldTemplate.cs" />
     <Compile Include="Editor\UI\Editor UI\Windows\Inspector\FieldTemplates\FloatFieldTemplate.cs" />
@@ -123,6 +125,8 @@
     <Compile Include="Engine\Asset Management\Icon.cs" />
     <Compile Include="Engine\ComponentModel\ExecuteAlways.cs" />
     <Compile Include="Engine\ComponentModel\ObservableObject.cs" />
+    <Compile Include="Engine\Components\AnimationRenderer.cs" />
+    <Compile Include="Engine\Components\RendererBehavior.cs" />
     <Compile Include="Engine\Components\UI\Button.cs" />
     <Compile Include="Engine\Components\UI\Canvas.cs" />
     <Compile Include="Engine\Components\DrawBounds.cs" />
@@ -190,6 +194,7 @@
     <Compile Include="Engine\Utilities\StringSpacer.cs" />
     <Compile Include="Engine\Utilities\UIHelper.cs" />
     <Compile Include="Game\Move.cs" />
+    <Compile Include="Game\SceneSwitcher.cs" />
     <Compile Include="Game\TestComponent.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,7 +208,9 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Editor\UI\Editor UI\Windows\Animator\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Engine\Asset Management\Icons\Active.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -215,7 +222,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Engine\Asset Management\Icons\placeholder.png" />
+    <Content Include="Game\Content\Character Test Sprite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game\Content\crate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Content\finalruncycle01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Content\PlaceHolder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Content\PlaceHolderOne.png">

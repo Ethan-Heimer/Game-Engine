@@ -103,11 +103,14 @@ namespace GameEngine.Engine.Physics
 
                     if (result != null && result.IsColliding)
                     {
-                        contactPairs.Add((i, j));
-                        collisions.Add(result);
-
                         c1.IsColliding = true;
                         c2.IsColliding = true;
+
+                        if (c1.IsTrigger || c2.IsTrigger)
+                            continue;
+
+                        contactPairs.Add((i, j));
+                        collisions.Add(result);
 
                         c1.AddNormal(result.Normal); 
                         c2.AddNormal(result.Normal);
@@ -330,9 +333,6 @@ namespace GameEngine.Engine.Physics
 
                 bodyB.AddForce(impulse * bodyB.InverseMass);
                 bodyB.SetAngularVelocity(rotImpulseB);
-
-                string nameA = bodyA.gameObject.Name;
-                string nameB = bodyB.gameObject.Name;
             }
 
             for (int i = 0; i < contactCount; i++)
@@ -392,9 +392,7 @@ namespace GameEngine.Engine.Physics
             for (int i = 0; i < contactCount; i++)
             {
                 Vector2 frictionImpulse = impulseFrictionList[i];
-                Vector2 ra = raList[i];
-                Vector2 rb = rbList[i];
-
+              
                 bodyA.AddForce(-frictionImpulse * bodyA.InverseMass);
                 //bodyA.AddTouque(Cross(ra, frictionImpulse) * bodyA.InverseInertia);
 

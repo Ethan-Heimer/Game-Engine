@@ -30,7 +30,6 @@ namespace GameEngine.Editor.UI.Hiarchy
         {
             int padding = args.Length > 0 ? (int)args[0] | 0 : 0;
 
-            Console.WriteLine("Icon Template");
             if (((GameObject)owner).Parent != null)
                 drawer.DrawIcon("child icon", new ElementStyle()
                 {

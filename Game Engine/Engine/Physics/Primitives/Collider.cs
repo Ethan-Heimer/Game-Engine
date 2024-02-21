@@ -24,6 +24,8 @@ namespace GameEngine.Engine.Physics
         RigidBody _ridgidBody;
 
         public bool IsColliding;
+        public bool IsTrigger;
+
         public Vector2[] CollsionNormals
         {
             get
@@ -51,14 +53,6 @@ namespace GameEngine.Engine.Physics
         }
 
         public void ClearNormals() => collisionNormals.Clear(); 
-        
-        public void OnDraw()
-        {
-            Renderer.DrawCircle(transform.GetVerticies()[0], 10, Color.Red);
-            Renderer.DrawCircle(transform.GetVerticies()[1], 10, Color.Red);
-            Renderer.DrawCircle(transform.GetVerticies()[2], 10, Color.Red);
-            Renderer.DrawCircle(transform.GetVerticies()[3], 10, Color.Red);
-        }
 
         public Vector2[] GetVerticies()
         {
@@ -86,6 +80,11 @@ namespace GameEngine.Engine.Physics
             {
                 Renderer.DrawLine(verticies[i], verticies[(i + 1) % verticies.Length], Color.Green);
             }
+
+            Renderer.DrawCircle(transform.GetVerticies()[0], 10, Color.Red);
+            Renderer.DrawCircle(transform.GetVerticies()[1], 10, Color.Red);
+            Renderer.DrawCircle(transform.GetVerticies()[2], 10, Color.Red);
+            Renderer.DrawCircle(transform.GetVerticies()[3], 10, Color.Red);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Engine.Components;
 using GameEngine.Engine.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -15,10 +16,15 @@ namespace GameEngine
         public int Acceleration;
         public int MaxSpeed;
         RigidBody body;
+        AnimationRenderer animationRenderer;
 
+        Direction playerDirection;
+
+        Vector2 prevDirection;
         public void Start()
         {
             body = gameObject.GetComponent<RigidBody>();
+            animationRenderer = gameObject.GetComponent<AnimationRenderer>();
         }
        
         public void Update() 
@@ -54,6 +60,38 @@ namespace GameEngine
             {
                 body.SetVelocity(new Vector2(body.Velocity.X, MaxSpeed * Math.Sign(body.Velocity.Y)));
             }
+
+            if(prevDirection != direction)
+            {
+                if(direction == Vector2.Zero)
+                {
+                    if (prevDirection == new Vector2(1, 0))
+                        playerDirection = Direction.RightIdle;
+                    else
+                        playerDirection = Direction.LeftIdle;
+                }
+                else if(direction == new Vector2(1, 0))
+                {
+                    playerDirection = Direction.Right;
+                }
+                else if(direction == new Vector2(-1, 0))
+                {
+                    playerDirection = Direction.Left;
+                }
+
+                if(animationRenderer != null)
+                animationRenderer.SawpYLevel(((int)playerDirection));
+            }
+
+            prevDirection = direction;
         }
+    }
+
+    enum Direction
+    {
+        RightIdle = 0,
+        Right = 1,
+        LeftIdle = 2,
+        Left = 3
     }
 }

@@ -47,7 +47,7 @@ namespace GameEngine.Pointer
             if (InputManager.MouseLeftClicked())
             {
                 Vector2 position = InputManager.MousePositionCamera();
-                Target = GameObjectManager.GetOverlapping(new Rectangle()
+                Target = GameObjectManager.GetOverlapping(new Rectangle() 
                 {
                     Width = 10,
                     Height = 10,

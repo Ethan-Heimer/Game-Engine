@@ -42,7 +42,6 @@ namespace GameEngine
 
         public void Load()
         {
-            Console.WriteLine(gameObjects.Length + " length");
             GameObjectManager.RegisterGameobjectGroup(gameObjects);
         }
 

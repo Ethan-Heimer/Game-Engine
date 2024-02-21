@@ -25,13 +25,11 @@ namespace GameEngine.Editor.UI.Inspector
             var fieldX =  drawer.DrawField((val) =>
             {
                 HandleInputX(val);
-                Console.WriteLine(val.ToString());
             }, "X", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.Red));
 
             var fieldY = drawer.DrawField((val) =>
             {
                 HandleInputY(val);
-                Console.WriteLine(val.ToString());
             }, "Y", ElementStyle.DefaultFieldStyle.OverrideBorderBrush(Brushes.LawnGreen));
         }
 

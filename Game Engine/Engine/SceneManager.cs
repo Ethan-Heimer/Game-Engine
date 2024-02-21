@@ -11,6 +11,8 @@ using GameEngine.Editor;
 using GameEngine.Engine.Events;
 using GameEngine.Engine;
 using GameEngine.Engine.Settings;
+using System.Diagnostics;
+using System.Threading;
 
 namespace GameEngine
 {
@@ -26,11 +28,11 @@ namespace GameEngine
         static readonly EngineEvent<SceneUnloadedEvent> OnSceneUnloaded;
         static readonly EngineEvent<SceneSavedEvent> OnSceneSaved;
 
-        static Dictionary<string, string> scenes = new Dictionary<string, string>(); 
+        static Dictionary<string, string> scenes = new Dictionary<string, string>();
         static Scene _currentScene;
         public static Scene currentScene
         {
-            get{return _currentScene;}
+            get { return _currentScene; }
 
             set
             {
@@ -39,7 +41,7 @@ namespace GameEngine
                     UnloadScene();
                     OnSceneUnloaded?.Invoke(new SceneUnloadedEvent() { Scene = value });
                 }
-                
+
                 _currentScene = value;
                 _currentScene.Load();
                 OnSceneLoaded?.Invoke(new SceneLoadedEvent() { Scene = value });
@@ -55,7 +57,7 @@ namespace GameEngine
             EngineEventManager.AddEventListener<OnEnterEditMode>(e => HandleSceneOnEdit());
         }
 
-        public static void FindScenes() 
+        public static void FindScenes()
         {
             scenes.Clear();
 
@@ -63,16 +65,28 @@ namespace GameEngine
             foreach (var o in scenesFound)
             {
                 string name = Path.GetFileNameWithoutExtension(o);
-                Console.WriteLine(o);
                 scenes.Add(name, o);
             }
         }
 
+        /*
+        public static void LoadSceneAsync(string name)
+        {
+            Thread thread = new Thread(() =>
+            {
+                LoadScene(name);
+            });
+
+            thread.Start();
+            thread.Join();
+        }
+        */
+
         public static void LoadScene(string name)
         {
             string path = scenes[name];
-            Scene scene = AssetManager.LoadFile<Scene>(path);
 
+            Scene scene = AssetManager.LoadFile<Scene>(path);
             LoadScene(scene);
         }
 
@@ -84,12 +98,12 @@ namespace GameEngine
         public static void SaveScene(string path)
         {
             currentScene.Save();
-            
+
             string name = AssetManager.GetFilePath(path);
             string sceneName = Path.GetFileNameWithoutExtension(name);
 
             currentScene.name = sceneName;
-           
+
             AssetManager.SaveFile(currentScene, name);
 
             Console.WriteLine(name);
@@ -112,7 +126,6 @@ namespace GameEngine
             catch
             {
                 LoadScene(new Scene());
-                Console.WriteLine("Loaded New");
             }
         }
 
@@ -130,9 +143,9 @@ namespace GameEngine
                 LoadScene(tempScene);
         }
 
+        //new thread?
         static void UnloadScene()
         {
-            Console.WriteLine("Unload");
             if (currentScene != null)
                 GameObjectManager.ClearAll();
         }
@@ -149,6 +162,6 @@ namespace GameEngine
             get; set;
         }
 
-        public Scene Scene; 
+        public Scene Scene;
     }
 }

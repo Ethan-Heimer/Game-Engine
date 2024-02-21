@@ -27,6 +27,8 @@ namespace GameEngine.Editor.UI.Inspector
 
         EditorGUIDrawer drawer;
 
+        bool hovered;
+
         protected ElementStyle templateStyle = new ElementStyle()
         {
             DynamicSize = true,
@@ -50,6 +52,10 @@ namespace GameEngine.Editor.UI.Inspector
             template.MouseEnter += (s, e) => OnMouseEnter(drawer);
             template.MouseLeave += (s, e) => OnMouseExit(drawer);
 
+            template.MouseUp += (s, e) => OnMouseUp(drawer);
+
+           
+
             this.drawer = drawer;
 
             OnValueChanged();
@@ -64,6 +70,7 @@ namespace GameEngine.Editor.UI.Inspector
             }
 
             OnUpdate(drawer);
+
 
             if (data.HasValueChange())
                 OnValueChanged();
@@ -138,8 +145,14 @@ namespace GameEngine.Editor.UI.Inspector
         protected virtual void OnValueChanged() { }
         protected virtual void WhileFocused(EditorGUIDrawer drawer) { }
         
-        protected virtual void OnMouseEnter(EditorGUIDrawer drawer) { }
-        protected virtual void OnMouseExit(EditorGUIDrawer drawer) { }
+        protected virtual void OnMouseEnter(EditorGUIDrawer drawer) 
+        {
+            hovered = true;
+        }
+        protected virtual void OnMouseExit(EditorGUIDrawer drawer) {}
+        protected virtual void OnMouseClick(EditorGUIDrawer drawer) { }
+        protected virtual void OnMouseUp(EditorGUIDrawer drawer) { }
+        protected virtual void OnMouseHover(EditorGUIDrawer drawer) { }
 
         protected virtual void OnDragEnter(EditorGUIDrawer drawer, object data) { }
         protected virtual void OnDragOver(EditorGUIDrawer drawer, object data) { }

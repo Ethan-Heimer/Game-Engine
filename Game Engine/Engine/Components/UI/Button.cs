@@ -32,6 +32,8 @@ namespace GameEngine.Engine.Components.UI
             else
                 color = BaseColor;
 
+            color.A = 255;
+
             if (IsClicked)
                 OnClick?.Invoke();
 

@@ -17,6 +17,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using GameEngine.Pointer;
 using GameEngine.Editor.Widgets;
+using GameEngine.Editor.Pointer_Functions;
 
 namespace GameEngine.Editor
 {
@@ -46,10 +47,12 @@ namespace GameEngine.Editor
 
             WidgetDrawer.Init();
 
-            editorPointer.AddManipulator(new OnGameObjectSelectManipulator())
+            editorPointer
+            //.AddManipulator(new OnGameObjectSelectManipulator())
             .AddManipulator(new GameObjectTranslateManipulator())
             .AddManipulator(new GameObjectRotationManipulator())
-            .AddManipulator(new GameObjectScaleManipulator());
+            .AddManipulator(new GameObjectScaleManipulator())
+            .AddManipulator(new GameObjectDragDropManipulator());
         }
 
         static void Update()

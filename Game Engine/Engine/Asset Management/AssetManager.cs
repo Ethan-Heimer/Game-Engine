@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -45,8 +46,14 @@ namespace GameEngine.Editor
 
         public static T LoadFile<T>(string name)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             BinarySeriailizer binarySeriailizer = new BinarySeriailizer();
-            return binarySeriailizer.Deserialize<T>(contentPath + "\\" + name);
+            var res = binarySeriailizer.Deserialize<T>(contentPath + "\\" + name);
+            stopwatch.Stop();
+            var elaps = stopwatch.Elapsed;
+
+            return res;
         }
 
         public static T[] FindAndLoadFiles<T>(string extension) => FindFiles(extension).Select(x => LoadFile<T>(x)).ToArray();
@@ -114,7 +121,6 @@ namespace GameEngine.Editor
         public static string GetFilePath(string path)
         {
             int contentIndex = path.IndexOf(folderName);
-            Console.WriteLine(contentIndex);
             return path.Substring(contentIndex + folderName.Length);
         }
     }

@@ -8,36 +8,14 @@ using Microsoft.Xna.Framework;
 using GameEngine.Rendering;
 using GameEngine.Editor;
 using GameEngine.Debugging;
+using GameEngine.Engine.Components;
 
 namespace GameEngine
 {
     [Note(note = "The Standard Rectangle Only Allows for int values, a coustom one with floting point values might be better")]
-    public class TextureRenderer : Behavior
+    public class TextureRenderer : RendererBehavior
     {
-        string _path;
-        public string Path
-        {
-            get { return _path; }
-            set
-            {
-                _path = value;
-                Sprite.Path = _path;
-            }
-        }
-
-        public Sprite Sprite;
-        public Color Color = Color.White;
-
-        public Rectangle Bounds 
-        {
-            get
-            {
-                if(Sprite == null)
-                    return Rectangle.Empty;
-                return Sprite.Bounds;
-            }
-        }
-
+        
         public void OnDraw()
         {
             if(Sprite != null)

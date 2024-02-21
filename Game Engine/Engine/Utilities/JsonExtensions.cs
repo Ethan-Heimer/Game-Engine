@@ -19,7 +19,6 @@ namespace GameEngine.Engine.Utilities
 
         public static object ToRuntimeObject(this JsonElement element, Type objectType)
         {
-            Console.WriteLine(objectType.FullName);
             return typeof(JsonExtensions).GetMethod("ToObject").MakeGenericMethod(objectType).Invoke(null, new object[] { element });
         }
     }

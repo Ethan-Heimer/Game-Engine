@@ -57,7 +57,6 @@ namespace GameEngine.Editor.Windows
 
             return objs.Where(x =>
             {
-                Console.WriteLine(x.Parent + " parent");
                 return x.Parent == null;
             }).ToArray();
         }

@@ -18,6 +18,7 @@ using GameEngine.Pointers;
 using GameEngine.Debugging;
 using System.Runtime.InteropServices;
 using GameEngine.Engine.Utilities;
+using GameEngine.Engine.Components;
 
 namespace GameEngine
 {
@@ -71,13 +72,14 @@ namespace GameEngine
             }
         }
 
-        TextureRenderer _renderer;
-        public TextureRenderer renderer
+        RendererBehavior _renderer;
+        public RendererBehavior renderer
         {
             get
             {
                 if (_renderer == null)
-                    _renderer = GetComponent<TextureRenderer>();
+                    _renderer = GetComponent<RendererBehavior>();
+                
                 return _renderer;
             }
         }
@@ -137,7 +139,10 @@ namespace GameEngine
         {
             foreach (var o in components) 
             {
-                if(o.BindingBehavior.GetType() == typeof(T))
+                if (o.BindingBehavior.GetType() == typeof(T))
+                    return o.BindingBehavior as T;
+
+                else if(o.BindingBehavior.GetType().BaseType == typeof(T))
                     return o.BindingBehavior as T;
             }
            

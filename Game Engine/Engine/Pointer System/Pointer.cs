@@ -14,7 +14,7 @@ namespace GameEngine.Pointers
 {
     public class Pointer<T> : IPointer<T> where T : IPointerManiplatable 
     {
-        protected PointerEvent<TargetSelected<T>> OnTargetSelected;
+        protected PointerEvent<TargetSelected<T>> OnTargetSelected; 
         protected PointerEvent<TargetDeselected<T>> OnTargetDeselected;
         protected PointerEvent<TargetDragged<T>> OnDragged;
         protected PointerEvent<PointerUpdated<T>> OnUpdate;

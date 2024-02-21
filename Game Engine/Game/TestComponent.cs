@@ -14,37 +14,17 @@ namespace GameEngine.Game
     [ExecuteAlways]
     public class TestComponent : Behavior
     {
-        Button button;
-        public void Awake()
-        {
-            //Console.WriteLine(gameObject.Transform);
-        }
+        //Button button;
 
+        public GameObject GameObject;
+        public Button button;
+       
         public void Start()
         {
-            Console.WriteLine("Start!! " + gameObject.Name);
             button = gameObject.GetComponent<Button>();
-
-            button.OnClick += () => Console.WriteLine("Click");
+            button.OnClick += () => Console.WriteLine(GameObject.Name);
         }
 
-        public void Update()
-        {
-            //Console.WriteLine("Update!!!");
-            //TextureRenderer render = gameObject.renderer;
-            //render.Sprite = new Rendering.Sprite("PlaceHolderTwo");
-            //Console.WriteLine(transform.Size);
-            
-        }
-
-        public void OnDraw()
-        {
-           
-        }
-
-        public void ParamFunc(string inputOne, int inputTwo)
-        {
-            Console.WriteLine(inputOne + " " + inputTwo);
-        }
+        
     }
 }

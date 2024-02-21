@@ -39,14 +39,12 @@ namespace GameEngine.Editor.UI.Inspector
 
         protected override void OnValueChanged()
         {
-            Console.WriteLine("Changed");
             var display = FindElementInTemplate<TextBox>("field");
             display.Text = data.GetValue()?.Path;
         }
 
         void OnFileSelected(string path) 
         {
-            Console.WriteLine("Value");
             string fileName = Path.GetFileNameWithoutExtension(path);
 
             var display = FindElementInTemplate<TextBox>("field");

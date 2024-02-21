@@ -46,6 +46,14 @@ namespace GameEngine
             }
         }
 
+        Rectangle spriteBounds
+        {
+            get
+            {
+                return gameObject.renderer.GetBounds();
+            }
+        }
+
         Vector2 OriginMultiplyer
         {
             get
@@ -69,8 +77,8 @@ namespace GameEngine
         {
             get
             {
-                var width = gameObject.renderer.Bounds.Width;
-                var height = gameObject.renderer.Bounds.Height;
+                var width = gameObject.renderer != null ? spriteBounds.Width : 0;
+                var height = gameObject.renderer != null ? spriteBounds.Height : 0;
 
                 return new Vector2(width * OriginMultiplyer.X, height * OriginMultiplyer.Y);
             }
@@ -98,8 +106,8 @@ namespace GameEngine
 
                 Vector2 rotVector = new Vector2(Math.Abs((float)Math.Cos(rot * (Math.PI / 180))), Math.Abs((float)Math.Sin(rot * (Math.PI / 180))));
 
-                var width = (gameObject.renderer.Bounds.Width * Math.Abs(scale)) * rotVector.X + (gameObject.renderer.Bounds.Height * Math.Abs(scale)) * rotVector.Y;
-                var height = (gameObject.renderer.Bounds.Height * Math.Abs(scale)) * rotVector.X + (gameObject.renderer.Bounds.Width * Math.Abs(scale)) * rotVector.Y;
+                var width = (spriteBounds.Width * Math.Abs(scale)) * rotVector.X + (spriteBounds.Height * Math.Abs(scale)) * rotVector.Y;
+                var height = (spriteBounds.Height * Math.Abs(scale)) * rotVector.X + (spriteBounds.Width * Math.Abs(scale)) * rotVector.Y;
 
                 Rectangle bounds = new Rectangle
                 {
@@ -121,7 +129,7 @@ namespace GameEngine
                 if (gameObject.renderer == null)
                     return Vector2.Zero;
 
-                return new Vector2(gameObject.renderer.Bounds.Width * Math.Abs(WorldScale), gameObject.renderer.Bounds.Height * Math.Abs(WorldScale));
+                return new Vector2(spriteBounds.Width * Math.Abs(WorldScale), spriteBounds.Height * Math.Abs(WorldScale));
             }
         }
 

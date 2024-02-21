@@ -16,7 +16,6 @@ namespace GameEngine.Engine.Rendering
         public static void Init(GameWindow window)
         {
             gameWindow = window;
-            window.ClientSizeChanged += (e, s) => Console.WriteLine("test");
         }
 
         public static Vector2 WindowPosition()

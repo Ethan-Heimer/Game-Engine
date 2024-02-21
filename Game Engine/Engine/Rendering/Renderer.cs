@@ -25,6 +25,9 @@ namespace GameEngine.Rendering
         [EngineSettings("Rendering")]
         public static float scale = 1;
 
+        [EngineSettings("Rendering")]
+        public static Color skyColor = new Color();
+
         static GameWindow window;
 
         static GraphicsDevice graphicsDevice;
@@ -56,11 +59,8 @@ namespace GameEngine.Rendering
             spriteBatch = new SpriteBatch(_graphicDevice);
             uiBatch = new SpriteBatch(_graphicDevice);
 
-            pixel = new Texture2D(graphicsDevice, 1, 1, false,
-            SurfaceFormat.Color);
-
-            Int32[] data = { 0xFFFFFF }; // White. 0xFF is Red, 0xFF0000 is Blue
-            pixel.SetData<Int32>(data, 0, pixel.Width * pixel.Height);
+            pixel = new Texture2D(graphicsDevice, 1, 1);
+            pixel.SetData(new Color[] { Color.White });
 
             circle = CreateCircleText(1000);
 
@@ -69,10 +69,10 @@ namespace GameEngine.Rendering
 
         public static void Draw()
         {
-            graphicsDevice.Clear(new Color(55,55,55));
+            graphicsDevice.Clear(skyColor);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, CameraManager.GetTransformantionMaxtrix());
-            uiBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, CameraManager.GetTransformantionMaxtrix());
+            uiBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
             BehaviorFunctionExecuter.Execute.OnDraw();
             OnDraw?.Invoke(OnEngineDrawEvent);
@@ -105,6 +105,11 @@ namespace GameEngine.Rendering
 
         public static void RenderTexture(Sprite texture, Vector2 position, float rotation, float scale, Color color, Vector2 origin, Layer layer)
         {
+            RenderTexture(texture, position, Rectangle.Empty, rotation, scale, color, origin, layer);
+        }
+        
+        public static void RenderTexture(Sprite texture, Vector2 position, Rectangle sourceRectangle, float rotation, float scale, Color color, Vector2 origin, Layer layer)
+        {
             buffer.Push(new SpriteData()
             {
                 texture = texture.Texture,
@@ -113,7 +118,8 @@ namespace GameEngine.Rendering
                 scale = scale,
                 color = color,
                 origin = origin,
-                layer = layer
+                layer = layer,
+                sourceRectangle = sourceRectangle
             });
         }
 
@@ -313,12 +319,32 @@ namespace GameEngine.Rendering
         public float scale;
         public Vector2 origin;
 
+        Rectangle _sourceRectangle;
+        public Rectangle sourceRectangle
+        {
+            get
+            {
+                if (_sourceRectangle.Width == 0 || _sourceRectangle.Height == 0)
+                    return new Rectangle()
+                    {
+                        X = 0,
+                        Y = 0,
+                        Width = texture.Width,
+                        Height = texture.Height
+                    };
+                else
+                    return _sourceRectangle;
+            }
+
+            set { _sourceRectangle = value; }
+        }
+
         public Layer layer { get; set; }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             if(texture != null)
-                spriteBatch.Draw(texture, position, null, color, rotation, origin, scale, SpriteEffects.None, 1);
+                spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, SpriteEffects.None, 1);
         }
     }
 
@@ -358,7 +384,10 @@ namespace GameEngine.Rendering
 
         public Layer layer { get; set; }
 
-        public void Draw(SpriteBatch spriteBatch) => spriteBatch.Draw(texture, rectangle, null, color, 0, Vector2.Zero, SpriteEffects.None, 1);
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, rectangle, null, color, 0, Vector2.Zero, SpriteEffects.None, 1);
+        }
     }
 
     public struct CircleData : IBufferData

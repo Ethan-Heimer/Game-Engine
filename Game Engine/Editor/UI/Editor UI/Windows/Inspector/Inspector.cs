@@ -45,7 +45,9 @@ namespace GameEngine.Editor.UI.Inspector
                 ContextManager context = new ContextManager(title);
                 context.AddOption("Remove Component", (e, s) => gameObject.RemoveComponent(o));
 
-                foreach (FieldInfo f in o.GetFields())
+                var drawableFields = o.GetFields().Where(x => x.GetCustomAttribute(typeof(HideInInspectorAttribute)) == null);
+
+                foreach (FieldInfo f in drawableFields)
                 {
                     Drawfield(f, o, drawer);
                 }
@@ -111,4 +113,6 @@ namespace GameEngine.Editor.UI.Inspector
             fields.Add(template);
         }
     }
+
+    public class HideInInspectorAttribute : Attribute { }
 }

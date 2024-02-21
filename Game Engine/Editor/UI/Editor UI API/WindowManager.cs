@@ -25,7 +25,7 @@ namespace GameEngine.Editor
         public static void Init()
         {
            OpenDefaultWindows();
-            EngineEventManager.AddEventListener<OnEngineTickEvent>(e => Update());
+           EngineEventManager.AddEventListener<OnEngineTickEvent>(e => Update());
         }
        
         static List<EditorWindow> OpenDefaultWindows()
@@ -35,7 +35,6 @@ namespace GameEngine.Editor
                 Assembly.GetAssembly(typeof(EditorWindow)).GetTypes()
                 .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(EditorWindow)) && myType.GetCustomAttribute(typeof(OpenWindowByDefaultAttribute)) != null))
             {
-                Console.WriteLine(type + " type");
                 CreateWindow(type);
             }
 

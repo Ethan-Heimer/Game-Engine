@@ -20,8 +20,7 @@ namespace GameEngine.Engine.Utilities
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childrenCount; i++)
             {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                Console.WriteLine(child.GetType().Name + " Name");    
+                var child = VisualTreeHelper.GetChild(parent, i);   
                 // If the child is not of the request child type child
                 T childType = child as T;
                 if (childType == null)
